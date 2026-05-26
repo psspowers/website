@@ -1,0 +1,77 @@
+---
+interface Props {
+  value: number;
+  label: string;
+  format?: 'MW' | '+' | 'tons';
+  icon?: string;
+  delay?: number;
+  'data-stat'?: string;
+}
+
+const { value, label, format, icon, delay = 0, 'data-stat': dataStat } = Astro.props;
+---
+
+<div 
+  class="stat-card enhanced-card p-6"
+  data-value={value}
+  data-format={format}
+  data-stat={dataStat}
+  data-aos="fade-up"
+  data-aos-delay={delay}
+>
+  {icon && (
+    <div class="text-primary mb-4 bg-white rounded-full p-2">
+      <img src={icon} alt={label} class="w-12 h-12 object-contain mx-auto" />
+    </div>
+  )}
+  <div class="text-2xl md:text-4xl font-bold text-gradient stat-value">
+    {value}{format === 'MW' ? ' MW' : format === '+' ? '+' : ''}
+  </div>
+  <div class="text-gray-600 mt-2 font-medium">{label}</div>
+</div>
+
+<script>
+function animateValue(element: HTMLElement, start: number, end: number, duration = 2000): void {
+  let current = start;
+  const range = end - start;
+  const format = (element.closest('.stat-card') as HTMLElement)?.dataset.format;
+
+  const timer = setInterval(() => {
+    current += range / (duration / 16);
+    if (current >= end) {
+      current = end;
+      clearInterval(timer);
+    }
+
+    let displayValue = Math.round(current).toLocaleString();
+    if (format) {
+      if (format === 'MW') displayValue += ' MW';
+      else if (format === '+') displayValue += '+';
+      else if (format === 'tons') displayValue += ' tons';
+    }
+    element.textContent = displayValue;
+  }, 16);
+}
+
+function initializeStats(): void {
+  const cards = document.querySelectorAll('.stat-card');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const card = entry.target;
+        const valueElement = card.querySelector('.stat-value');
+        if (!(valueElement instanceof HTMLElement)) return;
+
+        const targetValue = parseFloat((card as HTMLElement).dataset.value || '0');
+        animateValue(valueElement, 0, targetValue);
+        observer.unobserve(card);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  cards.forEach(card => observer.observe(card));
+}
+
+// Initialize when the DOM is loaded
+document.addEventListener('DOMContentLoaded', initializeStats);
+</script>

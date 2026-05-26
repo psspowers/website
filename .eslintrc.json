@@ -1,0 +1,73 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:astro/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "root": true,
+  "env": {
+    "browser": true,
+    "node": true,
+    "es2022": true,
+    "es6": true
+  },
+  "globals": {
+    "window": true,
+    "document": true,
+    "navigator": true,
+    "console": true,
+    "performance": true,
+    "requestAnimationFrame": true,
+    "IntersectionObserver": true,
+    "clearInterval": true,
+    "setInterval": true,
+    "setTimeout": "readonly",
+    "clearTimeout": "readonly"
+  },
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-unused-vars": ["error", {
+      "argsIgnorePattern": "^_",
+      "varsIgnorePattern": "^_",
+      "caughtErrorsIgnorePattern": "^_"
+    }]
+  },
+  "overrides": [
+    {
+      "files": ["*.astro"],
+      "parser": "astro-eslint-parser",
+      "parserOptions": {
+        "parser": "@typescript-eslint/parser",
+        "extraFileExtensions": [".astro"]
+      },
+      "rules": {
+        "astro/no-conflict-set-directives": "error",
+        "astro/no-unused-css-selector": "error"
+      }
+    },
+    {
+      "files": ["*.tsx"],
+      "extends": [
+        "plugin:react/recommended",
+        "plugin:jsx-a11y/recommended"
+      ],
+      "plugins": ["react", "jsx-a11y"],
+      "rules": {
+        "react/prop-types": "off",
+        "react/react-in-jsx-scope": "off",
+        "jsx-a11y/alt-text": "error",
+        "jsx-a11y/anchor-has-content": "error",
+        "jsx-a11y/click-events-have-key-events": "error",
+        "jsx-a11y/no-static-element-interactions": "error"
+      },
+      "settings": {
+        "react": {
+          "version": "detect"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ZoomableContent from '../components/ZoomableContent';
+
+---
+
+<Layout title="Zoomable Content Example">
+  <main class="pt-20">
+    <div class="container mx-auto px-6 py-12">
+      <h1 class="text-4xl font-bold mb-8">Zoomable Content Example</h1>
+      
+      <div class="bg-gray-100 rounded-xl p-8">
+        <ZoomableContent client:load className="w-full h-[600px] bg-white rounded-lg shadow-lg">
+          <div class="p-8">
+            <h2 class="text-2xl font-bold mb-4">Sample Content</h2>
+            <p class="mb-4">This content can be zoomed and panned. Try using the controls or keyboard shortcuts.</p>
+            
+            <div class="grid grid-cols-3 gap-4">
+              {Array.from({ length: 9 }).map((_, i) => (
+                <div class="bg-gray-100 p-4 rounded-lg">
+                  <h3 class="font-bold mb-2">Item {i + 1}</h3>
+                  <p class="text-sm text-gray-600">Sample content for item {i + 1}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </ZoomableContent>
+      </div>
+    </div>
+  </main>
+</Layout>

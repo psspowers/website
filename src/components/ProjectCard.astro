@@ -1,0 +1,113 @@
+---
+import type { Project } from '../data/projects/types';
+import OptimizedImage from './OptimizedImage.astro';
+
+interface Props {
+  project: Project;
+  index: number;
+}
+
+const { project, index } = Astro.props;
+---
+
+<article 
+  class="project-card group enhanced-card flex flex-col h-full overflow-hidden"
+  data-type={project.type}
+  data-status={project.status}
+  data-location={project.location}
+  data-capacity={project.capacity.toUpperCase()}
+  data-aos="fade-up"
+  data-aos-delay={index * 50}
+>
+  <!-- Image Container -->
+  <div class="relative aspect-video overflow-hidden rounded-t-lg bg-gray-50">
+    <OptimizedImage
+      src={project.image}
+      fallback="/pss-logo-black.png"
+      alt={project.name}
+      aspectRatio="16:9"
+      priority={index < 4}
+      class="w-full h-full object-cover transition-all duration-300 group-hover:brightness-125 group-hover:contrast-110 group-hover:saturate-110"
+    />
+    
+    <!-- Image Overlay with Project Name -->
+    <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent group-hover:from-black/30 transition-all duration-300 flex flex-col justify-between p-4">
+      <!-- Tags Container -->
+      <div class="flex flex-col gap-2">
+        <div class="flex gap-2 animate-fadeIn">
+          <span 
+            class={`px-3 py-1 text-white text-xs font-medium rounded-full ${
+              project.status === 'Completed' 
+                ? 'bg-emerald-500/90 backdrop-blur-sm' 
+                : 'bg-blue-500/90 backdrop-blur-sm'
+            }`}
+          >
+            {project.status}
+          </span>
+          <span class="px-3 py-1 bg-gray-700/90 text-white text-xs font-medium rounded-full backdrop-blur-sm">
+            {project.type}
+          </span>
+        </div>
+      </div>
+      
+      <h2 class="text-xl font-bold text-white line-clamp-2 mt-auto drop-shadow-sm group-hover:text-white/90">
+        {project.name}
+      </h2>
+    </div>
+  </div>
+
+  <!-- Content Container -->
+  <div class="p-3 flex flex-col flex-grow bg-gray-50/50">
+    <!-- Key Project Details -->
+    <div class="grid grid-cols-2 gap-x-3 gap-y-2 w-full">
+      <div class="flex items-baseline justify-between bg-white px-3 py-2 rounded">
+        <span class="text-[13px] text-gray-500 font-medium">Capacity</span>
+        <span class="text-[14px] font-semibold text-primary ml-2">{project.capacity}</span>
+      </div>
+      <div class="flex items-baseline justify-between bg-white px-3 py-2 rounded">
+        <span class="text-[13px] text-gray-500 font-medium">COD</span>
+        <span class="text-[14px] font-semibold text-primary ml-2">{project.cod}</span>
+      </div>
+      <div class="flex items-baseline justify-between bg-white px-3 py-2 rounded">
+        <span class="text-[13px] text-gray-500 font-medium">Role</span>
+        <span class="text-[14px] font-semibold text-primary ml-2">{project.role}</span>
+      </div>
+      <div class="flex items-baseline justify-between bg-white px-3 py-2 rounded">
+        <span class="text-[13px] text-gray-500 font-medium">Location</span>
+        <span class="text-[14px] font-semibold text-primary ml-2">{project.location}</span>
+        </div>
+    </div>
+  </div>
+</article>
+
+<style>
+  .project-card {
+    opacity: 0;
+    animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    height: fit-content;
+  }
+
+  .project-card.hidden {
+    display: none;
+  }
+
+  .project-card:hover .project-card-details {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .project-card:hover {
+    transform: translateY(-2px);
+  }
+</style>

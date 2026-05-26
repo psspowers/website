@@ -1,0 +1,21 @@
+{
+  "name": "PSS Powers",
+  "short_name": "PSS Powers",
+  "description": "Leading renewable energy solutions for a sustainable future",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1550b6",
+  "icons": [
+    {
+      "src": "/pss-logo-black.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/pss-logo-black.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

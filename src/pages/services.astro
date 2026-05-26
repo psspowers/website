@@ -1,0 +1,296 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AnimatedStats from '../components/AnimatedStats.astro';
+import OptimizedImage from '../components/OptimizedImage.astro';
+
+const services = [
+  {
+    id: 'spd',
+    title: 'Development and Financing',
+    icon: 'M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7',
+    description: 'We provide comprehensive development and financing solutions for renewable energy projects, from initial concept to financial close.',
+    features: [
+      'Project Development',
+      'Project Financing',
+      'Project Management',
+      'Risk Assessment'
+    ],
+    stats: {
+      value: '550+ MW',
+      label: 'Project Pipeline'
+    },
+    success: {
+      client: 'Multiple Projects',
+      result: 'Successfully developed and financed over 100 MW of solar projects'
+    }
+  },
+  {
+    id: 'epc',
+    title: 'Turnkey Solar PV EPC Services',
+    icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4',
+    description: 'End-to-end project execution from engineering and procurement to construction and commissioning.',
+    features: [
+      'Turnkey project delivery',
+      'Quality assurance',
+      'Project management',
+      'Safety compliance'
+    ],
+    stats: {
+      value: '450 MW',
+      label: 'Total Capacity Installed'
+    },
+    success: {
+      client: 'Industrial Manufacturing Plant',
+      result: 'Completed 60MW project in 3 months from start of construction'
+    }
+  },
+  {
+    id: 'om',
+    title: 'Operations & Maintenance',
+    icon: 'M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 011.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143.854.107 1.204l.527.738c.32.447.27 1.06-.12 1.45l-.774.773a1.125 1.125 0 01-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.397.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.27-1.45-.12l-.773-.774a1.125 1.125 0 01-.12-1.45l.527-.737c.25-.35.273-.806.108-1.204-.165-.397-.505-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.107-1.204l-.527-.738a1.125 1.125 0 01.12-1.45l.773-.773a1.125 1.125 0 011.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894z',
+    description: 'Comprehensive maintenance services to ensure optimal system performance and longevity.',
+    features: [
+      'Preventive maintenance',
+      'Performance monitoring',
+      '24/7 emergency support',
+      'Condition assessment'
+    ],
+    stats: {
+      value: '99.9%',
+      label: 'System Availability'
+    },
+    success: {
+      client: 'Power Distribution Company',
+      result: 'Achieved zero downtime for critical systems'
+    }
+  },
+  {
+    id: 'retrofit',
+    title: 'Retrofit & Repowering Upgrades',
+    icon: 'M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75',
+    description: 'Modernization and repowering services to enhance system efficiency and capabilities.',
+    features: [
+      'Equipment modernization',
+      'System upgrades',
+      'Energy efficiency improvements',
+      'Technology integration'
+    ],
+    stats: {
+      value: '25%',
+      label: 'Average Efficiency Gain'
+    },
+    success: {
+      client: 'Large Shopping Center',
+      result: 'Reduced energy consumption by 40% through modernization'
+    }
+  }
+];
+
+const testimonials = [
+  {
+    quote: "PSS Powers' expertise in system design has been instrumental in our facility's improved performance.",
+    author: "John Smith",
+    position: "Technical Director",
+    company: "Global Manufacturing Corp"
+  },
+  {
+    quote: "Their maintenance team's quick response and expertise have helped us maintain optimal operations.",
+    author: "Sarah Chen",
+    position: "Operations Manager",
+    company: "Energy Solutions Ltd"
+  }
+];
+
+const certifications = [
+  { 
+    name: 'ISO 9001:2015', 
+    description: 'Quality Management System certification demonstrating our commitment to consistently delivering products and services that meet customer and regulatory requirements. Our robust quality control processes ensure continuous improvement and customer satisfaction in everything we do.' 
+  }
+];
+---
+
+<Layout
+  title="Services - PSS Powers"
+  description="Comprehensive renewable energy solutions including solar, wind, and energy storage services. From development and financing to operations and maintenance."
+  image="/icons/services/solar-energy.png"
+  type="website"
+>
+  <main class="pt-20">
+    <!-- Hero Section -->
+    <section class="gradient-header">
+      <div class="container mx-auto px-6">
+        <div class="max-w-3xl text-white" data-aos="fade-up">
+          <h1 class="text-4xl md:text-5xl font-bold mb-6">
+            Comprehensive Power Solutions
+          </h1>
+          <p class="text-xl opacity-90">
+            From system design to ongoing maintenance, we deliver end-to-end power solutions that drive efficiency and reliability.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Grid -->
+    <section class="py-20">
+      <div class="container mx-auto px-6">
+        <div class="grid md:grid-cols-2 gap-8">
+          {services.map((service, index) => (
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden border border-[#E0E0E0] p-4" data-aos="fade-up" data-aos-delay={index * 100}>
+              <div class="p-8">
+                <h2 class="text-2xl font-bold mb-6">{service.title}</h2>
+                
+                <p class="text-gray-600 mb-6">{service.description}</p>
+                
+                <div class="mb-6">
+                  <h3 class="font-semibold mb-3">Key Features:</h3>
+                  <ul class="space-y-2">
+                    {service.features.map(feature => (
+                      <li class="flex items-center">
+                        <svg class="w-5 h-5 text-primary mr-2" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                        </svg>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div class="flex items-center justify-center mb-6">
+                  <AnimatedStats
+                    value={service.stats.value}
+                    label={service.stats.label}
+                    format={service.stats.value.includes('%') ? '%' : 'MW'}
+                  />
+                </div>
+
+                <div class="border-t pt-6">
+                  <h3 class="font-semibold mb-3">Success Story:</h3>
+                  <div class="bg-gray-50 p-4 rounded">
+                    <p class="font-medium">{service.success.client}</p>
+                    <p class="text-gray-600">{service.success.result}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    {/* Testimonials Section (Hidden)
+      <section class="bg-gray-50 py-20">
+        <div class="container mx-auto px-6">
+          <h2 class="text-3xl font-bold text-center mb-12" data-aos="fade-up">Client Testimonials</h2>
+          <div class="grid md:grid-cols-2 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <div class="bg-white p-8 rounded-lg shadow-lg border border-[#E0E0E0] m-4" data-aos="fade-up" data-aos-delay={index * 100}>
+                <svg class="w-8 h-8 text-primary mb-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                </svg>
+                <p class="text-gray-600 mb-4">{testimonial.quote}</p>
+                <div>
+                  <p class="font-bold">{testimonial.author}</p>
+                  <p class="text-gray-600">{testimonial.position}</p>
+                  <p class="text-primary">{testimonial.company}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    */}
+
+    <!-- Certifications -->
+    <section class="py-20">
+      <div class="container mx-auto px-6">
+        <h2 class="text-3xl font-bold text-center mb-12" data-aos="fade-up">Certifications & Standards</h2>
+        <div class="max-w-2xl mx-auto">
+          {certifications.map((cert, index) => (
+            <div class="text-center" data-aos="fade-up" data-aos-delay={index * 100}>
+              <div class="bg-gray-50 p-8 rounded-lg border border-[#E0E0E0] m-4">
+                <h3 class="text-xl font-bold mb-2">{cert.name}</h3>
+                <p class="text-gray-600 leading-relaxed text-lg">{cert.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="bg-primary text-white py-20">
+      <div class="container mx-auto px-6">
+        <div class="max-w-4xl mx-auto">
+          <div class="text-center mb-12" data-aos="fade-up">
+            <h2 class="text-3xl font-bold mb-4">Ready to Get Started?</h2>
+            <p class="text-lg opacity-90">Contact our team for expert consultation and support.</p>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-8">
+            <div data-aos="fade-up">
+              <h3 class="text-xl font-bold mb-4">Quick Contact</h3>
+              <div class="space-y-4">
+                <a
+                  href="mailto:info@psspowers.com"
+                  class="flex items-center space-x-2 text-white hover:opacity-80"
+                >
+                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                  </svg>
+                  <span>info@psspowers.com</span>
+                </a>
+                <div class="flex items-center space-x-2">
+                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                  </svg>
+                  <span>+66 2 106 2611</span>
+                </div>
+              </div>
+            </div>
+
+            <div data-aos="fade-up" data-aos-delay="100">
+              <form class="space-y-6 p-6 rounded-lg bg-white/10">
+                <div>
+                  <label class="block text-sm font-medium mb-2 text-white/90" htmlFor="name">Name</label>
+                  <input 
+                    type="text" 
+                    class="w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all" 
+                    required 
+                    placeholder="Your name"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-2 text-white/90" htmlFor="email">Email</label>
+                  <input 
+                    type="email" 
+                    class="w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all" 
+                    required 
+                    placeholder="your@email.com"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-2 text-white/90" htmlFor="message">Message</label>
+                  <textarea 
+                    class="w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all resize-none" 
+                    rows="4" 
+                    required
+                    placeholder="How can we help you?"
+                  ></textarea>
+                </div>
+                <button 
+                  type="submit" 
+                  class="w-full bg-white text-primary font-semibold py-3 rounded-lg hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
+                >
+                  Send Message
+                </button>
+              </form>
+              <p class="text-sm mt-4 text-white/80">* We typically respond within 24 hours</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>

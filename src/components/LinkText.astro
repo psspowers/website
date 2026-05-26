@@ -1,0 +1,19 @@
+---
+interface Props {
+  text: string;
+  searchTerm?: string;
+  url?: string;
+}
+
+const { text, searchTerm = 'I Squared Capital', url = 'http://www.isquaredcapital.com' } = Astro.props;
+
+const parts = text.split(new RegExp(`(${searchTerm})`, 'g'));
+---
+
+<span>
+  {parts.map(part => 
+    part === searchTerm 
+      ? <a href={url} class="text-primary hover:text-primary/80 transition-colors" target="_blank" rel="noopener noreferrer">{part}</a>
+      : part
+  )}
+</span>

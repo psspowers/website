@@ -1,0 +1,73 @@
+---
+const currentPath = Astro.url.pathname;
+
+const links = [
+  { text: 'Home', href: '/' },
+  { text: 'About', href: '/about' },
+  { text: 'Services', href: '/services' },
+  { text: 'Projects', href: '/projects' },
+  { text: 'News', href: '/news' },
+  { text: 'Group', href: '/group' },
+  { text: 'Contact', href: '/contact' },
+];
+---
+
+<header class="fixed w-full bg-white shadow-md z-50">
+  <nav class="container mx-auto px-6 py-3">
+    <div class="flex items-center justify-between">
+      <a href="/" class="flex items-center space-x-3">
+        <img src="/pss-logo-black.png" alt="PSS Powers - Renewable Energy Solutions" class="h-16 w-auto" />
+        <span class="text-2xl font-bold text-gradient">PSS Powers</span>
+      </a>
+      
+      <div class="hidden md:flex space-x-8">
+        {links.map(link => (
+          <a 
+            href={link.href} 
+            class={`transition-colors ${
+              (currentPath === link.href) || 
+              (currentPath.startsWith(link.href) && link.href !== '/') 
+                ? 'text-primary font-semibold border-b-2 border-primary hover:text-primary/80'
+                : 'text-gray-600 hover:text-primary hover:border-b-2 hover:border-primary/30'
+            }`}
+          >
+            {link.text}
+          </a>
+        ))}
+      </div>
+
+      <button class="md:hidden text-gray-600" id="mobile-menu-button">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+
+    <div class="md:hidden hidden" id="mobile-menu">
+      <div class="flex flex-col space-y-4 mt-4">
+        {links.map(link => (
+          <a 
+            href={link.href} 
+            class={`transition-colors ${
+              (currentPath === link.href) || 
+              (currentPath.startsWith(link.href) && link.href !== '/') 
+                ? 'text-primary font-semibold'
+                : 'text-gray-600 hover:text-primary'
+            }`}
+          >
+            {link.text}
+          </a>
+        ))}
+      </div>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  mobileMenuButton?.addEventListener('click', () => {
+    mobileMenu?.classList.toggle('hidden');
+  });
+</script>

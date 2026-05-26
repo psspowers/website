@@ -1,0 +1,305 @@
+---
+import Layout from '../layouts/Layout.astro';
+import LinkText from '../components/LinkText.astro';
+import FinancialPartnerBadge from '../components/FinancialPartnerBadge.astro';
+import AnimatedStats from '../components/AnimatedStats.astro';
+import OptimizedImage from '../components/OptimizedImage.astro';
+
+const stats = [
+  { value: 450, label: 'Total Project Pipeline', format: 'MW' },
+  { value: 5, label: 'Countries Served', format: '+' },
+  { value: 70, label: 'Employees Worldwide', format: '+' },
+  { value: 100, label: 'Projects Completed', format: '+' },
+];
+
+const leaders = [
+  {
+    name: 'Sam Yamdagni',
+    role: 'CEO & JMD',
+    image: '/Team/Sam.jpg',
+    bio: 'Leading PSS Powers with strategic vision and extensive industry experience.'
+  },
+  {
+    name: 'Nikesh Sinha',
+    role: 'JMD',
+    image: '/Team/Nikesh.jpg',
+    bio: 'Leading PSS Powers with strategic vision and extensive industry experience.'
+  },
+  {
+    name: 'Nakkarin Saingarmsatit',
+    role: 'GM & Director',
+    image: '/Team/Nakkarin.jpg',
+    bio: 'Overseeing Project Development & execution in Thailand.'
+  },
+  {
+    name: 'Suraphol Sanyom',
+    role: 'Head, Construction O&M',
+    image: '/Team/Suraphol.jpg',
+    bio: 'Leading construction operations and maintenance with proven expertise.'
+  },
+  {
+    name: 'Ashish Kumar',
+    role: 'Head, Investment & Transac.',
+    image: '/Team/Ashish.jpg',
+    bio: 'Leading investment strategies and transaction management.'
+  },
+  {
+    name: 'Chudapak Juthachutinan',
+    role: 'Head, Finance & Accounts',
+    image: '/Team/Chudapak.jpg',
+    bio: 'Overseeing financial operations and accounting excellence in Thailand.'
+  },
+  {
+    name: 'Kapil Joshi',
+    role: 'Head, Finance & Accounts',
+    image: '/Team/Kapil.jpg',
+    bio: 'Overseeing financial operations and accounting excellence in India.'
+  },
+  {
+    name: 'Pimlapat Boonthae',
+    role: 'Renewable Energy Marketing Lead',
+    image: '/Team/Pimlapat.jpg',
+    bio: 'Drives brand decarbonizatoin engagement and Marketing.'
+  }
+];
+
+const milestones = [
+  { year: '2012', event: 'APCA Powers invest in first 5.0 MW solar plant' },
+  { year: '2015', event: 'PSS Powers founded with a vision for renewable energy' },
+  { year: '2016', event: 'Completed first utility-scale solar project (5+1 MW)' },
+  { year: '2017', event: 'Expanded operations into EPC Business' },
+  { year: '2019', event: 'Started C&I Business' },
+  { year: '2022', event: 'Expanded in to India with 60 MW under open access' },
+  { year: '2024', event: 'Complete execution of 105 MW' },
+  { year: '2025', event: 'Signed agreement to partner with I Squared Capital' }
+];
+---
+
+<Layout
+  title="About PSS Powers - Leading Renewable Energy Provider"
+  description="Learn about PSS Powers' journey in renewable energy, our expert team, and partnership with I Squared Capital. Discover how we're shaping a sustainable future."
+  image="/i-squared-capital-logo.png"
+  type="website"
+>
+  <main class="pt-20">
+    <!-- Hero Section -->
+    <section class="gradient-header relative pb-12">
+      <!-- Financial Partner Badge -->
+      <FinancialPartnerBadge class="absolute top-6 right-6 lg:top-8 lg:right-12 z-50" />
+
+      <div class="container mx-auto px-6">
+        <div class="max-w-3xl text-white" data-aos="fade-up">
+          <h1 class="text-4xl md:text-5xl font-bold mb-6">
+            Our Journey in Renewable Energy
+          </h1>
+          <p class="text-xl opacity-90">
+            Since our inception in 2012, PSS Powers has been at the forefront of the renewable energy revolution, delivering innovative solutions and driving sustainable change across Asia.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-8 bg-white">
+      <div class="container mx-auto px-6">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+          {stats.map((stat, index) => (
+            <AnimatedStats
+              value={stat.value}
+              label={stat.label}
+              format={stat.format}
+              delay={index * 100}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- History Section -->
+    <section class="py-12 bg-gray-50">
+      <div class="container mx-auto px-6">
+        <h2 class="text-3xl font-bold text-center mb-4" data-aos="fade-up">History</h2>
+        <h3 class="text-xl text-center text-gray-600 mb-12" data-aos="fade-up" data-aos-delay="100">From Yesterday to Today</h3>
+        
+        <div class="max-w-4xl mx-auto">
+          <div class="bg-white rounded-lg shadow-lg p-8" data-aos="fade-up" data-aos-delay="200">
+            <p class="text-gray-700 mb-8 leading-relaxed">
+              PSS Powers, an independent energy producer, was founded in 2012 through the collaboration of two industry leaders with complementary expertise.
+            </p>
+
+            <div class="space-y-8">
+              <div class="border-l-4 border-primary pl-6">
+                <p class="text-gray-700 leading-relaxed">
+                  Sam Yamdagni entered the renewable energy sector in 2015, developing over 100 MW of projects with an in-house EPC and O&M team. He previously served as Country Head of the ib Vogt JV in Thailand and as MD APAC for Amarenco JV. He is a graduate of IIT Kharagpur.
+                </p>
+              </div>
+
+              <div class="border-l-4 border-primary pl-6">
+                <p class="text-gray-700 leading-relaxed">
+                  Nikesh Sinha has been in the renewable energy industry since 2011, developing over 350 MW of projects. He previously led investment for ib Vogt in APAC under the NV Vogt JV. He holds degrees from IIT Chennai and IIM Ahmedabad.
+                </p>
+              </div>
+            </div>
+
+            <p class="text-gray-700 mt-8 leading-relaxed">
+              With their combined expertise, PSS Powers has established itself as a trusted partner for renewable energy investments in the region, driving sustainable growth and innovation with a strong pipeline in the region.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Leadership Section -->
+    <section class="py-20 bg-white">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-16" data-aos="fade-up">
+          <h2 class="text-4xl font-bold mb-4">Our Leadership</h2>
+          <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+            Meet the team driving innovation and excellence in renewable energy solutions across Asia.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {leaders.map((leader, index) => (
+            <div 
+              class="group bg-white rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-1 transition-all duration-300 h-fit" 
+              data-aos="fade-up" 
+              data-aos-delay={index * 100}
+            >
+              <div class="relative aspect-[4/3] overflow-hidden">
+                <OptimizedImage
+                  src={leader.image}
+                  alt={leader.name}
+                  aspectRatio="4:3"
+                  class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  priority={index < 4}
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+              <div class="p-4 relative">
+                <h3 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">{leader.name}</h3>
+                <p class="text-primary font-semibold mb-3 text-sm uppercase tracking-wider">{leader.role}</p>
+                <p class="text-gray-600">{leader.bio}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div class="mt-16 text-center">
+          <a 
+            href="/contact" 
+            class="inline-flex items-center text-primary hover:text-primary/80 font-semibold transition-colors"
+          >
+            <span>Join Our Team</span>
+            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="py-20 bg-primary text-white">
+      <div class="container mx-auto px-6">
+        <div class="max-w-3xl mx-auto text-center">
+          <h2 class="text-3xl font-bold mb-6" data-aos="fade-up">Our Mission</h2>
+          <p class="text-xl mb-8" data-aos="fade-up" data-aos-delay="100">
+            To accelerate the transition to sustainable energy by providing innovative renewable solutions that empower businesses and communities to achieve their environmental goals while ensuring economic benefits.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Milestones Section -->
+    <section class="py-16 bg-white">
+      <div class="container mx-auto px-6">
+        <h2 class="text-3xl font-bold text-center mb-12" data-aos="fade-up">Our Journey</h2>
+        <div class="max-w-4xl mx-auto">
+          {milestones.map((milestone, index) => (
+            <div 
+              class="flex items-center mb-8 relative"
+              data-aos="fade-up"
+              data-aos-delay={index * 100}
+            >
+              <div class="w-24 flex-shrink-0 text-primary font-bold text-xl">
+                {milestone.year}
+              </div>
+              <div class="flex-grow bg-gray-50 rounded-lg p-6 ml-4 shadow-sm relative">
+                <div class="absolute left-0 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                  <div class="w-4 h-4 bg-primary rounded-full"></div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <p class="text-gray-700" set:html={false}>
+                    <LinkText text={milestone.event} />
+                  </p>
+                  {milestone.year === '2025' && (
+                    <a
+                      href="https://isquaredcapital.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <OptimizedImage
+                        src="/i-squared-capital-logo.png" 
+                        alt="I Squared Capital Logo" 
+                        aspectRatio="4:3"
+                        class="h-12 ml-6 hover:brightness-110 transition-all duration-300"
+                      />
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="py-16 bg-gray-50">
+      <div class="container mx-auto px-6">
+        <h2 class="text-3xl font-bold text-center mb-12" data-aos="fade-up">Our Values</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="bg-white p-8 rounded-lg shadow-lg" data-aos="fade-up">
+            <h3 class="text-xl font-bold text-primary mb-4">Innovation</h3>
+            <p class="text-gray-600">
+              Continuously pushing boundaries to develop and implement cutting-edge renewable energy solutions.
+            </p>
+          </div>
+          <div class="bg-white p-8 rounded-lg shadow-lg" data-aos="fade-up" data-aos-delay="100">
+            <h3 class="text-xl font-bold text-primary mb-4">Sustainability</h3>
+            <p class="text-gray-600">
+              Committed to environmental stewardship and promoting sustainable practices in everything we do.
+            </p>
+          </div>
+          <div class="bg-white p-8 rounded-lg shadow-lg" data-aos="fade-up" data-aos-delay="200">
+            <h3 class="text-xl font-bold text-primary mb-4">Excellence</h3>
+            <p class="text-gray-600">
+              Delivering superior quality and reliability in every project and service we provide.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-primary text-white">
+      <div class="container mx-auto px-6 text-center">
+        <h2 class="text-3xl font-bold mb-6" data-aos="fade-up">
+          Join Us in Shaping a Sustainable Future
+        </h2>
+        <p class="text-xl mb-8 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+          Partner with PSS Powers to accelerate your transition to renewable energy and contribute to a cleaner, more sustainable world.
+        </p>
+        <a
+          href="/contact"
+          class="inline-block bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+          data-aos="fade-up"
+          data-aos-delay="200"
+        >
+          Contact Us
+        </a>
+      </div>
+    </section>
+  </main>
+</Layout>
