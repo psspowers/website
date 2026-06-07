@@ -1,7 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { offices } from '../data/offices';
+import { fetchOffices } from '../services/officesDbService';
 import MapComponent from '../components/ContactMap';
+
+const offices = await fetchOffices();
 ---
 
 <Layout

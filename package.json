@@ -21,6 +21,7 @@
   "dependencies": {
     "@astrojs/react": "^3.0.10",
     "@astrojs/tailwind": "^5.1.0",
+    "@supabase/supabase-js": "^2.107.0",
     "@types/leaflet": "^1.9.8",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
@@ -37,24 +38,24 @@
   "devDependencies": {
     "@astrojs/check": "^0.5.6",
     "@netlify/plugin-lighthouse": "^5.0.0",
-    "@types/leaflet.markercluster": "^1.5.5",
-    "@types/lodash": "^4.17.15",
     "@types/compression": "^1.7.5",
     "@types/express": "^4.17.21",
+    "@types/leaflet.markercluster": "^1.5.5",
+    "@types/lodash": "^4.17.15",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/eslint-plugin-tslint": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",
-    "compression": "^1.7.4",
-    "express": "^4.18.2",
     "archiver": "^6.0.1",
+    "compression": "^1.7.4",
+    "critters": "^0.0.20",
     "eslint": "^8.56.0",
     "eslint-plugin-astro": "^0.31.4",
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-react": "^7.33.2",
+    "express": "^4.18.2",
     "prettier": "^3.2.5",
-    "critters": "^0.0.20",
     "prettier-plugin-astro": "^0.13.0",
-    "typescript": "^5.3.3",
-    "sharp": "^0.33.2"
+    "sharp": "^0.33.2",
+    "typescript": "^5.3.3"
   }
 }

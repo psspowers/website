@@ -1,18 +1,20 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { newsItems } from '../data/news';
+import { fetchNewsItems } from '../services/newsDbService';
 import LinkText from '../components/LinkText.astro';
 import OptimizedImage from '../components/OptimizedImage.astro';
+
+const newsItems = await fetchNewsItems();
 
 const allTags = [...new Set(newsItems.flatMap(item => item.tags))].sort();
 
 // Sort news items by date and separate into sections
-const sortedNews = [...newsItems].sort((a, b) => 
+const sortedNews = [...newsItems].sort((a, b) =>
   new Date(b.date).getTime() - new Date(a.date).getTime()
 );
 
-const newsWithImages = sortedNews.filter(item => item.image);
-const newsWithoutImages = sortedNews.filter(item => !item.image);
+const newsWithImages = sortedNews.filter(item => item.image?.url);
+const newsWithoutImages = sortedNews.filter(item => !item.image?.url);
 
 // Format date to be more readable
 function formatDate(dateStr: string) {

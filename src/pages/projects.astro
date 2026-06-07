@@ -3,14 +3,34 @@ import Layout from '../layouts/Layout.astro';
 import AnimatedStats from '../components/AnimatedStats.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import MapComponent from '../components/MapComponent';
-import { 
-  validatedProjects,
-  projectTypes,
-  projectStatuses,
-  projectRegions,
-  projectMetrics,
-  sortedProjects
-} from '../data/projects';
+import { fetchProjects } from '../services/projectsDbService';
+import { regions as projectRegions } from '../data/projects/regions';
+import { validateProject, validateCapacityValue } from '../data/projects/validation';
+
+const allProjects = await fetchProjects();
+const validatedProjects = allProjects.filter(validateProject);
+const projectTypes = [...new Set(validatedProjects.map(p => p.type))];
+const projectStatuses = [...new Set(validatedProjects.map(p => p.status))];
+
+const projectMetrics = {
+  activeProjects: validatedProjects.length,
+  totalCapacity: validatedProjects.reduce((sum, p) => sum + validateCapacityValue(p.capacity), 0).toFixed(2),
+  totalSites: new Set(validatedProjects.map(p => p.location)).size,
+  projectTypes: projectTypes.length,
+};
+
+const sortedProjects = [...validatedProjects].sort((a, b) => {
+  const yearMatchA = a.cod.match(/\d{4}/);
+  const yearMatchB = b.cod.match(/\d{4}/);
+  if (!yearMatchA || !yearMatchB) return 0;
+  const yearA = parseInt(yearMatchA[0]);
+  const yearB = parseInt(yearMatchB[0]);
+  if (yearA !== yearB) return yearB - yearA;
+  const quarterMatchA = a.cod.match(/Q(\d)/);
+  const quarterMatchB = b.cod.match(/Q(\d)/);
+  if (!quarterMatchA || !quarterMatchB) return 0;
+  return parseInt(quarterMatchB[1]) - parseInt(quarterMatchA[1]);
+});
 
 // Icons for stats (using the existing icons from public/icons/projects/png/)
 const statIcons = {
