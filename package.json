@@ -19,6 +19,7 @@
     "zip-public": "node scripts/zip-public.js"
   },
   "dependencies": {
+    "@astrojs/netlify": "^5.5.4",
     "@astrojs/react": "^3.0.10",
     "@astrojs/tailwind": "^5.1.0",
     "@supabase/supabase-js": "^2.107.0",

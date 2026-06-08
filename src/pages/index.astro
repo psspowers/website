@@ -1,12 +1,36 @@
 ---
+export const prerender = false;
 import Layout from '../layouts/Layout.astro';
 import AnimatedStats from '../components/AnimatedStats.astro';
+import { fetchProjects } from '../services/projectsDbService';
+
+let activeProjects = 32;
+let totalCapacityMW = 145;
+let totalLocations = 19;
+const co2Reduction = 137750;
+
+try {
+  const projects = await fetchProjects();
+  if (projects.length > 0) {
+    activeProjects = projects.length;
+    totalCapacityMW = Math.round(
+      projects.reduce((sum, p) => {
+        if (p.capacity.includes('Well')) return sum;
+        const n = parseFloat(p.capacity.replace(/[^\d.]/g, ''));
+        return sum + (isNaN(n) ? 0 : n);
+      }, 0)
+    );
+    totalLocations = new Set(projects.map(p => p.location)).size;
+  }
+} catch {
+  // fall back to hardcoded values
+}
 
 const metrics = [
-  { value: 32, label: 'Active Projects', format: '+', icon: '/icons/projects/png/active-projects.png' },
-  { value: 145, label: 'Total Capacity', format: 'MW', icon: '/icons/projects/png/total-capacity.png' },
-  { value: 19, label: 'Locations', format: '+', icon: '/icons/projects/png/total-sites.png' },
-  { value: 137750, label: 'CO2 Reduction/year', format: 'tons', icon: '/icons/projects/png/CO2 reduction.png' }
+  { value: activeProjects, label: 'Active Projects', format: '+', icon: '/icons/projects/png/active-projects.png' },
+  { value: totalCapacityMW, label: 'Total Capacity', format: 'MW', icon: '/icons/projects/png/total-capacity.png' },
+  { value: totalLocations, label: 'Locations', format: '+', icon: '/icons/projects/png/total-sites.png' },
+  { value: co2Reduction, label: 'CO2 Reduction/year', format: 'tons', icon: '/icons/projects/png/CO2 reduction.png' }
 ];
 ---
 

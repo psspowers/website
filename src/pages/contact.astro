@@ -1,4 +1,5 @@
 ---
+export const prerender = false;
 import Layout from '../layouts/Layout.astro';
 import { fetchOffices } from '../services/officesDbService';
 import MapComponent from '../components/ContactMap';
@@ -190,6 +191,7 @@ const offices = await fetchOffices();
               >
                 Send Message
               </button>
+              <p id="form-status" class="text-sm mt-2"></p>
             </form>
           </div>
         </div>
@@ -232,3 +234,45 @@ const offices = await fetchOffices();
     </section>
   </main>
 </Layout>
+
+<script>
+  import { createClient } from '@supabase/supabase-js';
+
+  const supabase = createClient(
+    import.meta.env.VITE_SUPABASE_URL,
+    import.meta.env.VITE_SUPABASE_ANON_KEY
+  );
+
+  const form = document.querySelector('form') as HTMLFormElement;
+  const btn = form?.querySelector('button[type="submit"]') as HTMLButtonElement;
+  const status = document.getElementById('form-status') as HTMLParagraphElement;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+    const d = new FormData(form);
+    const { error } = await supabase.from('contact_submissions').insert({
+      first_name: d.get('firstName') as string,
+      last_name: d.get('lastName') as string,
+      email: d.get('email') as string,
+      phone: (d.get('phone') as string) || null,
+      company: (d.get('company') as string) || null,
+      role: (d.get('role') as string) || null,
+      country: d.get('country') as string,
+      message: d.get('message') as string,
+    });
+    if (error) {
+      status.textContent = 'Something went wrong. Please try again.';
+      status.className = 'text-red-600 text-sm mt-2';
+      btn.disabled = false;
+      btn.textContent = 'Send Message';
+    } else {
+      form.reset();
+      status.textContent = "Thank you — we'll be in touch soon.";
+      status.className = 'text-green-600 text-sm mt-2';
+      btn.textContent = 'Message Sent!';
+      setTimeout(() => { btn.disabled = false; btn.textContent = 'Send Message'; }, 4000);
+    }
+  });
+</script>
