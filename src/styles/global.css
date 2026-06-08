@@ -1,97 +1,337 @@
-/* ============================================
-   PSS Powers - New Design System (2026)
-   Dark Premium Theme
-   ============================================ */
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ========== Base & Typography ========== */
-:root {
-  --emerald: #10b981;
-  --emerald-dark: #059669;
+/* Font preloading */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2) format('woff2');
+}
+
+/* Ensure proper mobile rendering */
+html, body {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background-color: #0f172a;
-  color: #e2e8f0;
+  @apply font-sans text-gray-800;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.font-display {
-  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-}
-
-/* ========== Glassmorphism ========== */
-.glass {
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(148, 163, 184, 0.1);
-}
-
-/* ========== Buttons ========== */
-.btn {
-  @apply inline-flex items-center justify-center gap-x-2 px-6 py-3 rounded-3xl font-semibold transition-all active:scale-[0.985];
-}
-
-.btn-primary {
-  @apply bg-emerald-500 hover:bg-emerald-600 text-slate-950;
-}
-
-.btn-secondary {
-  @apply border border-slate-700 hover:bg-slate-900 text-white;
-}
-
-/* ========== Project Cards ========== */
-.project-card {
-  transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-}
-
-.project-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-}
-
-/* ========== Stats ========== */
-.stat-value {
-  font-variant-numeric: tabular-nums;
-}
-
-/* ========== Section Headers ========== */
-.section-header {
-  font-size: 3.25rem;
-  line-height: 1.05;
-  font-weight: 700;
-  letter-spacing: -0.04em;
-}
-
-/* ========== Smooth Scroll ========== */
-html {
-  scroll-behavior: smooth;
-}
-
-/* ========== Mobile Improvements ========== */
+/* Improve tap targets on mobile */
 button, a {
   min-height: 44px;
   min-width: 44px;
 }
 
-/* ========== Leaflet Map Styles (kept for compatibility) ========== */
-.leaflet-container {
-  font-family: inherit !important;
+/* Improve form field accessibility */
+input, select, textarea {
+  @apply px-4 py-2;
+  min-height: 44px;
 }
 
+/* Zoom transitions */
+.zoom-transition {
+  transition: transform 0.2s ease-out;
+}
+
+/* Custom scrollbar for zoom container */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.btn {
+  @apply inline-block px-6 py-3 rounded-lg font-semibold transition-colors;
+}
+
+.btn-primary {
+  @apply bg-primary text-white hover:bg-primary/90;
+}
+
+.btn-secondary {
+  @apply bg-secondary text-white hover:bg-secondary/90;
+}
+
+.section-padding {
+  @apply py-20;
+}
+
+.gradient-header {
+  @apply relative py-24 bg-gradient-to-r from-[#1E3D59] via-[#2A4F7A] to-[#4F94CD] overflow-hidden;
+}
+
+.gradient-header::before {
+  content: '';
+  @apply absolute inset-0 opacity-30;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.828-1.415 1.415L51.8 0h2.827zM5.373 0l-.83.828L5.96 2.243 8.2 0H5.374zM48.97 0l3.657 3.657-1.414 1.414L46.143 0h2.828zM11.03 0L7.372 3.657 8.787 5.07 13.857 0H11.03zm32.284 0L49.8 6.485 48.384 7.9l-7.9-7.9h2.83zM16.686 0L10.2 6.485 11.616 7.9l7.9-7.9h-2.83zM22.343 0L13.857 8.485 15.272 9.9l7.9-7.9h-.83zm5.657 0L19.514 8.485 20.93 9.9l8.485-8.485h-1.414zM32.372 0L22.343 10.03 23.758 11.444l10.03-10.03h-1.415zm-1.415 0L19.514 11.444l1.414 1.414L34.2 0h-3.242zm-5.657 0L13.857 11.444l1.415 1.414L29.543 0h-3.243zM11.03 0L0 11.03l1.414 1.414L13.857 0h-2.827zm32.284 0L51.8 8.485 50.384 7.07 44.728 0h-1.414zm-16.97 0L36.9 10.456 38.315 9.04 29.828 0h-3.242zm10.657 0L47.557 10.456 48.97 9.04 40.485 0h-3.243zM16.686 0L4.242 12.444l1.415 1.414L19.514 0h-2.828zM5.373 0L0 5.373l1.414 1.414L8.2 0H5.374zm48.97 0L60 5.373l-1.414 1.414L51.8 0h2.827zM54.627 0L60 5.373 58.586 6.787 51.8 0h2.827zm-48.97 0L0 5.373 1.414 6.787 8.2 0H5.657z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+}
+
+/* Enhanced Card Styles */
+.enhanced-card {
+  @apply bg-white rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+}
+
+/* Enhanced Button Styles */
+.btn {
+  @apply inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold transition-all duration-300;
+}
+
+.btn-primary {
+  @apply bg-primary text-white hover:bg-primary/90 hover:shadow-lg hover:-translate-y-0.5;
+}
+
+/* Enhanced Typography */
+.heading-xl {
+  @apply text-4xl md:text-5xl lg:text-6xl font-bold leading-tight;
+}
+
+.heading-lg {
+  @apply text-3xl md:text-4xl font-bold leading-tight;
+}
+
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-[#4F94CD];
+}
+
+/* Leaflet custom styles */
 .leaflet-popup-content-wrapper {
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
-/* ========== Utility Classes ========== */
-.text-gradient {
-  background: linear-gradient(to right, #10b981, #34d399);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.leaflet-popup-content {
+  margin: 0;
+}
+
+.custom-popup .leaflet-popup-content-wrapper {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(4px);
+}
+
+/* Project Card Styles */
+.project-card {
+  @apply bg-white rounded-lg shadow-md overflow-hidden will-change-transform;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-card.hidden {
+  display: none;
+}
+
+.project-card .image-container {
+  @apply relative aspect-[16/9] overflow-hidden;
+}
+
+.project-card .image-overlay {
+  @apply absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent;
+  @apply flex flex-col justify-end p-6;
+}
+
+.project-card .project-title {
+  @apply text-xl font-bold text-white mb-2;
+}
+
+.project-card .tag-container {
+  @apply flex gap-2;
+}
+
+.project-card .status-tag {
+  @apply px-3 py-1 bg-blue-600 text-white text-sm rounded-full shadow-sm;
+}
+
+.project-card .type-tag {
+  @apply px-3 py-1 bg-gray-800 text-white text-sm rounded-full shadow-sm;
+}
+
+.project-card .details-container {
+  @apply p-6 flex-grow;
+}
+
+.project-card .details-grid {
+  @apply grid grid-cols-2 gap-4 text-sm;
+}
+
+.project-card .detail-label {
+  @apply text-gray-500 block mb-1;
+}
+
+.project-card .detail-value {
+  @apply font-semibold text-gray-900;
+}
+
+/* Map Styles */
+.custom-marker {
+  contain: layout style paint;
+}
+
+.marker-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.marker-icon:hover {
+  transform: scale(1.1);
+}
+
+.marker-icon-inner {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: white;
+}
+
+.custom-cluster-marker {
+  background: transparent;
+}
+
+.cluster-marker {
+  width: 40px;
+  height: 40px;
+  background: rgba(21, 80, 182, 0.9);
+  border: 2px solid white;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.custom-popup .leaflet-popup-content-wrapper {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  padding: 0;
+}
+
+.custom-popup .leaflet-popup-content {
+  margin: 0;
+  min-width: 200px;
+}
+
+.custom-popup .leaflet-popup-tip-container {
+  margin-top: -1px;
+}
+
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.leaflet-control-zoom a {
+  background: white !important;
+  color: #1a5f7a !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background: #f3f4f6 !important;
+}
+
+.leaflet-control-scale {
+  border: none !important;
+  box-shadow: none !important;
+  color: #4b5563 !important;
+}
+
+.leaflet-container {
+  font-family: inherit !important;
+}
+/* Map container styles */
+.leaflet-container {
+  contain: size layout style paint;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 1 !important;
+}
+
+/* Ensure map tiles render properly */
+.leaflet-tile {
+  visibility: inherit !important;
+}
+
+/* Improve popup styling */
+.leaflet-popup-content-wrapper {
+  padding: 0;
+  overflow: hidden;
+}
+
+.leaflet-popup-content {
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Custom loading state */
+.map-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 1000;
+}
+
+/* Company Card Styles */
+.company-card {
+  @apply bg-white rounded-2xl shadow-xl overflow-hidden;
+  contain: content;
+}
+
+.company-card img {
+  @apply transition-all duration-300;
+  contain: paint style;
+}
+
+.company-card:hover img {
+  @apply brightness-105;
+}
+
+.company-card .feature-item {
+  @apply flex items-start space-x-3 bg-gray-50 p-3 rounded-lg transition-colors;
+  contain: content;
+}
+
+.company-card .feature-item:hover {
+  @apply bg-gray-100;
 }
