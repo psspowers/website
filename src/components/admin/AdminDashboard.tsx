@@ -9,8 +9,8 @@ import { projects as staticProjects } from '../../data/projects/projects';
 import { offices as staticOffices } from '../../data/offices';
 
 const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
+  import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co',
+  import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-anon-key'
 );
 
 type Tab = 'news' | 'projects' | 'offices' | 'leads';
