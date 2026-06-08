@@ -9,8 +9,8 @@ import { projects as staticProjects } from '../../data/projects/projects';
 import { offices as staticOffices } from '../../data/offices';
 
 const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co',
-  import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-anon-key'
+  import.meta.env.VITE_SUPABASE_URL || 'https://vxnxixwawtdhkjdsivak.supabase.co',
+  import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ4bnhpeHdhd3RkaGtqZHNpdmFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3ODE3NDEsImV4cCI6MjA5NjM1Nzc0MX0.t-UTAXhvHCeRTvTchhBS-MhbQw7wJ9Spx9O9jlSAVWQ'
 );
 
 type Tab = 'news' | 'projects' | 'offices' | 'leads';
