@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import NewsTab from './NewsTab';
 import ProjectsTab from './ProjectsTab';
@@ -31,16 +31,37 @@ export default function AdminDashboard() {
   const [counts, setCounts] = useState<TableCounts | null>(null);
   const [syncing, setSyncing] = useState(false);
   const [syncMsg, setSyncMsg] = useState('');
+  const resolvedRef = useRef(false);
 
   useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (!resolvedRef.current) {
+        resolvedRef.current = true;
+        setAuthLoading(false);
+      }
+    }, 5000);
+
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session?.user) setUser({ email: data.session.user.email ?? '' });
-      setAuthLoading(false);
+      if (!resolvedRef.current) {
+        resolvedRef.current = true;
+        if (data.session?.user) setUser({ email: data.session.user.email ?? '' });
+        setAuthLoading(false);
+      }
+    }).catch(() => {
+      if (!resolvedRef.current) {
+        resolvedRef.current = true;
+        setAuthLoading(false);
+      }
     });
+
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ? { email: session.user.email ?? '' } : null);
     });
-    return () => listener.subscription.unsubscribe();
+
+    return () => {
+      clearTimeout(timeout);
+      listener.subscription.unsubscribe();
+    };
   }, []);
 
   useEffect(() => { if (user) loadCounts(); }, [user]);
@@ -113,35 +134,51 @@ export default function AdminDashboard() {
 
   if (authLoading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div className="w-8 h-8 border-2 border-[#1550b6] border-t-transparent rounded-full animate-spin" />
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8fafc' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+          <div style={{
+            width: '40px', height: '40px',
+            border: '3px solid #e2e8f0',
+            borderTopColor: '#1550b6',
+            borderRadius: '50%',
+            animation: 'spin 0.8s linear infinite',
+          }} />
+          <p style={{ color: '#64748b', fontSize: '14px', margin: 0, fontFamily: 'Inter, sans-serif' }}>Loading...</p>
+        </div>
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </div>
     );
   }
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-        <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
-          <div className="text-center mb-8">
-            <img src="/pss-logo-black.png" alt="PSS Powers" className="h-10 mx-auto mb-4 object-contain" />
-            <h1 className="text-2xl font-bold text-gray-900">Admin Portal</h1>
-            <p className="text-gray-500 text-sm mt-1">Sign in to manage site content</p>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f1f5f9', padding: '16px' }}>
+        <div style={{ width: '100%', maxWidth: '400px', background: '#fff', borderRadius: '16px', boxShadow: '0 4px 24px rgba(0,0,0,0.10)', padding: '40px 36px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+            <img src="/pss-logo-black.png" alt="PSS Powers" style={{ height: '40px', margin: '0 auto 16px', display: 'block', objectFit: 'contain' }} />
+            <h1 style={{ fontSize: '22px', fontWeight: 700, color: '#0f172a', margin: '0 0 6px', fontFamily: 'Inter, sans-serif' }}>Admin Portal</h1>
+            <p style={{ fontSize: '14px', color: '#64748b', margin: 0 }}>Sign in to manage site content</p>
           </div>
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-              <input type="email" required value={email} onChange={e => setEmail(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1550b6] focus:border-transparent outline-none" />
+              <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: '#374151', marginBottom: '6px' }}>Email</label>
+              <input
+                type="email" required value={email} onChange={e => setEmail(e.target.value)}
+                style={{ width: '100%', padding: '10px 14px', border: '1px solid #d1d5db', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box', minHeight: 'unset' }}
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-              <input type="password" required value={password} onChange={e => setPassword(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1550b6] focus:border-transparent outline-none" />
+              <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: '#374151', marginBottom: '6px' }}>Password</label>
+              <input
+                type="password" required value={password} onChange={e => setPassword(e.target.value)}
+                style={{ width: '100%', padding: '10px 14px', border: '1px solid #d1d5db', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box', minHeight: 'unset' }}
+              />
             </div>
-            {loginError && <p className="text-red-600 text-sm">{loginError}</p>}
-            <button type="submit"
-              className="w-full bg-[#1550b6] text-white py-2.5 rounded-lg font-semibold hover:bg-[#1243a0] transition-colors">
+            {loginError && <p style={{ color: '#dc2626', fontSize: '13px', margin: 0 }}>{loginError}</p>}
+            <button
+              type="submit"
+              style={{ background: '#1550b6', color: '#fff', padding: '11px', borderRadius: '8px', fontWeight: 600, fontSize: '15px', border: 'none', cursor: 'pointer', marginTop: '4px', minHeight: 'unset', minWidth: 'unset' }}
+            >
               Sign In
             </button>
           </form>
