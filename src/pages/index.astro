@@ -1,39 +1,14 @@
 ---
-export const prerender = false;
 import Layout from '../layouts/Layout.astro';
 import AnimatedStats from '../components/AnimatedStats.astro';
-import { fetchProjects } from '../services/projectsDbService';
-
-let activeProjects = 32;
-let totalCapacityMW = 145;
-let totalLocations = 19;
-const co2Reduction = 137750;
-
-try {
-  const projects = await fetchProjects();
-  if (projects.length > 0) {
-    activeProjects = projects.length;
-    totalCapacityMW = Math.round(
-      projects.reduce((sum, p) => {
-        if (p.capacity.includes('Well')) return sum;
-        const n = parseFloat(p.capacity.replace(/[^\d.]/g, ''));
-        return sum + (isNaN(n) ? 0 : n);
-      }, 0)
-    );
-    totalLocations = new Set(projects.map(p => p.location)).size;
-  }
-} catch {
-  // fall back to hardcoded values
-}
 
 const metrics = [
-  { value: activeProjects, label: 'Active Projects', format: '+', icon: '/icons/projects/png/active-projects.png' },
-  { value: totalCapacityMW, label: 'Total Capacity', format: 'MW', icon: '/icons/projects/png/total-capacity.png' },
-  { value: totalLocations, label: 'Locations', format: '+', icon: '/icons/projects/png/total-sites.png' },
-  { value: co2Reduction, label: 'CO2 Reduction/year', format: 'tons', icon: '/icons/projects/png/CO2 reduction.png' }
+  { value: 32,     label: 'Active Projects',    format: '+',    icon: '/icons/projects/png/active-projects.png', stat: 'activeProjects' },
+  { value: 145,    label: 'Total Capacity',      format: 'MW',   icon: '/icons/projects/png/total-capacity.png',  stat: 'totalCapacity' },
+  { value: 19,     label: 'Locations',           format: '+',    icon: '/icons/projects/png/total-sites.png',     stat: 'totalLocations' },
+  { value: 137750, label: 'CO2 Reduction/year',  format: 'tons', icon: '/icons/projects/png/CO2 reduction.png',  stat: 'co2Reduction' },
 ];
 ---
-
 <Layout
   title="PSS Powers - Leading Renewable Energy Solutions Provider"
   description="PSS Powers delivers innovative solar, wind, and energy storage solutions across Asia. Partner with us for sustainable energy solutions and expert project development."
@@ -79,6 +54,7 @@ const metrics = [
               format={metric.format}
               icon={metric.icon}
               delay={index * 100}
+              data-stat={metric.stat}
             />
           ))}
         </div>
@@ -156,3 +132,56 @@ const metrics = [
     </section>
   </main>
 </Layout>
+
+<script>
+  // Fetch live stats from the API and update the animated counters.
+  // Falls back silently to the build-time hardcoded values if the request
+  // fails or times out — no network call ever blocks page rendering.
+  (function () {
+    const STAT_KEYS: Record<string, string> = {
+      activeProjects: 'activeProjects',
+      totalCapacity:  'totalCapacityMW',
+      totalLocations: 'totalLocations',
+    };
+
+    function reanimate(card: Element, newVal: number) {
+      const el = card.querySelector('.stat-value') as HTMLElement | null;
+      if (!el) return;
+      const fmt = (card as HTMLElement).dataset.format ?? '';
+      const start = parseFloat(el.textContent?.replace(/[^\d.]/g, '') ?? '0') || 0;
+      if (start === newVal) return;
+      const range = newVal - start;
+      const duration = 1200;
+      const t0 = performance.now();
+      function tick(now: number) {
+        const progress = Math.min((now - t0) / duration, 1);
+        const cur = Math.round(start + range * progress);
+        let display = cur.toLocaleString();
+        if (fmt === 'MW') display += ' MW';
+        else if (fmt === '+') display += '+';
+        else if (fmt === 'tons') display += ' tons';
+        el.textContent = display;
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    const ctrl = new AbortController();
+    setTimeout(() => ctrl.abort(), 5000);
+
+    fetch('/api/stats', { signal: ctrl.signal })
+      .then(r => r.json())
+      .then((stats: { ok: boolean; activeProjects?: number; totalCapacityMW?: number; totalLocations?: number }) => {
+        if (!stats.ok) return;
+        document.querySelectorAll<HTMLElement>('.stat-card[data-stat]').forEach(card => {
+          const key = card.dataset.stat!;
+          const apiKey = STAT_KEYS[key];
+          const newVal = apiKey ? (stats as Record<string, number>)[apiKey] : undefined;
+          if (newVal == null) return;
+          card.dataset.value = String(newVal);
+          reanimate(card, newVal);
+        });
+      })
+      .catch(() => { /* silently use build-time values */ });
+  })();
+</script>
