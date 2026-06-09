@@ -73,11 +73,9 @@ const filterTypes = ['All', 'Ground Mount', 'Floating Solar', 'Solar Rooftop', '
 >
   <main>
     <!-- ── Hero ─────────────────────────────────────────────── -->
-    <section class="relative min-h-screen flex items-center solar-gradient overflow-hidden">
-      <!-- dot grid overlay -->
-      <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#334155 0.8px, transparent 1px); background-size: 28px 28px;"></div>
-      <!-- radial glow -->
-      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-10" style="background: radial-gradient(circle, #10b981 0%, transparent 70%);"></div>
+    <section class="relative min-h-screen flex items-center bg-cover bg-center bg-no-repeat overflow-hidden" style="background-image: url('/Final_Hero_shot_website.jpg');">
+      <!-- gradient overlay: dark on left for text contrast, fades right to reveal image -->
+      <div class="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/65 to-slate-950/25 sm:from-slate-950/85"></div>
 
       <div class="relative max-w-screen-2xl mx-auto px-6 lg:px-8 py-32 md:py-40">
         <!-- announcement badge -->
