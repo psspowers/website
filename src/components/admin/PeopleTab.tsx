@@ -7,17 +7,19 @@ interface TeamMember {
   role: string;
   bio: string;
   image_url: string | null;
+  linkedin_url: string | null;
   display_order: number;
   is_visible: boolean;
 }
 
-type FormData = Omit<TeamMember, 'id'> & { image_url: string };
+type FormData = Omit<TeamMember, 'id'> & { image_url: string; linkedin_url: string };
 
 const EMPTY: FormData = {
   name: '',
   role: '',
   bio: '',
   image_url: '',
+  linkedin_url: '',
   display_order: 1,
   is_visible: true,
 };
@@ -52,7 +54,7 @@ export default function PeopleTab({ supabase }: { supabase: SupabaseClient }) {
   }
 
   function openEdit(item: TeamMember) {
-    setForm({ ...item, image_url: item.image_url ?? '' });
+    setForm({ ...item, image_url: item.image_url ?? '', linkedin_url: item.linkedin_url ?? '' });
     setEditingId(item.id);
     setError('');
     setShowForm(true);
@@ -66,7 +68,7 @@ export default function PeopleTab({ supabase }: { supabase: SupabaseClient }) {
     e.preventDefault();
     setSaving(true);
     setError('');
-    const payload = { ...form, image_url: form.image_url || null };
+    const payload = { ...form, image_url: form.image_url || null, linkedin_url: form.linkedin_url || null };
     const { error: err } = editingId
       ? await supabase.from('team_members').update(payload).eq('id', editingId)
       : await supabase.from('team_members').insert(payload);
@@ -160,6 +162,17 @@ export default function PeopleTab({ supabase }: { supabase: SupabaseClient }) {
                 <p className="text-xs text-gray-400 mt-1">
                   Use a path like <code>/Team/Name.jpg</code> for photos uploaded to the public/Team folder.
                 </p>
+              </div>
+
+              <div className="md:col-span-2">
+                <label className="block text-xs font-medium text-gray-600 mb-1">LinkedIn URL</label>
+                <input
+                  type="url"
+                  value={form.linkedin_url}
+                  onChange={e => set('linkedin_url', e.target.value)}
+                  placeholder="https://www.linkedin.com/in/username"
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6]"
+                />
               </div>
 
               <div>

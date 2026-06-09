@@ -10,13 +10,15 @@ interface Props {
   description?: string;
   image?: string;
   type?: string;
+  noPopup?: boolean;
 }
 
-const { 
+const {
   title,
   description = "Leading renewable energy solutions for a sustainable future",
   image = "/Pss.O_Logo.png",
-  type = "website"
+  type = "website",
+  noPopup = false,
 } = Astro.props;
 
 const canonicalURL = Astro.url.pathname;
@@ -98,7 +100,7 @@ const canonicalURL = Astro.url.pathname;
     <slot />
     <Footer />
     <NewsModal />
-    <PopupAnnouncement />
+    {!noPopup && <PopupAnnouncement />}
     <script>
       import AOS from 'aos';
       import 'aos/dist/aos.css';
