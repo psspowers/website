@@ -20,7 +20,7 @@ const links = [
     </a>
 
     <!-- Desktop Nav -->
-    <div class="hidden md:flex items-center gap-x-7 text-sm font-medium">
+    <div class="hidden md:flex items-center gap-x-5 text-sm font-medium">
       {links.map(link => (
         <a
           href={link.href}
@@ -116,10 +116,10 @@ const links = [
   updateNavBackground();
 
   btn?.addEventListener('click', () => {
-    const isOpen = !menu?.classList.contains('hidden');
     menu?.classList.toggle('hidden');
-    menuIcon?.classList.toggle('hidden', !isOpen);
-    closeIcon?.classList.toggle('hidden', isOpen);
-    btn.setAttribute('aria-expanded', String(!isOpen));
+    const isNowOpen = !menu?.classList.contains('hidden');
+    menuIcon?.classList.toggle('hidden', isNowOpen);
+    closeIcon?.classList.toggle('hidden', !isNowOpen);
+    btn.setAttribute('aria-expanded', String(isNowOpen));
   });
 </script>
