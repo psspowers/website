@@ -28,8 +28,8 @@ const canonicalURL = Astro.url.pathname;
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/pss-logo-black.png" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"></noscript>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"></noscript>
     <meta name="generator" content={Astro.generator} />
     
     <!-- Primary Meta Tags -->
@@ -91,7 +91,7 @@ const canonicalURL = Astro.url.pathname;
 
     <title>{title}</title>
   </head>
-  <body class="bg-white">
+  <body class="bg-slate-950 text-slate-200 antialiased">
     <Navigation />
     <slot />
     <Footer />

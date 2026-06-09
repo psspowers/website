@@ -33,6 +33,7 @@ const sortedProjects = [...validatedProjects].sort((a, b) => {
   return parseInt(quarterMatchB[1]) - parseInt(quarterMatchA[1]);
 });
 
+// Icons for stats (using the existing icons from public/icons/projects/png/)
 const statIcons = {
   activeProjects: '/icons/projects/png/active-projects.png',
   totalCapacity: '/icons/projects/png/total-capacity.png',
@@ -48,24 +49,30 @@ const statIcons = {
   type="website"
 >
   <main class="pt-20">
-    <!-- Hero -->
-    <section class="dark-gradient-header">
-      <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
-        <div class="max-w-4xl text-white" data-aos="fade-up">
-          <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-4">Our Work</p>
-          <h1 class="font-display text-4xl md:text-6xl font-bold tracking-tight mb-6">
+    <!-- Header Section -->
+    <section class="bg-[#1550b6] py-20">
+      <div class="container mx-auto px-6">
+        <div class="max-w-4xl mx-auto text-center text-white">
+          <h1 class="text-4xl md:text-6xl font-bold mb-6">
             Global Project Portfolio
           </h1>
-          <p class="text-xl text-slate-300 leading-relaxed">
+          <p class="text-xl opacity-90">
             Explore our worldwide renewable energy projects and achievements.
           </p>
         </div>
       </div>
     </section>
 
-    <!-- Stats -->
-    <section class="py-12 bg-slate-900">
-      <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
+    <!-- Navigation Tabs -->
+    <div class="border-b">
+      <div class="container mx-auto px-6">
+        <div class="flex space-x-8"></div>
+      </div>
+    </div>
+
+    <!-- Project Statistics -->
+    <section class="py-12">
+      <div class="container mx-auto px-6">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
           <AnimatedStats
             value={projectMetrics.activeProjects}
@@ -74,6 +81,7 @@ const statIcons = {
             icon={statIcons.activeProjects}
             data-stat="activeProjects"
           />
+          
           <AnimatedStats
             value={parseFloat(projectMetrics.totalCapacity)}
             label="Total Capacity"
@@ -81,47 +89,46 @@ const statIcons = {
             icon={statIcons.totalCapacity}
             data-stat="totalCapacity"
           />
+          
           <AnimatedStats
             value={projectMetrics.totalSites}
             label="Total Sites"
             format="+"
-            icon={statIcons.totalSites}
+            icon="/icons/projects/png/total-sites.png"
             data-stat="totalSites"
           />
+          
           <AnimatedStats
             value={projectMetrics.projectTypes}
             label="Project Types"
             format="+"
-            icon={statIcons.projectTypes}
+            icon="/icons/projects/png/project-types.png"
             data-stat="projectTypes"
-          />
         </div>
       </div>
     </section>
 
     <!-- Filters and Projects -->
-    <section class="py-12">
-      <div class="max-w-screen-2xl mx-auto px-4 md:px-6 lg:px-8">
+    <section class="py-8">
+      <div class="container mx-auto px-4 md:px-6">
         <!-- View Toggle -->
         <div class="flex justify-end mb-8">
-          <div class="inline-flex rounded-xl glass p-1 gap-1">
+          <div class="inline-flex rounded-lg border border-gray-200 p-1">
             <button
               id="grid-view"
-              class="px-4 py-2 rounded-lg text-sm font-medium bg-emerald-500 text-slate-950"
+              class="px-4 py-2 rounded-md text-sm font-medium bg-primary text-white"
               aria-label="Grid View"
-              style="min-height: auto; min-width: auto;"
             >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
               </svg>
             </button>
             <button
               id="map-view"
-              class="px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-200 transition-colors"
+              class="px-4 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-gray-900"
               aria-label="Map View"
-              style="min-height: auto; min-width: auto;"
             >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
               </svg>
             </button>
@@ -129,42 +136,56 @@ const statIcons = {
         </div>
 
         <!-- Filters -->
-        <div class="flex flex-wrap gap-3 mb-8">
-          <select id="type-filter" class="px-4 py-2 rounded-xl glass border-0 text-slate-300 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-transparent min-w-[150px]" style="min-height: auto;">
-            <option value="" class="bg-slate-800">All Types</option>
+        <div class="flex flex-wrap gap-4 mb-8">
+          <select
+            id="type-filter"
+            class="px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1550b6] focus:border-transparent bg-white min-w-[150px]"
+          >
+            <option value="">All Types</option>
             {projectTypes.map((type, index) => (
-              <option key={`type-${index}`} value={type} class="bg-slate-800">{type}</option>
+              <option key={`type-${index}`} value={type}>{type}</option>
             ))}
           </select>
 
-          <select id="status-filter" class="px-4 py-2 rounded-xl glass border-0 text-slate-300 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-transparent min-w-[150px]" style="min-height: auto;">
-            <option value="" class="bg-slate-800">All Statuses</option>
+          <select
+            id="status-filter"
+            class="px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1550b6] focus:border-transparent bg-white min-w-[150px]"
+          >
+            <option value="">All Statuses</option>
             {projectStatuses.map((status, index) => (
-              <option key={`status-${index}`} value={status} class="bg-slate-800">{status}</option>
+              <option key={`status-${index}`} value={status}>{status}</option>
             ))}
           </select>
 
-          <select id="region-filter" class="px-4 py-2 rounded-xl glass border-0 text-slate-300 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-transparent min-w-[200px]" style="min-height: auto;">
-            <option value="" class="bg-slate-800">All Regions</option>
+          <select
+            id="region-filter"
+            class="px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1550b6] focus:border-transparent bg-white min-w-[200px]"
+          >
+            <option value="">All Regions</option>
             {Object.entries(projectRegions).map(([key, region], index) => (
-              <option key={`region-${key}-${index}`} value={key} class="bg-slate-800">{region.name}</option>
+              <option key={`region-${key}-${index}`} value={key}>{region.name}</option>
             ))}
           </select>
         </div>
 
         <!-- Views Container -->
         <div id="views-container" class="w-full">
-          <div id="grid-view-container" class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-7xl mx-auto">
+          <!-- Grid View -->
+          <div
+            id="grid-view-container"
+            class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-7xl mx-auto"
+          >
             {sortedProjects.map((project, index) => (
               <ProjectCard project={project} index={index} />
             ))}
           </div>
-
+          
+          <!-- Map View -->
           <div id="map-view-container" class="hidden">
             <div data-map>
-              <MapComponent
-                client:only="react"
-                projects={validatedProjects.filter(p => p.coordinates?.lat && p.coordinates?.lng)}
+              <MapComponent 
+                client:only="react" 
+                projects={validatedProjects.filter(p => p.coordinates?.lat && p.coordinates?.lng)} 
               />
             </div>
           </div>
@@ -175,27 +196,31 @@ const statIcons = {
 </Layout>
 
 <script>
-  import type { FilterCriteria } from '../data/projects/types';
-
+  import { filterProjects } from '../data/projects/utils';
+  import type { Project, FilterCriteria } from '../data/projects/types';
+  
+  // View switching logic
   const gridViewBtn = document.getElementById('grid-view');
   const mapViewBtn = document.getElementById('map-view');
   const gridViewContainer = document.getElementById('grid-view-container');
   const mapViewContainer = document.getElementById('map-view-container');
 
   function switchToGridView() {
-    gridViewBtn?.classList.add('bg-emerald-500', 'text-slate-950');
-    gridViewBtn?.classList.remove('text-slate-400');
-    mapViewBtn?.classList.remove('bg-emerald-500', 'text-slate-950');
-    mapViewBtn?.classList.add('text-slate-400');
+    gridViewBtn?.classList.add('bg-primary', 'text-white');
+    gridViewBtn?.classList.remove('text-gray-600', 'hover:text-gray-900');
+    mapViewBtn?.classList.remove('bg-primary', 'text-white');
+    mapViewBtn?.classList.add('text-gray-600', 'hover:text-gray-900');
+    
     gridViewContainer?.classList.remove('hidden');
     mapViewContainer?.classList.add('hidden');
   }
 
   function switchToMapView() {
-    mapViewBtn?.classList.add('bg-emerald-500', 'text-slate-950');
-    mapViewBtn?.classList.remove('text-slate-400');
-    gridViewBtn?.classList.remove('bg-emerald-500', 'text-slate-950');
-    gridViewBtn?.classList.add('text-slate-400');
+    mapViewBtn?.classList.add('bg-primary', 'text-white');
+    mapViewBtn?.classList.remove('text-gray-600', 'hover:text-gray-900');
+    gridViewBtn?.classList.remove('bg-primary', 'text-white');
+    gridViewBtn?.classList.add('text-gray-600', 'hover:text-gray-900');
+    
     mapViewContainer?.classList.remove('hidden');
     gridViewContainer?.classList.add('hidden');
   }
@@ -207,7 +232,7 @@ const statIcons = {
     const typeFilter = document.getElementById('type-filter') as HTMLSelectElement;
     const regionFilter = document.getElementById('region-filter') as HTMLSelectElement;
     const statusFilter = document.getElementById('status-filter') as HTMLSelectElement;
-
+    
     const filters: FilterCriteria = {
       type: typeFilter.value,
       status: statusFilter.value,
@@ -221,7 +246,7 @@ const statIcons = {
       const status = card.getAttribute('data-status');
 
       const matchesType = !filters.type || type === filters.type;
-      const matchesRegion = !filters.region || isInRegion(location || '', filters.region);
+      const matchesRegion = !filters.region || isInRegion(location, filters.region);
       const matchesStatus = !filters.status || status === filters.status;
 
       if (matchesType && matchesRegion && matchesStatus) {
@@ -235,26 +260,53 @@ const statIcons = {
   }
 
   function isInRegion(location: string, region: string): boolean {
-    const regions: Record<string, string[]> = {
-      'Central Thailand': ['Bangkok, Thailand', 'Samut Prakan, Thailand', 'Pathum Thani, Thailand', 'Saraburi, Thailand', 'Samut Sakhon, Thailand', 'Ayutthaya, Thailand', 'Chachoengsao, Thailand', 'Prachinburi, Thailand', 'Kanchanaburi, Thailand', 'Suphan Buri, Thailand'],
-      'Southern Thailand': ['Phuket, Thailand', 'Krabi, Thailand'],
-      'Eastern Thailand': ['Chonburi, Thailand', 'Rayong, Thailand'],
-      'Northeastern Thailand': ['Udon Thani, Thailand', 'Nong Khai, Thailand', 'Si Sa Ket, Thailand', 'Maha Sarakham, Thailand'],
-      'India': ['Punjab, India']
+    const regions = {
+      'Central Thailand': [
+        'Bangkok, Thailand',
+        'Samut Prakan, Thailand',
+        'Pathum Thani, Thailand',
+        'Saraburi, Thailand',
+        'Samut Sakhon, Thailand',
+        'Ayutthaya, Thailand',
+        'Chachoengsao, Thailand',
+        'Prachinburi, Thailand',
+        'Kanchanaburi, Thailand',
+        'Suphan Buri, Thailand'
+      ],
+      'Southern Thailand': [
+        'Phuket, Thailand',
+        'Krabi, Thailand'
+      ],
+      'Eastern Thailand': [
+        'Chonburi, Thailand',
+        'Rayong, Thailand'
+      ],
+      'Northeastern Thailand': [
+        'Udon Thani, Thailand',
+        'Nong Khai, Thailand',
+        'Si Sa Ket, Thailand',
+        'Maha Sarakham, Thailand'
+      ],
+      'India': [
+        'Punjab, India'
+      ]
     };
+    
     return regions[region]?.includes(location) || false;
   }
 
   function updateMetrics() {
     const visibleCards = document.querySelectorAll('.project-card:not(.hidden)');
-
+    
     const activeProjectsValue = document.querySelector('[data-stat="activeProjects"] .stat-value');
-    if (activeProjectsValue) activeProjectsValue.textContent = `${visibleCards.length}+`;
+    if (activeProjectsValue) {
+      activeProjectsValue.textContent = `${visibleCards.length}+`;
+    }
 
     let totalCapacity = 0;
     visibleCards.forEach(card => {
       const capacityStr = card.getAttribute('data-capacity');
-      if (capacityStr?.toLowerCase().includes('mwp')) {
+      if (capacityStr && capacityStr.toLowerCase().includes('mwp')) {
         const matches = capacityStr.match(/(\d+(?:\.\d+)?)/);
         const capacity = matches ? parseFloat(matches[0]) : 0;
         totalCapacity += !isNaN(capacity) ? capacity : 0;
@@ -263,25 +315,48 @@ const statIcons = {
 
     const totalCapacityValue = document.querySelector('[data-stat="totalCapacity"] .stat-value');
     if (totalCapacityValue) {
-      totalCapacityValue.textContent = `${new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(totalCapacity)} MW`;
+      const formattedCapacity = new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(totalCapacity);
+      totalCapacityValue.textContent = `${formattedCapacity} MW`;
     }
 
-    const locations = new Set(Array.from(visibleCards).map(card => card.getAttribute('data-location')));
+    const locations = new Set(Array.from(visibleCards).map(card => 
+      card.getAttribute('data-location')
+    ));
     const totalSitesValue = document.querySelector('[data-stat="totalSites"] .stat-value');
-    if (totalSitesValue) totalSitesValue.textContent = `${locations.size}+`;
+    if (totalSitesValue) {
+      totalSitesValue.textContent = `${locations.size}+`;
+    }
 
-    const types = new Set(Array.from(visibleCards).map(card => card.getAttribute('data-type')));
+    const types = new Set(Array.from(visibleCards).map(card => 
+      card.getAttribute('data-type')
+    ));
     const projectTypesValue = document.querySelector('[data-stat="projectTypes"] .stat-value');
-    if (projectTypesValue) projectTypesValue.textContent = `${types.size}+`;
+    if (projectTypesValue) {
+      projectTypesValue.textContent = `${types.size}+`;
+    }
   }
 
+  // Add event listeners
   document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('type-filter')?.addEventListener('change', updateProjectDisplay);
-    document.getElementById('region-filter')?.addEventListener('change', updateProjectDisplay);
-    document.getElementById('status-filter')?.addEventListener('change', updateProjectDisplay);
+    const typeFilter = document.getElementById('type-filter');
+    const regionFilter = document.getElementById('region-filter');
+    const statusFilter = document.getElementById('status-filter');
+
+    typeFilter?.addEventListener('change', updateProjectDisplay);
+    regionFilter?.addEventListener('change', updateProjectDisplay);
+    statusFilter?.addEventListener('change', updateProjectDisplay);
   });
 </script>
 
 <style>
-  .project-card.hidden { display: none; }
+  .project-card {
+    transition: all 0.3s ease-in-out;
+  }
+
+  .project-card.hidden {
+    display: none;
+  }
 </style>

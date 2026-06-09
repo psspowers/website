@@ -1,132 +1,489 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import AnimatedStats from '../components/AnimatedStats.astro';
 
-const metrics = [
-  { value: 32,     label: 'Active Projects',    format: '+',    icon: '/icons/projects/png/active-projects.png', stat: 'activeProjects' },
-  { value: 145,    label: 'Total Capacity',      format: 'MW',   icon: '/icons/projects/png/total-capacity.png',  stat: 'totalCapacity' },
-  { value: 19,     label: 'Locations',           format: '+',    icon: '/icons/projects/png/total-sites.png',     stat: 'totalLocations' },
-  { value: 137750, label: 'CO2 Reduction/year',  format: 'tons', icon: '/icons/projects/png/CO2 reduction.png',  stat: 'co2Reduction' },
+const featuredProjects = [
+  {
+    id: 'vardhaman',
+    name: 'Vardhaman Steel',
+    capacity: '60.0',
+    type: 'Ground Mount',
+    country: 'India',
+    image: '/project-images/vardhaman-steel.webp',
+    description: 'Large-scale ground mount solar installation for one of India\'s leading steel manufacturers, delivering significant energy cost reductions.',
+    year: '2023',
+  },
+  {
+    id: 'irpc',
+    name: 'IRPC PLC',
+    capacity: '12.0',
+    type: 'Floating Solar',
+    country: 'Thailand',
+    image: '/project-images/irpc.webp',
+    description: 'Pioneering floating solar array on industrial reservoir, demonstrating innovative land-use solutions for large industrial clients.',
+    year: '2022',
+  },
+  {
+    id: 'seacon',
+    name: 'Seacon Srinakharin',
+    capacity: '6.0',
+    type: 'Solar Rooftop',
+    country: 'Thailand',
+    image: '/project-images/seacon.webp',
+    description: 'Premium rooftop solar system for one of Bangkok\'s largest shopping centers, covering a significant portion of facility energy needs.',
+    year: '2021',
+  },
+  {
+    id: 'prime-road',
+    name: 'Prime Road Solar',
+    capacity: '18.0',
+    type: 'Re.Powering',
+    country: 'Thailand',
+    image: '/project-images/prime-road.webp',
+    description: 'Full repowering of aging solar farm to restore and exceed original performance using modern bifacial modules and updated inverters.',
+    year: '2023',
+  },
+  {
+    id: 'hv-fila',
+    name: 'HV Fila',
+    capacity: '2.5',
+    type: 'Floating Solar',
+    country: 'Thailand',
+    image: '/project-images/hv-fila.webp',
+    description: 'Compact floating solar solution for industrial wastewater pond, combining renewable generation with reduced evaporation benefits.',
+    year: '2022',
+  },
+  {
+    id: 'mars-solar',
+    name: 'Mars Solar — Krabi',
+    capacity: '5.0',
+    type: 'Ground Mount',
+    country: 'Thailand',
+    image: '/project-images/krabi.webp',
+    description: 'Ground mount solar farm in southern Thailand, optimised for the region\'s high irradiance and contributing to provincial clean energy targets.',
+    year: '2021',
+  },
 ];
+
+const filterTypes = ['All', 'Ground Mount', 'Floating Solar', 'Solar Rooftop', 'Re.Powering'];
 ---
+
 <Layout
-  title="PSS Powers - Leading Renewable Energy Solutions Provider"
-  description="PSS Powers delivers innovative solar, wind, and energy storage solutions across Asia. Partner with us for sustainable energy solutions and expert project development."
-  image="https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
-  type="website"
+  title="PSS Powers — Bankable Renewable Energy Across Asia"
+  description="Leading the transition to bankable renewable energy across Asia since 2015. Over 450 MW installed, serving industrial and utility clients in Thailand, India, and Singapore."
 >
   <main>
-    <!-- Hero Section -->
-    <section class="relative h-screen flex items-center">
-      <div class="absolute inset-0 z-0">
-        <img
-          src="https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
-          alt="Solar panels"
-          class="w-full h-full object-cover"
-        />
-        <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+    <!-- ── Hero ─────────────────────────────────────────────── -->
+    <section class="relative min-h-screen flex items-center solar-gradient overflow-hidden">
+      <!-- dot grid overlay -->
+      <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#334155 0.8px, transparent 1px); background-size: 28px 28px;"></div>
+      <!-- radial glow -->
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-10" style="background: radial-gradient(circle, #10b981 0%, transparent 70%);"></div>
+
+      <div class="relative max-w-screen-2xl mx-auto px-6 lg:px-8 py-32 md:py-40">
+        <!-- announcement badge -->
+        <div class="inline-flex items-center gap-x-2 px-3.5 py-1.5 rounded-full glass text-sm text-emerald-300 font-medium mb-8" data-aos="fade-down">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          Now active across 6 countries in Asia
+        </div>
+
+        <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-[1.05] tracking-[-0.03em] max-w-4xl mb-8" data-aos="fade-up" data-aos-delay="50">
+          Powering Asia's<br />
+          <span class="text-emerald-400">Clean Energy</span><br />
+          Transition
+        </h1>
+
+        <p class="text-xl text-slate-300 max-w-2xl mb-10 leading-relaxed" data-aos="fade-up" data-aos-delay="100">
+          PSS Powers delivers bankable renewable energy solutions across Asia — from
+          initial development and financing through to EPC execution, O&amp;M, and
+          repowering. 450+ MW installed since 2015.
+        </p>
+
+        <div class="flex flex-wrap gap-4 mb-16" data-aos="fade-up" data-aos-delay="150">
+          <a href="/projects" class="inline-flex items-center gap-x-2 px-7 py-3.5 bg-emerald-500 hover:bg-emerald-600 transition-colors text-slate-950 font-semibold rounded-full text-sm" style="min-height: auto;">
+            Explore Projects
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+          </a>
+          <a href="/contact" class="inline-flex items-center gap-x-2 px-7 py-3.5 glass hover:bg-slate-700/50 transition-colors text-slate-200 font-semibold rounded-full text-sm" style="min-height: auto;">
+            Partner With Us
+          </a>
+        </div>
+
+        <!-- team avatars strip -->
+        <div class="flex items-center gap-x-4" data-aos="fade-up" data-aos-delay="200">
+          <div class="flex -space-x-2.5">
+            <img src="/Team/ceo.jpg" alt="CEO" class="w-10 h-10 rounded-full border-2 border-slate-800 object-cover" onerror="this.style.display='none'" />
+            <img src="/Team/cto.jpg" alt="CTO" class="w-10 h-10 rounded-full border-2 border-slate-800 object-cover" onerror="this.style.display='none'" />
+            <img src="/Team/cfo.jpg" alt="CFO" class="w-10 h-10 rounded-full border-2 border-slate-800 object-cover" onerror="this.style.display='none'" />
+            <div class="w-10 h-10 rounded-full border-2 border-slate-800 bg-slate-700 flex items-center justify-center text-xs font-semibold text-slate-300">+5</div>
+          </div>
+          <p class="text-slate-400 text-sm">50+ energy professionals across Asia</p>
+        </div>
       </div>
-      
-      <div class="container mx-auto px-6 relative z-10">
-        <div class="max-w-3xl" data-aos="fade-up">
-          <h1 class="text-4xl md:text-6xl font-bold text-white mb-6">
-            Powering a Sustainable Future
-          </h1>
-          <p class="text-xl text-white mb-8">
-            Leading the renewable energy revolution with innovative solar and wind solutions.
+    </section>
+
+    <!-- ── Stats strip ───────────────────────────────────────── -->
+    <section class="relative z-10 max-w-screen-2xl mx-auto px-6 lg:px-8 -mt-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4" data-aos="fade-up">
+        {[
+          { value: '450+', unit: 'MW', label: 'Total Capacity Installed' },
+          { value: '100+', unit: '', label: 'Projects Delivered' },
+          { value: '6', unit: '', label: 'Countries Active' },
+          { value: '2015', unit: '', label: 'Founded in Bangkok' },
+        ].map(stat => (
+          <div class="glass rounded-2xl p-6 text-center">
+            <p class="font-display text-3xl md:text-4xl font-bold text-white mb-1">
+              {stat.value}<span class="text-emerald-400">{stat.unit}</span>
+            </p>
+            <p class="text-slate-400 text-sm">{stat.label}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ── About / Mission ───────────────────────────────────── -->
+    <section class="py-28 max-w-screen-2xl mx-auto px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div data-aos="fade-right">
+          <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-4">Our Mission</p>
+          <h2 class="font-display text-4xl md:text-5xl font-bold text-white leading-tight tracking-tight mb-6">
+            Making clean energy<br />bankable across Asia
+          </h2>
+          <p class="text-slate-400 text-lg leading-relaxed mb-6">
+            Founded in Bangkok in 2015, PSS Powers bridges the gap between ambitious
+            renewable energy targets and the rigorous financial standards demanded by
+            institutional investors. We combine deep local market knowledge with
+            international project finance expertise.
           </p>
-          <div class="flex space-x-4">
-            <a href="/contact" class="btn btn-primary">Get Started</a>
-            <a href="/projects" class="btn bg-white text-primary hover:bg-gray-100">View Projects</a>
+          <p class="text-slate-400 text-lg leading-relaxed mb-8">
+            Our team of 50+ engineers, financiers, and project managers operates across
+            Thailand, India, Singapore, Vietnam, the Philippines, and Japan — delivering
+            technically excellent, commercially bankable projects at every scale.
+          </p>
+          <a href="/about" class="inline-flex items-center gap-x-2 text-emerald-400 font-semibold hover:text-emerald-300 transition-colors" style="min-height: auto;">
+            Learn about our team
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+          </a>
+        </div>
+
+        <div class="glass rounded-3xl p-8" data-aos="fade-left">
+          <h3 class="text-white font-semibold text-lg mb-6">Core Capabilities</h3>
+          <div class="space-y-5">
+            {[
+              { icon: 'M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7', label: 'Development & Financing', desc: 'Full project lifecycle from site selection to financial close' },
+              { icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4', label: 'Turnkey EPC', desc: 'End-to-end engineering, procurement, and construction' },
+              { icon: 'M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4', label: 'O&M Services', desc: '24/7 monitoring with 99.9% system availability target' },
+              { icon: 'M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15', label: 'Retrofit & Repowering', desc: 'Modernisation services delivering 25%+ efficiency gains' },
+            ].map(item => (
+              <div class="flex gap-x-4 p-4 rounded-xl hover:bg-slate-800/50 transition-colors group">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center flex-shrink-0 group-hover:bg-emerald-500/20 transition-colors">
+                  <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={item.icon} />
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-white font-semibold text-sm mb-0.5">{item.label}</p>
+                  <p class="text-slate-400 text-sm">{item.desc}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Project Metrics Section -->
-    <section class="bg-white py-16 border-b">
-      <div class="container mx-auto px-6">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {metrics.map((metric, index) => (
-            <AnimatedStats
-              value={metric.value}
-              label={metric.label}
-              format={metric.format}
-              icon={metric.icon}
-              delay={index * 100}
-              data-stat={metric.stat}
-            />
+    <!-- ── Services strip ────────────────────────────────────── -->
+    <section class="bg-slate-900 py-24">
+      <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
+        <div class="text-center mb-16" data-aos="fade-up">
+          <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-3">What We Do</p>
+          <h2 class="font-display text-4xl md:text-5xl font-bold text-white tracking-tight">End-to-end energy solutions</h2>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6">
+          {[
+            {
+              title: 'Development &\nFinancing',
+              icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+              points: ['Site assessment & permitting', 'Project finance structuring', 'PPA & offtake negotiation', 'Risk management'],
+            },
+            {
+              title: 'EPC\nDelivery',
+              icon: 'M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+              points: ['Engineering & design', 'Procurement & logistics', 'Construction management', 'Commissioning & testing'],
+            },
+            {
+              title: 'O&M &\nRepowering',
+              icon: 'M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z',
+              points: ['Remote monitoring & SCADA', 'Preventive & corrective M', 'Module & inverter upgrades', 'Performance optimisation'],
+            },
+          ].map((svc, i) => (
+            <div class="glass rounded-2xl p-8 hover:bg-slate-800/40 transition-colors group" data-aos="fade-up" data-aos-delay={i * 100}>
+              <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-6 group-hover:bg-emerald-500/20 transition-colors">
+                <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={svc.icon} />
+                </svg>
+              </div>
+              <h3 class="font-display text-2xl font-bold text-white mb-4 whitespace-pre-line leading-tight">{svc.title}</h3>
+              <ul class="space-y-2.5">
+                {svc.points.map(pt => (
+                  <li class="flex items-center gap-x-2.5 text-slate-400 text-sm">
+                    <svg class="w-4 h-4 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                    {pt}
+                  </li>
+                ))}
+              </ul>
+              <a href="/services" class="inline-flex items-center gap-x-1.5 text-emerald-400 text-sm font-semibold mt-6 hover:text-emerald-300 transition-colors" style="min-height: auto;">
+                Learn more
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+              </a>
+            </div>
           ))}
         </div>
       </div>
     </section>
 
-    <!-- Services Section -->
-    <section class="section-padding bg-gray-50">
-      <div class="container mx-auto px-6">
+    <!-- ── Featured Projects ─────────────────────────────────── -->
+    <section class="py-28 max-w-screen-2xl mx-auto px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12" data-aos="fade-up">
+        <div>
+          <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-3">Track Record</p>
+          <h2 class="font-display text-4xl md:text-5xl font-bold text-white tracking-tight">Featured Projects</h2>
+        </div>
+        <a href="/projects" class="inline-flex items-center gap-x-2 text-slate-400 hover:text-white transition-colors text-sm font-medium flex-shrink-0" style="min-height: auto;">
+          View all projects
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- filter tabs -->
+      <div class="flex flex-wrap gap-2 mb-8" id="project-filters" data-aos="fade-up">
+        {filterTypes.map((type, i) => (
+          <button
+            data-filter={type}
+            class={`px-4 py-1.5 rounded-full text-sm font-medium transition-all border ${i === 0 ? 'bg-emerald-500 border-emerald-500 text-slate-950' : 'glass border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200'}`}
+            style="min-height: auto; min-width: auto;"
+          >
+            {type}
+          </button>
+        ))}
+      </div>
+
+      <!-- grid -->
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="projects-grid">
+        {featuredProjects.map((project, i) => (
+          <article
+            class="group relative rounded-2xl overflow-hidden cursor-pointer project-item"
+            data-type={project.type}
+            data-project={JSON.stringify(project)}
+            data-aos="fade-up"
+            data-aos-delay={i * 60}
+            id={`proj-${project.id}`}
+          >
+            <div class="aspect-[4/3] overflow-hidden bg-slate-800">
+              <img
+                src={project.image}
+                alt={project.name}
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
+              />
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-5">
+              <div class="flex items-center gap-x-2 mb-2">
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">{project.type}</span>
+                <span class="text-slate-400 text-xs">{project.country}</span>
+              </div>
+              <h3 class="text-white font-semibold text-lg leading-tight">{project.name}</h3>
+              <p class="text-emerald-400 font-bold text-2xl mt-0.5">{project.capacity} <span class="text-sm font-normal text-slate-400">MW</span></p>
+            </div>
+            <div class="absolute inset-0 border border-emerald-500/0 group-hover:border-emerald-500/30 rounded-2xl transition-colors duration-300 pointer-events-none"></div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- ── Project Modal ─────────────────────────────────────── -->
+    <div id="project-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+      <div id="modal-backdrop" class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm"></div>
+      <div class="relative glass rounded-3xl max-w-2xl w-full overflow-hidden">
+        <button id="modal-close" class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-full bg-slate-800 hover:bg-slate-700 transition-colors text-slate-300 z-10" style="min-height: auto; min-width: auto;" aria-label="Close">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+        <div id="modal-img-wrap" class="aspect-video bg-slate-800">
+          <img id="modal-img" src="" alt="" class="w-full h-full object-cover" />
+        </div>
+        <div class="p-7">
+          <div class="flex flex-wrap items-center gap-x-3 gap-y-2 mb-3">
+            <span id="modal-type" class="px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"></span>
+            <span id="modal-country" class="text-slate-400 text-sm"></span>
+            <span id="modal-year" class="text-slate-500 text-sm"></span>
+          </div>
+          <h2 id="modal-name" class="font-display text-2xl font-bold text-white mb-1"></h2>
+          <p id="modal-capacity" class="text-emerald-400 text-3xl font-bold mb-4"></p>
+          <p id="modal-desc" class="text-slate-400 leading-relaxed"></p>
+          <a href="/projects" class="inline-flex items-center gap-x-2 mt-6 text-emerald-400 text-sm font-semibold hover:text-emerald-300 transition-colors" style="min-height: auto;">
+            See full project portfolio
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Impact ────────────────────────────────────────────── -->
+    <section class="bg-slate-900 py-24">
+      <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
         <div class="text-center mb-16" data-aos="fade-up">
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">Our Services</h2>
-          <p class="text-gray-600 max-w-2xl mx-auto">
-            We provide comprehensive renewable energy solutions to meet your sustainability goals.
+          <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-3">Environmental Impact</p>
+          <h2 class="font-display text-4xl md:text-5xl font-bold text-white tracking-tight">Making a measurable difference</h2>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6">
+          {[
+            { value: '~220', unit: 'GWh', label: 'Clean Energy Generated Annually', icon: 'M13 10V3L4 14h7v7l9-11h-7z' },
+            { value: '138k', unit: 'tonnes', label: 'CO₂ Emissions Avoided Per Year', icon: 'M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
+            { value: '50+', unit: 'partners', label: 'Strategic Partners Across Asia', icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z' },
+          ].map((stat, i) => (
+            <div class="glass rounded-2xl p-8 text-center" data-aos="fade-up" data-aos-delay={i * 100}>
+              <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center mx-auto mb-5">
+                <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={stat.icon} />
+                </svg>
+              </div>
+              <p class="font-display text-4xl font-bold text-white mb-1">
+                {stat.value}<span class="text-emerald-400 text-2xl ml-1">{stat.unit}</span>
+              </p>
+              <p class="text-slate-400 text-sm mt-1">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Solar Savings Calculator ──────────────────────────── -->
+    <section class="py-28 max-w-screen-2xl mx-auto px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div data-aos="fade-right">
+          <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-4">Quick Estimate</p>
+          <h2 class="font-display text-4xl md:text-5xl font-bold text-white leading-tight tracking-tight mb-4">
+            How much could you save?
+          </h2>
+          <p class="text-slate-400 text-lg leading-relaxed mb-8">
+            Adjust the slider to your facility's annual electricity consumption and
+            see an indicative solar generation estimate and payback period.
+          </p>
+          <p class="text-slate-500 text-sm">
+            Estimates assume 1,450 peak sun hours/yr (Thailand average), 15% system losses,
+            USD 0.09/kWh tariff, and USD 0.75/Wp installed cost. For a site-specific
+            assessment, <a href="/contact" class="text-emerald-400 hover:underline">contact our team</a>.
           </p>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-8">
-          <div class="bg-white p-8 rounded-lg shadow-lg" data-aos="fade-up">
-            <div class="mb-4 h-12 w-12">
-              <img src="/icons/services/solar-energy.png" alt="Solar Energy Icon" class="w-full h-full object-contain"/>
+        <div class="glass rounded-3xl p-8" data-aos="fade-left">
+          <label class="block text-white font-semibold mb-2" for="energy-slider">
+            Annual consumption: <span id="slider-value" class="text-emerald-400">500,000</span> kWh
+          </label>
+          <input
+            id="energy-slider"
+            type="range"
+            min="50000"
+            max="2000000"
+            step="50000"
+            value="500000"
+            class="w-full accent-emerald-500 mb-8"
+            style="min-height: auto;"
+          />
+          <div class="grid grid-cols-3 gap-4 mb-6">
+            <div class="bg-slate-800/60 rounded-xl p-4 text-center">
+              <p class="text-slate-400 text-xs mb-1">Est. Solar Generation</p>
+              <p id="calc-gen" class="text-white font-bold text-lg">362,500 kWh</p>
             </div>
-            <h3 class="text-xl font-bold mb-4">Solar Energy</h3>
-            <p class="text-gray-600">
-              Custom solar solutions for residential, commercial, and utility-scale projects.
-            </p>
+            <div class="bg-slate-800/60 rounded-xl p-4 text-center">
+              <p class="text-slate-400 text-xs mb-1">Annual Savings</p>
+              <p id="calc-savings" class="text-emerald-400 font-bold text-lg">$32,625</p>
+            </div>
+            <div class="bg-slate-800/60 rounded-xl p-4 text-center">
+              <p class="text-slate-400 text-xs mb-1">Payback Period</p>
+              <p id="calc-payback" class="text-white font-bold text-lg">3.8 yrs</p>
+            </div>
           </div>
+          <a href="/contact" class="block w-full text-center px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-semibold rounded-xl transition-colors text-sm" style="min-height: auto;">
+            Get a Detailed Assessment
+          </a>
+        </div>
+      </div>
+    </section>
 
-          <div class="bg-white p-8 rounded-lg shadow-lg" data-aos="fade-up" data-aos-delay="100">
-            <div class="mb-4 h-12 w-12">
-              <img src="/icons/services/wind-power.png" alt="Wind Power Icon" class="w-full h-full object-contain"/>
-            </div>
-            <h3 class="text-xl font-bold mb-4">Wind Power</h3>
-            <p class="text-gray-600">
-              Harnessing wind energy with state-of-the-art turbine technology.
-            </p>
-          </div>
-
-          <div class="bg-white p-8 rounded-lg shadow-lg" data-aos="fade-up" data-aos-delay="200">
-            <div class="mb-4 h-12 w-12">
-              <img src="/icons/services/energy-storage.png" alt="Energy Storage Icon" class="w-full h-full object-contain"/>
-            </div>
-            <h3 class="text-xl font-bold mb-4">Energy Storage</h3>
-            <p class="text-gray-600">
-              Advanced battery solutions for reliable energy storage and distribution.
-            </p>
+    <!-- ── Journey Timeline ──────────────────────────────────── -->
+    <section class="bg-slate-900 py-24">
+      <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
+        <div class="text-center mb-16" data-aos="fade-up">
+          <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-3">Our Journey</p>
+          <h2 class="font-display text-4xl md:text-5xl font-bold text-white tracking-tight">10 years of clean energy leadership</h2>
+        </div>
+        <div class="relative max-w-3xl mx-auto">
+          <div class="absolute left-5 top-0 bottom-0 w-px bg-slate-700"></div>
+          <div class="space-y-10">
+            {[
+              { year: '2015', title: 'Founded in Bangkok', desc: 'PSS Powers established with a mission to make renewable energy bankable across Southeast Asia.' },
+              { year: '2018', title: '100 MW Milestone', desc: 'Crossed 100 MW of cumulative installed capacity, establishing PSS as a Tier-1 EPC contractor in Thailand.' },
+              { year: '2021', title: 'Regional Expansion', desc: 'Expanded operations into India and Singapore, with first floating solar projects commissioned for IRPC PLC.' },
+              { year: '2025', title: '450 MW & Growing', desc: 'Over 450 MW installed across 6 countries, with 550+ MW pipeline and backing from I Squared Capital.' },
+            ].map((mile, i) => (
+              <div class="flex gap-x-8 pl-12 relative" data-aos="fade-up" data-aos-delay={i * 80}>
+                <div class="absolute left-0 top-1 w-10 h-10 rounded-full bg-slate-900 border-2 border-emerald-500 flex items-center justify-center flex-shrink-0">
+                  <div class="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
+                </div>
+                <div>
+                  <span class="text-emerald-400 text-sm font-semibold">{mile.year}</span>
+                  <h3 class="text-white font-semibold text-lg mt-0.5 mb-1">{mile.title}</h3>
+                  <p class="text-slate-400 text-sm leading-relaxed">{mile.desc}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="relative py-20">
-      <div class="absolute inset-0 z-0">
-        <img
-          src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
-          alt="Wind turbines"
-          class="w-full h-full object-cover"
-        />
-        <div class="absolute inset-0 bg-primary bg-opacity-90"></div>
-      </div>
-      
-      <div class="container mx-auto px-6 relative z-10">
-        <div class="max-w-3xl mx-auto text-center text-white" data-aos="fade-up">
-          <h2 class="text-3xl md:text-4xl font-bold mb-6">
-            Ready to Switch to Renewable Energy?
-          </h2>
-          <p class="text-xl mb-8">
-            Contact us today to discuss your energy needs and discover how we can help you achieve your sustainability goals.
-          </p>
-          <a href="/contact" class="btn bg-white text-primary hover:bg-gray-100">
-            Get in Touch
+    <!-- ── Final CTA ─────────────────────────────────────────── -->
+    <section class="py-28 max-w-screen-2xl mx-auto px-6 lg:px-8">
+      <div class="glass rounded-3xl p-10 md:p-16 text-center" data-aos="fade-up">
+        <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-4">Get In Touch</p>
+        <h2 class="font-display text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">
+          Ready to start your<br />solar journey?
+        </h2>
+        <p class="text-slate-400 text-lg max-w-xl mx-auto mb-10">
+          Whether you're looking for a development partner, EPC contractor, or
+          long-term O&amp;M provider, our team is ready to help.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-10">
+          <a href="/contact" class="inline-flex items-center justify-center gap-x-2 px-8 py-4 bg-emerald-500 hover:bg-emerald-600 transition-colors text-slate-950 font-semibold rounded-full" style="min-height: auto;">
+            Contact Our Team
           </a>
+          <a href="/projects" class="inline-flex items-center justify-center gap-x-2 px-8 py-4 border border-slate-600 hover:border-slate-400 text-slate-300 hover:text-white transition-colors rounded-full font-semibold" style="min-height: auto;">
+            View Portfolio
+          </a>
+        </div>
+        <div class="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-slate-500">
+          <span>Bangkok, Thailand (HQ)</span>
+          <span class="hidden sm:inline text-slate-700">·</span>
+          <span>Gurgaon, India</span>
+          <span class="hidden sm:inline text-slate-700">·</span>
+          <span>Singapore</span>
+          <span class="hidden sm:inline text-slate-700">·</span>
+          <a href="mailto:info@psspowers.com" class="text-emerald-500 hover:text-emerald-400 transition-colors" style="min-height: auto;">info@psspowers.com</a>
         </div>
       </div>
     </section>
@@ -134,54 +491,94 @@ const metrics = [
 </Layout>
 
 <script>
-  // Fetch live stats from the API and update the animated counters.
-  // Falls back silently to the build-time hardcoded values if the request
-  // fails or times out — no network call ever blocks page rendering.
-  (function () {
-    const STAT_KEYS: Record<string, string> = {
-      activeProjects: 'activeProjects',
-      totalCapacity:  'totalCapacityMW',
-      totalLocations: 'totalLocations',
-    };
+  // ── Project filter tabs ───────────────────────────────────────
+  const filterBtns = document.querySelectorAll<HTMLButtonElement>('#project-filters button');
+  const projectItems = document.querySelectorAll<HTMLElement>('.project-item');
 
-    function reanimate(card: Element, newVal: number) {
-      const el = card.querySelector('.stat-value') as HTMLElement | null;
-      if (!el) return;
-      const fmt = (card as HTMLElement).dataset.format ?? '';
-      const start = parseFloat(el.textContent?.replace(/[^\d.]/g, '') ?? '0') || 0;
-      if (start === newVal) return;
-      const range = newVal - start;
-      const duration = 1200;
-      const t0 = performance.now();
-      function tick(now: number) {
-        const progress = Math.min((now - t0) / duration, 1);
-        const cur = Math.round(start + range * progress);
-        let display = cur.toLocaleString();
-        if (fmt === 'MW') display += ' MW';
-        else if (fmt === '+') display += '+';
-        else if (fmt === 'tons') display += ' tons';
-        el.textContent = display;
-        if (progress < 1) requestAnimationFrame(tick);
-      }
-      requestAnimationFrame(tick);
-    }
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter;
 
-    const ctrl = new AbortController();
-    setTimeout(() => ctrl.abort(), 5000);
+      filterBtns.forEach(b => {
+        b.classList.remove('bg-emerald-500', 'border-emerald-500', 'text-slate-950');
+        b.classList.add('glass', 'border-slate-700', 'text-slate-400');
+      });
+      btn.classList.add('bg-emerald-500', 'border-emerald-500', 'text-slate-950');
+      btn.classList.remove('glass', 'border-slate-700', 'text-slate-400');
 
-    fetch('/api/stats', { signal: ctrl.signal })
-      .then(r => r.json())
-      .then((stats: { ok: boolean; activeProjects?: number; totalCapacityMW?: number; totalLocations?: number }) => {
-        if (!stats.ok) return;
-        document.querySelectorAll<HTMLElement>('.stat-card[data-stat]').forEach(card => {
-          const key = card.dataset.stat!;
-          const apiKey = STAT_KEYS[key];
-          const newVal = apiKey ? (stats as Record<string, number>)[apiKey] : undefined;
-          if (newVal == null) return;
-          card.dataset.value = String(newVal);
-          reanimate(card, newVal);
-        });
-      })
-      .catch(() => { /* silently use build-time values */ });
-  })();
+      projectItems.forEach(item => {
+        if (filter === 'All' || item.dataset.type === filter) {
+          item.style.display = '';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // ── Project modal ─────────────────────────────────────────────
+  const modal = document.getElementById('project-modal');
+  const backdrop = document.getElementById('modal-backdrop');
+  const closeBtn = document.getElementById('modal-close');
+
+  function openModal(data: any) {
+    if (!modal) return;
+    (document.getElementById('modal-img') as HTMLImageElement).src = data.image;
+    (document.getElementById('modal-img') as HTMLImageElement).alt = data.name;
+    document.getElementById('modal-type')!.textContent = data.type;
+    document.getElementById('modal-country')!.textContent = data.country;
+    document.getElementById('modal-year')!.textContent = data.year;
+    document.getElementById('modal-name')!.textContent = data.name;
+    document.getElementById('modal-capacity')!.textContent = data.capacity + ' MW';
+    document.getElementById('modal-desc')!.textContent = data.description;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    if (!modal) return;
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = '';
+  }
+
+  projectItems.forEach(item => {
+    item.addEventListener('click', () => {
+      try {
+        const data = JSON.parse(item.dataset.project || '{}');
+        openModal(data);
+      } catch (_) {}
+    });
+  });
+
+  closeBtn?.addEventListener('click', closeModal);
+  backdrop?.addEventListener('click', closeModal);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  // ── Solar Savings Calculator ──────────────────────────────────
+  const slider = document.getElementById('energy-slider') as HTMLInputElement;
+  const sliderValue = document.getElementById('slider-value');
+  const calcGen = document.getElementById('calc-gen');
+  const calcSavings = document.getElementById('calc-savings');
+  const calcPayback = document.getElementById('calc-payback');
+
+  function updateCalculator() {
+    const consumption = parseInt(slider.value);
+    const coverage = 0.725; // 72.5% coverage ratio
+    const generation = Math.round(consumption * coverage);
+    const tariff = 0.09; // USD per kWh
+    const annualSavings = generation * tariff;
+    const systemSizeKwp = generation / 1450; // peak sun hours
+    const installCost = systemSizeKwp * 750; // USD 0.75/Wp
+    const payback = installCost / annualSavings;
+
+    if (sliderValue) sliderValue.textContent = consumption.toLocaleString();
+    if (calcGen) calcGen.textContent = generation.toLocaleString() + ' kWh';
+    if (calcSavings) calcSavings.textContent = '$' + Math.round(annualSavings).toLocaleString();
+    if (calcPayback) calcPayback.textContent = payback.toFixed(1) + ' yrs';
+  }
+
+  slider?.addEventListener('input', updateCalculator);
+  updateCalculator();
 </script>

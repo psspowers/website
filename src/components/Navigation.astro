@@ -8,66 +8,120 @@ const links = [
   { text: 'Projects', href: '/projects' },
   { text: 'News', href: '/news' },
   { text: 'Group', href: '/group' },
-  { text: 'Contact', href: '/contact' },
 ];
 ---
 
-<header class="fixed w-full bg-white shadow-md z-50">
-  <nav class="container mx-auto px-6 py-3">
-    <div class="flex items-center justify-between">
-      <a href="/" class="flex items-center space-x-3">
-        <img src="/pss-logo-black.png" alt="PSS Powers - Renewable Energy Solutions" class="h-16 w-auto" />
-        <span class="text-2xl font-bold text-gradient">PSS Powers</span>
-      </a>
-      
-      <div class="hidden md:flex space-x-8">
-        {links.map(link => (
-          <a 
-            href={link.href} 
-            class={`transition-colors ${
-              (currentPath === link.href) || 
-              (currentPath.startsWith(link.href) && link.href !== '/') 
-                ? 'text-primary font-semibold border-b-2 border-primary hover:text-primary/80'
-                : 'text-gray-600 hover:text-primary hover:border-b-2 hover:border-primary/30'
-            }`}
-          >
-            {link.text}
-          </a>
-        ))}
+<header class="fixed w-full z-50 transition-all duration-300" id="main-nav">
+  <nav class="max-w-screen-2xl mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="/" class="flex items-center gap-x-2.5 flex-shrink-0">
+      <div class="w-9 h-9 bg-emerald-500 rounded-xl flex items-center justify-center overflow-hidden">
+        <img src="/pss-logo-white.png" alt="PSS Powers" class="h-5 w-auto" onerror="this.parentElement.innerHTML='<span class=\'text-slate-950 font-bold text-xs\'>PSS</span>'" />
       </div>
+      <span class="font-display text-lg font-semibold tracking-[-0.04em] text-white">PSS<span class="text-emerald-400">Powers</span></span>
+    </a>
 
-      <button class="md:hidden text-gray-600" id="mobile-menu-button">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+    <!-- Desktop Nav -->
+    <div class="hidden md:flex items-center gap-x-7 text-sm font-medium">
+      {links.map(link => (
+        <a
+          href={link.href}
+          class={`transition-colors duration-200 ${
+            (currentPath === link.href) || (currentPath.startsWith(link.href) && link.href !== '/')
+              ? 'text-emerald-400 font-semibold'
+              : 'text-slate-300 hover:text-white'
+          }`}
+        >
+          {link.text}
+        </a>
+      ))}
+    </div>
+
+    <!-- CTA Buttons -->
+    <div class="flex items-center gap-x-3">
+      <a
+        href="/contact"
+        class="hidden md:inline-flex items-center px-5 py-2 text-sm font-semibold rounded-full border border-slate-600 hover:border-slate-400 text-slate-300 hover:text-white transition-all duration-200"
+        style="min-height: auto;"
+      >
+        Contact
+      </a>
+      <a
+        href="/contact"
+        class="inline-flex items-center px-5 py-2 bg-emerald-500 hover:bg-emerald-600 transition-colors text-slate-950 font-semibold text-sm rounded-full"
+        style="min-height: auto;"
+      >
+        Partner With Us
+      </a>
+      <!-- Mobile toggle -->
+      <button
+        class="md:hidden w-10 h-10 flex items-center justify-center text-slate-300 hover:text-white transition-colors"
+        id="mobile-menu-button"
+        aria-label="Toggle menu"
+        aria-expanded="false"
+        style="min-height: auto; min-width: auto;"
+      >
+        <svg id="menu-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg id="close-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
     </div>
-
-    <div class="md:hidden hidden" id="mobile-menu">
-      <div class="flex flex-col space-y-4 mt-4">
-        {links.map(link => (
-          <a 
-            href={link.href} 
-            class={`transition-colors ${
-              (currentPath === link.href) || 
-              (currentPath.startsWith(link.href) && link.href !== '/') 
-                ? 'text-primary font-semibold'
-                : 'text-gray-600 hover:text-primary'
-            }`}
-          >
-            {link.text}
-          </a>
-        ))}
-      </div>
-    </div>
   </nav>
+
+  <!-- Mobile Menu -->
+  <div class="md:hidden hidden glass border-t border-slate-800" id="mobile-menu">
+    <div class="max-w-screen-2xl mx-auto px-6 py-4 flex flex-col gap-y-1">
+      {links.map(link => (
+        <a
+          href={link.href}
+          class={`py-3 text-base font-medium transition-colors border-b border-slate-800/60 last:border-0 ${
+            (currentPath === link.href) || (currentPath.startsWith(link.href) && link.href !== '/')
+              ? 'text-emerald-400'
+              : 'text-slate-300 hover:text-white'
+          }`}
+          style="min-height: auto;"
+        >
+          {link.text}
+        </a>
+      ))}
+      <a
+        href="/contact"
+        class="py-3 text-base font-medium text-slate-300 hover:text-white transition-colors border-b border-slate-800/60"
+        style="min-height: auto;"
+      >
+        Contact
+      </a>
+    </div>
+  </div>
 </header>
 
 <script>
-  const mobileMenuButton = document.getElementById('mobile-menu-button');
-  const mobileMenu = document.getElementById('mobile-menu');
+  const nav = document.getElementById('main-nav');
+  const btn = document.getElementById('mobile-menu-button');
+  const menu = document.getElementById('mobile-menu');
+  const menuIcon = document.getElementById('menu-icon');
+  const closeIcon = document.getElementById('close-icon');
 
-  mobileMenuButton?.addEventListener('click', () => {
-    mobileMenu?.classList.toggle('hidden');
+  function updateNavBackground() {
+    const isHome = window.location.pathname === '/';
+    if (window.scrollY > 60 || !isHome) {
+      nav?.classList.add('nav-scrolled');
+    } else {
+      nav?.classList.remove('nav-scrolled');
+    }
+  }
+
+  window.addEventListener('scroll', updateNavBackground, { passive: true });
+  updateNavBackground();
+
+  btn?.addEventListener('click', () => {
+    const isOpen = !menu?.classList.contains('hidden');
+    menu?.classList.toggle('hidden');
+    menuIcon?.classList.toggle('hidden', !isOpen);
+    closeIcon?.classList.toggle('hidden', isOpen);
+    btn.setAttribute('aria-expanded', String(!isOpen));
   });
 </script>
