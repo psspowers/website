@@ -1,24 +1,80 @@
 ---
+import { supabase } from '../lib/supabase';
 import { NewsService } from '../services/newsService';
-import OptimizedImage from '../components/OptimizedImage.astro';
-const newsService = NewsService.getInstance();
-const { news } = await newsService.getLatestNews(1);
-const latestNews = news[0]; // Get the most recent news item
+
+interface PopupRow {
+  id: string;
+  title: string;
+  body: string;
+  image_url: string | null;
+  cta_label: string;
+  cta_url: string;
+  delay_seconds: number;
+}
+
+// Fetch the most recently created active popup within its date window
+const now = new Date().toISOString();
+const { data: popupRows } = await supabase
+  .from('popup_announcements')
+  .select('id, title, body, image_url, cta_label, cta_url, delay_seconds')
+  .eq('is_active', true)
+  .lte('show_from', now)
+  .gte('show_until', now)
+  .order('created_at', { ascending: false })
+  .limit(1);
+
+const popup = popupRows?.[0] as PopupRow | undefined;
+
+// Fallback: show the latest news item when no popup is configured
+let fallbackTitle = '';
+let fallbackBody = '';
+let fallbackImageUrl: string | null = null;
+let fallbackCtaLabel = 'Learn More';
+let fallbackCtaUrl = '/news';
+
+if (!popup) {
+  try {
+    const newsService = NewsService.getInstance();
+    const { news } = await newsService.getLatestNews(1);
+    const latest = news[0];
+    if (latest) {
+      fallbackTitle = latest.title;
+      fallbackBody = latest.summary.slice(0, 160) + (latest.summary.length > 160 ? '...' : '');
+      fallbackImageUrl = latest.image?.url ?? null;
+    }
+  } catch (_) {
+    // no fallback available — render nothing
+  }
+}
+
+const title = popup?.title ?? fallbackTitle;
+const body = popup?.body ?? fallbackBody;
+const imageUrl = popup?.image_url ?? fallbackImageUrl;
+const ctaLabel = popup?.cta_label ?? fallbackCtaLabel;
+const ctaUrl = popup?.cta_url ?? fallbackCtaUrl;
+const delayMs = (popup?.delay_seconds ?? 5) * 1000;
+const popupId = popup?.id ?? 'news-fallback';
+
+// Nothing to show
+const hasContent = title && body;
 ---
 
+{hasContent && (
 <div
   id="news-modal"
   class="fixed inset-0 z-50 hidden px-4 md:px-0"
   role="dialog"
   aria-modal="true"
   aria-labelledby="modal-title"
+  data-popup-id={popupId}
+  data-delay={delayMs}
 >
   <!-- Backdrop -->
   <div class="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm"></div>
 
-  <!-- Modal -->
+  <!-- Modal card -->
   <div class="fixed inset-0 flex items-center justify-center">
-    <div 
+    <div
       class="bg-white bg-opacity-95 backdrop-blur-md w-full max-w-[320px] rounded-xl shadow-2xl transform transition-all duration-300 opacity-0 translate-y-4 relative mx-4"
       id="modal-content"
     >
@@ -27,8 +83,8 @@ const latestNews = news[0]; // Get the most recent news item
         type="button"
         class="absolute -top-2 -right-2 bg-white w-8 h-8 rounded-full shadow-lg flex items-center justify-center text-gray-500 hover:text-gray-700 focus:outline-none transition-colors duration-200 z-10"
         id="close-modal"
+        aria-label="Close"
       >
-        <span class="sr-only">Close</span>
         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
@@ -36,35 +92,35 @@ const latestNews = news[0]; // Get the most recent news item
 
       <!-- Content -->
       <div class="p-5">
-        {latestNews.image && (
+        {imageUrl && (
           <div class="relative w-full h-[180px] mb-4 rounded-lg overflow-hidden">
-            <OptimizedImage
-              src={latestNews.image.url}
-              alt={latestNews.title}
-              aspectRatio="16:9"
-              priority={true}
+            <img
+              src={imageUrl}
+              alt={title}
               class="w-full h-full object-cover"
+              loading="eager"
             />
             <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
           </div>
         )}
+
         <h2
           id="modal-title"
-          class="font-bold text-lg text-[#1A1A1A] mb-2 font-poppins leading-tight line-clamp-2"
+          class="font-bold text-lg text-[#1A1A1A] mb-2 leading-tight line-clamp-2"
         >
-          {latestNews.title}
+          {title}
         </h2>
 
-        <p class="text-[#4A4A4A] text-base md:text-lg leading-relaxed mb-6 font-inter">
-          {latestNews.summary.slice(0, 120)}...
+        <p class="text-[#4A4A4A] text-sm leading-relaxed mb-5">
+          {body}
         </p>
 
         <div class="flex flex-col sm:flex-row gap-2">
           <a
-            href="/news"
-            class="flex-1 inline-flex justify-center items-center px-4 py-2.5 rounded-lg bg-primary text-white font-semibold hover:bg-primary/90 transition-all duration-200 text-center text-sm"
+            href={ctaUrl}
+            class="flex-1 inline-flex justify-center items-center px-4 py-2.5 rounded-lg bg-[#1550b6] text-white font-semibold hover:bg-[#1243a0] transition-all duration-200 text-center text-sm"
           >
-            Learn More
+            {ctaLabel}
           </a>
           <a
             href="https://www.linkedin.com/company/psspowers"
@@ -72,39 +128,20 @@ const latestNews = news[0]; // Get the most recent news item
             rel="noopener noreferrer"
             class="flex-1 inline-flex justify-center items-center px-3 py-2 rounded-lg bg-[#0077b5] text-white font-semibold hover:bg-[#0077b5]/90 transition-all duration-200 text-center text-xs"
           >
-            Follow us on LinkedIn
+            Follow on LinkedIn
           </a>
-        </div>
-        <div class="mt-2 flex justify-between items-center text-xs text-gray-500">
-          <time datetime={latestNews.date}>
-            {new Date(latestNews.date).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            })}
-          </time>
-          <div class="flex gap-2">
-            {latestNews.tags.map(tag => (
-              <span class="px-2 py-0.5 bg-gray-100 rounded-full">
-                {tag}
-              </span>
-            ))}
-          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+)}
 
 <script>
-  import { NewsService } from '../services/newsService';
-
   class NewsModal {
     private modal: HTMLElement | null;
     private content: HTMLElement | null;
     private closeButton: HTMLElement | null;
-    private readonly sessionKey: string = 'modal_shown';
-    private readonly initialDelay: number = 5000; // 5 seconds
 
     constructor() {
       this.modal = document.getElementById('news-modal');
@@ -116,128 +153,57 @@ const latestNews = news[0]; // Get the most recent news item
       }
     }
 
-    private initialize = () => {
-      // Initial display after delay
-      if (this.canShowModal()) {
-        setTimeout(() => this.showModal(), this.initialDelay);
-      }
-
-      // Event listeners
-      this.closeButton!.addEventListener('click', this.hideModal);
-      this.modal!.addEventListener('click', (e: MouseEvent) => {
-        if (e.target === this.modal) {
-          this.hideModal();
-        }
-      });
-
-      // Analytics setup
-      this.setupAnalytics();
+    private get sessionKey(): string {
+      const id = this.modal?.dataset.popupId ?? 'popup';
+      return `popup_shown_${id}`;
     }
 
-    private canShowModal = (): boolean => {
-      return !sessionStorage.getItem(this.sessionKey);
+    private get delayMs(): number {
+      return Number(this.modal?.dataset.delay ?? 5000);
+    }
+
+    private initialize = () => {
+      if (!sessionStorage.getItem(this.sessionKey)) {
+        setTimeout(() => this.showModal(), this.delayMs);
+      }
+      this.closeButton!.addEventListener('click', this.hideModal);
+      this.modal!.addEventListener('click', (e: MouseEvent) => {
+        if (e.target === this.modal) this.hideModal();
+      });
     }
 
     private showModal = () => {
-      if (!this.canShowModal() || !this.modal || !this.content) return;
-
-      // Add entrance animation classes
+      if (sessionStorage.getItem(this.sessionKey) || !this.modal || !this.content) return;
       this.modal.classList.remove('hidden');
-      this.modal.classList.add('animate-fadeIn');
-      
       setTimeout(() => {
         this.content!.classList.remove('opacity-0', 'translate-y-4');
         this.content!.classList.add('animate-slideUp');
       }, 50);
-
-      // Mark as shown in session storage
       sessionStorage.setItem(this.sessionKey, 'true');
-
-      this.trackEvent('modal_shown');
     }
 
     private hideModal = () => {
       if (!this.modal || !this.content) return;
-
-      // Add exit animation classes
       this.content.classList.add('opacity-0', 'translate-y-4', 'animate-slideDown');
-      this.modal.classList.add('animate-fadeOut');
-
       setTimeout(() => {
         this.modal!.classList.add('hidden');
         this.content!.classList.remove('animate-slideDown');
-        this.modal!.classList.remove('animate-fadeOut');
       }, 300);
-
-      this.trackEvent('modal_closed');
-    }
-
-    private setupAnalytics = () => {
-      // Google Analytics Events
-      this.trackEvent('modal_initialized');
-    }
-
-    private trackEvent = (eventName: string) => {
-      if (typeof window.gtag !== 'undefined') {
-        gtag('event', eventName, {
-          'event_category': 'NewsModal',
-          'event_label': 'User Interaction'
-        });
-      }
     }
   }
 
-  // Initialize modal when DOM is loaded
-  document.addEventListener('DOMContentLoaded', () => {
-    new NewsModal();
-  });
+  document.addEventListener('DOMContentLoaded', () => { new NewsModal(); });
 </script>
 
 <style>
-  /* Ensure Poppins and Inter fonts are available */
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Inter:wght@400;500&display=swap');
-
-  .font-poppins {
-    font-family: 'Poppins', sans-serif;
-  }
-
-  .font-inter {
-    font-family: 'Inter', sans-serif;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  @keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
-  }
-
   @keyframes slideUp {
     from { transform: translateY(1rem); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    to   { transform: translateY(0);    opacity: 1; }
   }
-
   @keyframes slideDown {
-    from { transform: translateY(0); opacity: 1; }
-    to { transform: translateY(1rem); opacity: 0; }
+    from { transform: translateY(0);    opacity: 1; }
+    to   { transform: translateY(1rem); opacity: 0; }
   }
-
-  .animate-fadeIn {
-    animation: fadeIn 0.3s ease-out forwards;
-  }
-
-  .animate-fadeOut {
-    animation: fadeOut 0.3s ease-out forwards;
-  }
-
-  .animate-slideUp {
-    animation: slideUp 0.3s ease-out forwards;
-  }
-
-  .animate-slideDown {
-    animation: slideDown 0.3s ease-out forwards;
-  }
+  .animate-slideUp  { animation: slideUp  0.3s ease-out forwards; }
+  .animate-slideDown { animation: slideDown 0.3s ease-out forwards; }
 </style>
