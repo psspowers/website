@@ -83,13 +83,12 @@ const websites = [
                     </a>
                   </div>
                   {site.name === 'One PSS' && (
-                    <div class="bg-white rounded-xl px-3 py-2 flex-shrink-0">
-                      <img
-                        src="/PSS.RES.Logo.jpg"
-                        alt="PSS Group Logo"
-                        class="h-8 w-auto object-contain"
-                      />
-                    </div>
+                    <img
+                      src="/PSS.RES.Logo.jpg"
+                      alt="PSS Group Logo"
+                      class="flex-shrink-0 h-10 w-auto object-contain"
+                      style="mix-blend-mode: multiply; filter: brightness(1.8) contrast(1.2);"
+                    />
                   )}
                 </div>
                 <p class="text-slate-400 text-sm leading-relaxed">{site.description}</p>
@@ -103,7 +102,7 @@ const websites = [
                   class="w-full h-full object-cover"
                   priority={index < 2}
                 />
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent pointer-events-none"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-slate-950/30 to-transparent pointer-events-none"></div>
               </div>
 
               <div class="p-8">

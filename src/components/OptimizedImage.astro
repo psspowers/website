@@ -50,7 +50,7 @@ const fetchPriority = priority ? "high" : "auto";
 ---
 
 <div class={`relative overflow-hidden ${className}`} style={`padding-bottom: ${paddingBottom};`}>
-  <div class="absolute inset-0 bg-gray-50 animate-pulse skeleton"></div>
+  <div class="absolute inset-0 bg-slate-700 animate-pulse skeleton"></div>
   <img
     src={imageUrl}
     alt={alt}
@@ -73,7 +73,7 @@ const fetchPriority = priority ? "high" : "auto";
 
 <style>
   .skeleton {
-    @apply bg-gray-50;
+    @apply bg-slate-700;
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
@@ -91,6 +91,6 @@ const fetchPriority = priority ? "high" : "auto";
   }
   
   img.error {
-    @apply object-contain p-4 bg-gray-50;
+    @apply object-contain p-4 bg-slate-800;
   }
 </style>
