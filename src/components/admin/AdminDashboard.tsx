@@ -7,10 +7,6 @@ import LeadsTab from './LeadsTab';
 import PopupTab from './PopupTab';
 import PeopleTab from './PeopleTab';
 import AboutTab from './AboutTab';
-import PartnersTab from './PartnersTab';
-import ServicesTab from './ServicesTab';
-import GroupTab from './GroupTab';
-import ContentTab from './ContentTab';
 import { newsItems as staticNews } from '../../data/news';
 import { projects as staticProjects } from '../../data/projects/projects';
 import { offices as staticOffices } from '../../data/offices';
@@ -20,7 +16,7 @@ const supabase = createClient(
   import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ4bnhpeHdhd3RkaGtqZHNpdmFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3ODE3NDEsImV4cCI6MjA5NjM1Nzc0MX0.t-UTAXhvHCeRTvTchhBS-MhbQw7wJ9Spx9O9jlSAVWQ'
 );
 
-type Tab = 'news' | 'projects' | 'offices' | 'leads' | 'popup' | 'people' | 'about' | 'partners' | 'services' | 'group' | 'content';
+type Tab = 'news' | 'projects' | 'offices' | 'leads' | 'popup' | 'people' | 'about';
 
 interface TableCounts { news: number; projects: number; offices: number; }
 
@@ -200,11 +196,7 @@ export default function AdminDashboard() {
     { id: 'offices', label: 'Offices' },
     { id: 'people', label: 'People' },
     { id: 'about', label: 'About' },
-    { id: 'services', label: 'Services' },
-    { id: 'group', label: 'Group' },
-    { id: 'content', label: 'Content' },
     { id: 'leads', label: 'Leads Inbox' },
-    { id: 'partners', label: 'Partner Inquiries' },
     { id: 'popup', label: 'Popup' },
   ];
 
@@ -267,11 +259,7 @@ export default function AdminDashboard() {
         {activeTab === 'offices' && <OfficesTab supabase={supabase} />}
         {activeTab === 'people' && <PeopleTab supabase={supabase} />}
         {activeTab === 'about' && <AboutTab supabase={supabase} />}
-        {activeTab === 'services' && <ServicesTab supabase={supabase} />}
-        {activeTab === 'group' && <GroupTab supabase={supabase} />}
-        {activeTab === 'content' && <ContentTab supabase={supabase} />}
         {activeTab === 'leads' && <LeadsTab supabase={supabase} />}
-        {activeTab === 'partners' && <PartnersTab supabase={supabase} />}
         {activeTab === 'popup' && <PopupTab supabase={supabase} />}
       </main>
     </div>
