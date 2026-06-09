@@ -1,52 +1,28 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import AnimatedStats from '../components/AnimatedStats.astro';
+import { supabase } from '../lib/supabase';
 
-const services = [
-  {
-    id: 'spd',
-    title: 'Development and Financing',
-    icon: 'M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7',
-    description: 'We provide comprehensive development and financing solutions for renewable energy projects, from initial concept to financial close.',
-    features: ['Project Development', 'Project Financing', 'Project Management', 'Risk Assessment'],
-    stats: { value: 550, label: 'Project Pipeline (MW)', format: 'MW' },
-    success: { client: 'Multiple Projects', result: 'Successfully developed and financed over 100 MW of solar projects' }
-  },
-  {
-    id: 'epc',
-    title: 'Turnkey Solar PV EPC Services',
-    icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4',
-    description: 'End-to-end project execution from engineering and procurement to construction and commissioning.',
-    features: ['Turnkey project delivery', 'Quality assurance', 'Project management', 'Safety compliance'],
-    stats: { value: 450, label: 'Total Capacity Installed (MW)', format: 'MW' },
-    success: { client: 'Industrial Manufacturing Plant', result: 'Completed 60MW project in 3 months from start of construction' }
-  },
-  {
-    id: 'om',
-    title: 'Operations & Maintenance',
-    icon: 'M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4',
-    description: 'Comprehensive maintenance services to ensure optimal system performance and longevity.',
-    features: ['Preventive maintenance', 'Performance monitoring', '24/7 emergency support', 'Condition assessment'],
-    stats: { value: 99.9, label: 'System Availability (%)', format: '%' },
-    success: { client: 'Power Distribution Company', result: 'Achieved zero downtime for critical systems' }
-  },
-  {
-    id: 'retrofit',
-    title: 'Retrofit & Repowering Upgrades',
-    icon: 'M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15',
-    description: 'Modernization and repowering services to enhance system efficiency and capabilities.',
-    features: ['Equipment modernization', 'System upgrades', 'Energy efficiency improvements', 'Technology integration'],
-    stats: { value: 25, label: 'Average Efficiency Gain (%)', format: '%' },
-    success: { client: 'Large Shopping Center', result: 'Reduced energy consumption by 40% through modernization' }
-  }
-];
+interface Service {
+  id: string;
+  title: string;
+  description: string;
+  icon_path: string;
+  features: string[];
+  stat_value: number;
+  stat_label: string;
+  stat_format: string;
+  success_client: string;
+  success_result: string;
+  display_order: number;
+}
 
-const certifications = [
-  {
-    name: 'ISO 9001:2015',
-    description: 'Quality Management System certification demonstrating our commitment to consistently delivering products and services that meet customer and regulatory requirements. Our robust quality control processes ensure continuous improvement and customer satisfaction in everything we do.'
-  }
-];
+const { data } = await supabase
+  .from('services')
+  .select('*')
+  .order('display_order', { ascending: true });
+
+const services: Service[] = (data as Service[]) ?? [];
 ---
 
 <Layout
@@ -80,7 +56,7 @@ const certifications = [
               <div class="p-8">
                 <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-6">
                   <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={service.icon} />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={service.icon_path} />
                   </svg>
                 </div>
                 <h2 class="font-display text-2xl font-bold text-white mb-4">{service.title}</h2>
@@ -102,38 +78,20 @@ const certifications = [
 
                 <div class="flex items-center justify-center mb-6">
                   <AnimatedStats
-                    value={service.stats.value}
-                    label={service.stats.label}
-                    format={service.stats.format}
+                    value={service.stat_value}
+                    label={service.stat_label}
+                    format={service.stat_format}
                   />
                 </div>
 
                 <div class="border-t border-slate-700/50 pt-6">
                   <h3 class="text-white font-semibold text-sm mb-3">Success Story</h3>
                   <div class="bg-slate-800/60 p-4 rounded-xl">
-                    <p class="text-white font-medium text-sm mb-1">{service.success.client}</p>
-                    <p class="text-slate-400 text-sm">{service.success.result}</p>
+                    <p class="text-white font-medium text-sm mb-1">{service.success_client}</p>
+                    <p class="text-slate-400 text-sm">{service.success_result}</p>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- Certifications -->
-    <section class="py-20 bg-slate-900">
-      <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
-        <div class="text-center mb-12" data-aos="fade-up">
-          <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-3">Quality</p>
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight">Certifications & Standards</h2>
-        </div>
-        <div class="max-w-2xl mx-auto">
-          {certifications.map((cert, index) => (
-            <div class="glass rounded-2xl p-8 text-center" data-aos="fade-up" data-aos-delay={index * 100}>
-              <h3 class="text-white font-bold text-xl mb-4">{cert.name}</h3>
-              <p class="text-slate-400 leading-relaxed">{cert.description}</p>
             </div>
           ))}
         </div>
@@ -172,15 +130,15 @@ const certifications = [
             <div data-aos="fade-up" data-aos-delay="100">
               <form class="space-y-4 glass rounded-2xl p-6">
                 <div>
-                  <label class="block text-sm font-medium text-slate-300 mb-1.5" for="name">Name</label>
+                  <label class="block text-sm font-medium text-slate-300 mb-1.5">Name</label>
                   <input type="text" class="w-full px-4 py-3 rounded-xl bg-slate-800/60 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all text-sm" placeholder="Your name" />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-slate-300 mb-1.5" for="email">Email</label>
+                  <label class="block text-sm font-medium text-slate-300 mb-1.5">Email</label>
                   <input type="email" class="w-full px-4 py-3 rounded-xl bg-slate-800/60 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all text-sm" placeholder="your@email.com" />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-slate-300 mb-1.5" for="message">Message</label>
+                  <label class="block text-sm font-medium text-slate-300 mb-1.5">Message</label>
                   <textarea class="w-full px-4 py-3 rounded-xl bg-slate-800/60 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all resize-none text-sm" rows="4" placeholder="How can we help you?"></textarea>
                 </div>
                 <a href="/contact" class="block w-full text-center px-8 py-4 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-semibold rounded-full transition-colors text-sm" style="min-height: auto;">
