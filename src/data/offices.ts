@@ -46,7 +46,7 @@ export const offices: Office[] = [
   {
     country: 'Singapore',
     name: 'Singapore',
-    address: 'Asterix Energy PTE Limited, 7 Temasek Boulevard, #12-07, Suntec Tower One, Singapore 038987',
+    address: 'Pss Orange Pte Ltd, 7 Temasek Boulevard, #12-07, Suntec Tower One, Singapore 038987',
     coordinates: [103.8587, 1.2956],
     showInList: true
   }

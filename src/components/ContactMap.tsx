@@ -205,7 +205,7 @@ const ContactMap: React.FC<Props> = ({ offices }) => {
         <h3 className="text-sm font-semibold mb-2">Office Locations</h3>
         <div className="flex items-center space-x-2">
           <div className="w-4 h-4" style={{ backgroundColor: '#1a5f7a' }}></div>
-          <span className="text-sm">PSS Powers Office</span>
+          <span className="text-sm">Pss.Orange Office</span>
         </div>
       </div>
     </div>

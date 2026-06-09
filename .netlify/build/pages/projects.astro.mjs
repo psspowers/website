@@ -2,7 +2,7 @@
 import { c as createComponent, r as renderTemplate, m as maybeRenderHead, a as addAttribute, d as renderComponent, b as createAstro } from '../assets/astro/server.DYFYygLL.js';
 import 'kleur/colors';
 import 'html-escaper';
-import { $ as $$Layout } from '../assets/Layout.DMsgz_fS.js';
+import { $ as $$Layout } from '../assets/Layout.DGvwjEeV.js';
 import { $ as $$AnimatedStats } from '../assets/AnimatedStats.COJCaFeN.js';
 import { $ as $$OptimizedImage } from '../assets/OptimizedImage.BfeX-moT.js';
 /* empty css                                   */
@@ -174,7 +174,7 @@ const $$Projects = createComponent(async ($$result, $$props, $$slots) => {
     totalSites: "/icons/projects/png/total-sites.png",
     projectTypes: "/icons/projects/png/project-types.png"
   };
-  return renderTemplate`${renderComponent($$result, "Layout", $$Layout, { "title": "Projects Portfolio - PSS Powers", "description": "Explore PSS Powers' portfolio of renewable energy projects across Asia. Featuring solar, wind, BESS, and energy storage solutions.", "image": "/project-images/maxion.webp", "type": "website", "data-astro-cid-aid3sr62": true }, { "default": ($$result2) => renderTemplate` ${maybeRenderHead()}<main class="pt-20" data-astro-cid-aid3sr62> <!-- Hero --> <section class="dark-gradient-header" data-astro-cid-aid3sr62> <div class="max-w-screen-2xl mx-auto px-6 lg:px-8" data-astro-cid-aid3sr62> <div class="max-w-4xl text-white" data-aos="fade-up" data-astro-cid-aid3sr62> <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-4" data-astro-cid-aid3sr62>Our Work</p> <h1 class="font-display text-4xl md:text-6xl font-bold tracking-tight mb-6" data-astro-cid-aid3sr62>
+  return renderTemplate`${renderComponent($$result, "Layout", $$Layout, { "title": "Projects Portfolio - Pss.Orange", "description": "Explore Pss.Orange's portfolio of renewable energy projects across Asia. Featuring solar, wind, BESS, and energy storage solutions.", "image": "/project-images/maxion.webp", "type": "website", "data-astro-cid-aid3sr62": true }, { "default": ($$result2) => renderTemplate` ${maybeRenderHead()}<main class="pt-20" data-astro-cid-aid3sr62> <!-- Hero --> <section class="dark-gradient-header" data-astro-cid-aid3sr62> <div class="max-w-screen-2xl mx-auto px-6 lg:px-8" data-astro-cid-aid3sr62> <div class="max-w-4xl text-white" data-aos="fade-up" data-astro-cid-aid3sr62> <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-4" data-astro-cid-aid3sr62>Our Work</p> <h1 class="font-display text-4xl md:text-6xl font-bold tracking-tight mb-6" data-astro-cid-aid3sr62>
 Global Project Portfolio
 </h1> <p class="text-xl text-slate-300 leading-relaxed" data-astro-cid-aid3sr62>
 Explore our worldwide renewable energy projects and achievements.

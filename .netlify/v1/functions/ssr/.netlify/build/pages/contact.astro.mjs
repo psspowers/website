@@ -2,7 +2,7 @@
 import { c as createComponent, r as renderTemplate, d as renderComponent, m as maybeRenderHead, a as addAttribute } from '../assets/astro/server.DYFYygLL.js';
 import 'kleur/colors';
 import 'html-escaper';
-import { $ as $$Layout } from '../assets/Layout.DMsgz_fS.js';
+import { $ as $$Layout } from '../assets/Layout.DGvwjEeV.js';
 import { s as supabase } from '../assets/supabase.DTyfQ36f.js';
 export { renderers } from '../renderers.mjs';
 
@@ -27,7 +27,7 @@ async function fetchOffices() {
 const prerender = false;
 const $$Contact = createComponent(async ($$result, $$props, $$slots) => {
   const offices = await fetchOffices();
-  return renderTemplate`${renderComponent($$result, "Layout", $$Layout, { "title": "Contact PSS Powers - Get in Touch", "description": "Contact PSS Powers for renewable energy solutions. Reach our offices in Thailand, India, and Singapore. Let's discuss your sustainable energy needs.", "image": "/pss-logo-black.png", "type": "website" }, { "default": ($$result2) => renderTemplate` ${maybeRenderHead()}<main class="pt-20"> <!-- Hero --> <section class="dark-gradient-header"> <div class="max-w-screen-2xl mx-auto px-6 lg:px-8"> <div class="max-w-3xl text-white" data-aos="fade-up"> <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-4">Reach Out</p> <h1 class="font-display text-4xl md:text-5xl font-bold tracking-tight mb-6">
+  return renderTemplate`${renderComponent($$result, "Layout", $$Layout, { "title": "Contact Pss.Orange - Get in Touch", "description": "Contact Pss.Orange for renewable energy solutions. Reach our offices in Thailand, India, and Singapore. Let's discuss your sustainable energy needs.", "image": "/pss-logo-black.png", "type": "website" }, { "default": ($$result2) => renderTemplate` ${maybeRenderHead()}<main class="pt-20"> <!-- Hero --> <section class="dark-gradient-header"> <div class="max-w-screen-2xl mx-auto px-6 lg:px-8"> <div class="max-w-3xl text-white" data-aos="fade-up"> <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-4">Reach Out</p> <h1 class="font-display text-4xl md:text-5xl font-bold tracking-tight mb-6">
 Get in Touch
 </h1> <p class="text-xl text-slate-300 leading-relaxed">
 Ready to start your renewable energy journey? Contact us today to discuss how we can help
