@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 interface TeamMember {
@@ -31,7 +31,11 @@ export default function PeopleTab({ supabase }: { supabase: SupabaseClient }) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState<FormData>(EMPTY);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const MAX_FILE_BYTES = 2 * 1024 * 1024;
 
   useEffect(() => { load(); }, []);
 
@@ -62,6 +66,41 @@ export default function PeopleTab({ supabase }: { supabase: SupabaseClient }) {
 
   function set<K extends keyof FormData>(field: K, value: FormData[K]) {
     setForm(prev => ({ ...prev, [field]: value }));
+  }
+
+  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > MAX_FILE_BYTES) {
+      setError('Photo must be 2 MB or smaller.');
+      if (fileInputRef.current) fileInputRef.current.value = '';
+      return;
+    }
+
+    setError('');
+    setUploading(true);
+
+    const ext = file.name.split('.').pop()?.toLowerCase() ?? 'jpg';
+    const slug = (form.name || 'photo').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const path = `${slug}-${Date.now()}.${ext}`;
+
+    const { error: uploadErr } = await supabase.storage
+      .from('team-photos')
+      .upload(path, file, { upsert: true });
+
+    if (uploadErr) {
+      setError(`Upload failed: ${uploadErr.message}`);
+      setUploading(false);
+      return;
+    }
+
+    const { data: urlData } = supabase.storage
+      .from('team-photos')
+      .getPublicUrl(path);
+
+    set('image_url', urlData.publicUrl);
+    setUploading(false);
   }
 
   async function save(e: React.FormEvent) {
@@ -152,16 +191,42 @@ export default function PeopleTab({ supabase }: { supabase: SupabaseClient }) {
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-xs font-medium text-gray-600 mb-1">Photo URL</label>
-                <input
-                  value={form.image_url}
-                  onChange={e => set('image_url', e.target.value)}
-                  placeholder="/Team/Sam.jpg"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6]"
-                />
-                <p className="text-xs text-gray-400 mt-1">
-                  Use a path like <code>/Team/Name.jpg</code> for photos uploaded to the public/Team folder.
-                </p>
+                <label className="block text-xs font-medium text-gray-600 mb-1">Photo</label>
+                <div className="flex items-center gap-3">
+                  <label
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border cursor-pointer transition-colors ${
+                      uploading
+                        ? 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed'
+                        : 'border-[#1550b6] text-[#1550b6] hover:bg-blue-50'
+                    }`}
+                  >
+                    {uploading ? (
+                      <>
+                        <span className="w-4 h-4 border-2 border-[#1550b6] border-t-transparent rounded-full animate-spin inline-block" />
+                        Uploading...
+                      </>
+                    ) : (
+                      <>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M12 12V4m0 0L8 8m4-4l4 4" />
+                        </svg>
+                        {form.image_url ? 'Replace photo' : 'Upload photo'}
+                      </>
+                    )}
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/jpeg,image/jpg,image/png,image/webp"
+                      className="sr-only"
+                      disabled={uploading}
+                      onChange={handleFileChange}
+                    />
+                  </label>
+                  {form.image_url && !uploading && (
+                    <span className="text-xs text-green-600 font-medium">Photo uploaded</span>
+                  )}
+                </div>
+                <p className="text-xs text-gray-400 mt-1">JPG, PNG or WebP, max 2 MB.</p>
               </div>
 
               <div className="md:col-span-2">
@@ -205,7 +270,7 @@ export default function PeopleTab({ supabase }: { supabase: SupabaseClient }) {
               <div className="md:col-span-2 flex gap-3">
                 <button
                   type="submit"
-                  disabled={saving}
+                  disabled={saving || uploading}
                   className="bg-[#1550b6] text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-[#1243a0] disabled:opacity-60 transition-colors"
                 >
                   {saving ? 'Saving...' : 'Save'}
@@ -221,7 +286,7 @@ export default function PeopleTab({ supabase }: { supabase: SupabaseClient }) {
             </form>
 
             {form.image_url && (
-              <div className="hidden lg:block shrink-0 w-24 text-center">
+              <div className="shrink-0 w-24 text-center">
                 <p className="text-xs text-gray-500 mb-2">Preview</p>
                 <img
                   src={form.image_url}
