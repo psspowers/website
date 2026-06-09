@@ -38,7 +38,6 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.5.6",
-    "@netlify/plugin-lighthouse": "^5.0.0",
     "@types/compression": "^1.7.5",
     "@types/express": "^4.17.21",
     "@types/leaflet.markercluster": "^1.5.5",

@@ -1,0 +1,130 @@
+import '@astrojs/internal-helpers/path';
+import 'cookie';
+import 'kleur/colors';
+import 'es-module-lexer';
+import 'html-escaper';
+import 'clsx';
+import { N as NOOP_MIDDLEWARE_HEADER, g as decodeKey } from './assets/astro/server.CUvW1WRH.js';
+
+const NOOP_MIDDLEWARE_FN = async (_ctx, next) => {
+  const response = await next();
+  response.headers.set(NOOP_MIDDLEWARE_HEADER, "true");
+  return response;
+};
+
+const codeToStatusMap = {
+  // Implemented from tRPC error code table
+  // https://trpc.io/docs/server/error-handling#error-codes
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
+  NOT_FOUND: 404,
+  TIMEOUT: 405,
+  CONFLICT: 409,
+  PRECONDITION_FAILED: 412,
+  PAYLOAD_TOO_LARGE: 413,
+  UNSUPPORTED_MEDIA_TYPE: 415,
+  UNPROCESSABLE_CONTENT: 422,
+  TOO_MANY_REQUESTS: 429,
+  CLIENT_CLOSED_REQUEST: 499,
+  INTERNAL_SERVER_ERROR: 500
+};
+Object.entries(codeToStatusMap).reduce(
+  // reverse the key-value pairs
+  (acc, [key, value]) => ({ ...acc, [value]: key }),
+  {}
+);
+
+function sanitizeParams(params) {
+  return Object.fromEntries(
+    Object.entries(params).map(([key, value]) => {
+      if (typeof value === "string") {
+        return [key, value.normalize().replace(/#/g, "%23").replace(/\?/g, "%3F")];
+      }
+      return [key, value];
+    })
+  );
+}
+function getParameter(part, params) {
+  if (part.spread) {
+    return params[part.content.slice(3)] || "";
+  }
+  if (part.dynamic) {
+    if (!params[part.content]) {
+      throw new TypeError(`Missing parameter: ${part.content}`);
+    }
+    return params[part.content];
+  }
+  return part.content.normalize().replace(/\?/g, "%3F").replace(/#/g, "%23").replace(/%5B/g, "[").replace(/%5D/g, "]");
+}
+function getSegment(segment, params) {
+  const segmentPath = segment.map((part) => getParameter(part, params)).join("");
+  return segmentPath ? "/" + segmentPath : "";
+}
+function getRouteGenerator(segments, addTrailingSlash) {
+  return (params) => {
+    const sanitizedParams = sanitizeParams(params);
+    let trailing = "";
+    if (addTrailingSlash === "always" && segments.length) {
+      trailing = "/";
+    }
+    const path = segments.map((segment) => getSegment(segment, sanitizedParams)).join("") + trailing;
+    return path || "/";
+  };
+}
+
+function deserializeRouteData(rawRouteData) {
+  return {
+    route: rawRouteData.route,
+    type: rawRouteData.type,
+    pattern: new RegExp(rawRouteData.pattern),
+    params: rawRouteData.params,
+    component: rawRouteData.component,
+    generate: getRouteGenerator(rawRouteData.segments, rawRouteData._meta.trailingSlash),
+    pathname: rawRouteData.pathname || undefined,
+    segments: rawRouteData.segments,
+    prerender: rawRouteData.prerender,
+    redirect: rawRouteData.redirect,
+    redirectRoute: rawRouteData.redirectRoute ? deserializeRouteData(rawRouteData.redirectRoute) : undefined,
+    fallbackRoutes: rawRouteData.fallbackRoutes.map((fallback) => {
+      return deserializeRouteData(fallback);
+    }),
+    isIndex: rawRouteData.isIndex
+  };
+}
+
+function deserializeManifest(serializedManifest) {
+  const routes = [];
+  for (const serializedRoute of serializedManifest.routes) {
+    routes.push({
+      ...serializedRoute,
+      routeData: deserializeRouteData(serializedRoute.routeData)
+    });
+    const route = serializedRoute;
+    route.routeData = deserializeRouteData(serializedRoute.routeData);
+  }
+  const assets = new Set(serializedManifest.assets);
+  const componentMetadata = new Map(serializedManifest.componentMetadata);
+  const inlinedScripts = new Map(serializedManifest.inlinedScripts);
+  const clientDirectives = new Map(serializedManifest.clientDirectives);
+  const serverIslandNameMap = new Map(serializedManifest.serverIslandNameMap);
+  const key = decodeKey(serializedManifest.key);
+  return {
+    // in case user middleware exists, this no-op middleware will be reassigned (see plugin-ssr.ts)
+    middleware() {
+      return { onRequest: NOOP_MIDDLEWARE_FN };
+    },
+    ...serializedManifest,
+    assets,
+    componentMetadata,
+    inlinedScripts,
+    clientDirectives,
+    routes,
+    serverIslandNameMap,
+    key
+  };
+}
+
+const manifest = deserializeManifest({"hrefRoot":"file:///tmp/cc-agent/41679351/project/","adapterName":"@astrojs/netlify","routes":[{"file":"about/index.html","links":[],"scripts":[],"styles":[],"routeData":{"route":"/about","isIndex":false,"type":"page","pattern":"^\\/about\\/?$","segments":[[{"content":"about","dynamic":false,"spread":false}]],"params":[],"component":"src/pages/about.astro","pathname":"/about","prerender":true,"fallbackRoutes":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"admin/index.html","links":[],"scripts":[],"styles":[],"routeData":{"route":"/admin","isIndex":true,"type":"page","pattern":"^\\/admin\\/?$","segments":[[{"content":"admin","dynamic":false,"spread":false}]],"params":[],"component":"src/pages/admin/index.astro","pathname":"/admin","prerender":true,"fallbackRoutes":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"example/index.html","links":[],"scripts":[],"styles":[],"routeData":{"route":"/example","isIndex":false,"type":"page","pattern":"^\\/example\\/?$","segments":[[{"content":"example","dynamic":false,"spread":false}]],"params":[],"component":"src/pages/example.astro","pathname":"/example","prerender":true,"fallbackRoutes":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"group/index.html","links":[],"scripts":[],"styles":[],"routeData":{"route":"/group","isIndex":false,"type":"page","pattern":"^\\/group\\/?$","segments":[[{"content":"group","dynamic":false,"spread":false}]],"params":[],"component":"src/pages/group.astro","pathname":"/group","prerender":true,"fallbackRoutes":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"services/index.html","links":[],"scripts":[],"styles":[],"routeData":{"route":"/services","isIndex":false,"type":"page","pattern":"^\\/services\\/?$","segments":[[{"content":"services","dynamic":false,"spread":false}]],"params":[],"component":"src/pages/services.astro","pathname":"/services","prerender":true,"fallbackRoutes":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"index.html","links":[],"scripts":[],"styles":[],"routeData":{"route":"/","isIndex":true,"type":"page","pattern":"^\\/$","segments":[],"params":[],"component":"src/pages/index.astro","pathname":"/","prerender":true,"fallbackRoutes":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"","links":[],"scripts":[],"styles":[],"routeData":{"type":"endpoint","isIndex":false,"route":"/_image","pattern":"^\\/_image$","segments":[[{"content":"_image","dynamic":false,"spread":false}]],"params":[],"component":"node_modules/astro/dist/assets/endpoint/generic.js","pathname":"/_image","prerender":false,"fallbackRoutes":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"","links":[],"scripts":[],"styles":[],"routeData":{"route":"/api/stats","isIndex":false,"type":"endpoint","pattern":"^\\/api\\/stats\\/?$","segments":[[{"content":"api","dynamic":false,"spread":false}],[{"content":"stats","dynamic":false,"spread":false}]],"params":[],"component":"src/pages/api/stats.ts","pathname":"/api/stats","prerender":false,"fallbackRoutes":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"","links":[],"scripts":[{"type":"external","value":"/assets/hoisted.C9xmCn8t.js"}],"styles":[{"type":"external","src":"/assets/about.C6CaFc5h.css"},{"type":"external","src":"/assets/hoisted.DvB2Xm2x.css"},{"type":"external","src":"/assets/about.D5TjaE5u.css"},{"type":"external","src":"/assets/about.DDz0KJ9f.css"},{"type":"external","src":"/assets/leaflet.Dgihpmma.css"}],"routeData":{"route":"/contact","isIndex":false,"type":"page","pattern":"^\\/contact\\/?$","segments":[[{"content":"contact","dynamic":false,"spread":false}]],"params":[],"component":"src/pages/contact.astro","pathname":"/contact","prerender":false,"fallbackRoutes":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"","links":[],"scripts":[{"type":"external","value":"/assets/hoisted.Go14_aSM.js"}],"styles":[{"type":"external","src":"/assets/about.C6CaFc5h.css"},{"type":"external","src":"/assets/hoisted.DvB2Xm2x.css"},{"type":"external","src":"/assets/about.D5TjaE5u.css"},{"type":"external","src":"/assets/about.DhrCEMgF.css"},{"type":"external","src":"/assets/about.DDz0KJ9f.css"}],"routeData":{"route":"/news","isIndex":false,"type":"page","pattern":"^\\/news\\/?$","segments":[[{"content":"news","dynamic":false,"spread":false}]],"params":[],"component":"src/pages/news.astro","pathname":"/news","prerender":false,"fallbackRoutes":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"","links":[],"scripts":[{"type":"external","value":"/assets/hoisted.BDG-QlZe.js"}],"styles":[{"type":"external","src":"/assets/about.C6CaFc5h.css"},{"type":"external","src":"/assets/hoisted.DvB2Xm2x.css"},{"type":"external","src":"/assets/about.D5TjaE5u.css"},{"type":"external","src":"/assets/about.DhrCEMgF.css"},{"type":"external","src":"/assets/projects.t1e0B4Ri.css"},{"type":"external","src":"/assets/about.DDz0KJ9f.css"},{"type":"external","src":"/assets/MarkerCluster.BhFbdele.css"},{"type":"external","src":"/assets/MarkerCluster.4Oo7lyRB.css"},{"type":"external","src":"/assets/leaflet.Dgihpmma.css"}],"routeData":{"route":"/projects","isIndex":false,"type":"page","pattern":"^\\/projects\\/?$","segments":[[{"content":"projects","dynamic":false,"spread":false}]],"params":[],"component":"src/pages/projects.astro","pathname":"/projects","prerender":false,"fallbackRoutes":[],"_meta":{"trailingSlash":"ignore"}}}],"base":"/","trailingSlash":"ignore","compressHTML":true,"componentMetadata":[["/tmp/cc-agent/41679351/project/src/pages/admin/index.astro",{"propagation":"none","containsHead":true}],["/tmp/cc-agent/41679351/project/src/pages/about.astro",{"propagation":"none","containsHead":true}],["/tmp/cc-agent/41679351/project/src/pages/contact.astro",{"propagation":"none","containsHead":true}],["/tmp/cc-agent/41679351/project/src/pages/example.astro",{"propagation":"none","containsHead":true}],["/tmp/cc-agent/41679351/project/src/pages/group.astro",{"propagation":"none","containsHead":true}],["/tmp/cc-agent/41679351/project/src/pages/index.astro",{"propagation":"none","containsHead":true}],["/tmp/cc-agent/41679351/project/src/pages/news.astro",{"propagation":"none","containsHead":true}],["/tmp/cc-agent/41679351/project/src/pages/projects.astro",{"propagation":"none","containsHead":true}],["/tmp/cc-agent/41679351/project/src/pages/services.astro",{"propagation":"none","containsHead":true}]],"renderers":[],"clientDirectives":[["idle","(()=>{var l=(o,t)=>{let i=async()=>{await(await o())()},e=typeof t.value==\"object\"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};\"requestIdleCallback\"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event(\"astro:idle\"));})();"],["load","(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event(\"astro:load\"));})();"],["media","(()=>{var s=(i,t)=>{let a=async()=>{await(await i())()};if(t.value){let e=matchMedia(t.value);e.matches?a():e.addEventListener(\"change\",a,{once:!0})}};(self.Astro||(self.Astro={})).media=s;window.dispatchEvent(new Event(\"astro:media\"));})();"],["only","(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event(\"astro:only\"));})();"],["visible","(()=>{var l=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value==\"object\"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let a of e)if(a.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=l;window.dispatchEvent(new Event(\"astro:visible\"));})();"]],"entryModules":{"\u0000noop-middleware":"_noop-middleware.mjs","\u0000@astro-page:node_modules/astro/dist/assets/endpoint/generic@_@js":"pages/_image.astro.mjs","\u0000@astro-page:src/pages/about@_@astro":"pages/about.astro.mjs","\u0000@astro-page:src/pages/admin/index@_@astro":"pages/admin.astro.mjs","\u0000@astro-page:src/pages/api/stats@_@ts":"pages/api/stats.astro.mjs","\u0000@astro-page:src/pages/contact@_@astro":"pages/contact.astro.mjs","\u0000@astro-page:src/pages/example@_@astro":"pages/example.astro.mjs","\u0000@astro-page:src/pages/group@_@astro":"pages/group.astro.mjs","\u0000@astro-page:src/pages/news@_@astro":"pages/news.astro.mjs","\u0000@astro-page:src/pages/projects@_@astro":"pages/projects.astro.mjs","\u0000@astro-page:src/pages/services@_@astro":"pages/services.astro.mjs","\u0000@astro-page:src/pages/index@_@astro":"pages/index.astro.mjs","\u0000@astrojs-ssr-virtual-entry":"entry.mjs","\u0000@astro-renderers":"renderers.mjs","\u0000@astrojs-ssr-adapter":"_@astrojs-ssr-adapter.mjs","\u0000@astrojs-manifest":"manifest_BKYHQNkf.mjs","/tmp/cc-agent/41679351/project/src/components/ZoomableContent":"assets/ZoomableContent.BYg54LdC.js","/tmp/cc-agent/41679351/project/src/components/ContactMap":"assets/ContactMap.BeE5Iw4X.js","/astro/hoisted.js?q=0":"assets/hoisted.C9xmCn8t.js","/astro/hoisted.js?q=1":"assets/hoisted.Go14_aSM.js","/astro/hoisted.js?q=2":"assets/hoisted.BDG-QlZe.js","/astro/hoisted.js?q=3":"assets/hoisted.CUBtl1K-.js","/tmp/cc-agent/41679351/project/node_modules/leaflet/dist/leaflet.css":"assets/leaflet.DV_UAf4f.js","/tmp/cc-agent/41679351/project/node_modules/leaflet.markercluster/dist/MarkerCluster.css":"assets/MarkerCluster.x3aDoahD.js","/tmp/cc-agent/41679351/project/node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css":"assets/MarkerCluster.Default.d-8S5mZF.js","/tmp/cc-agent/41679351/project/src/components/MapComponent":"assets/MapComponent.eEN1VklG.js","/tmp/cc-agent/41679351/project/src/components/admin/AdminDashboard":"assets/AdminDashboard.BOIi5wg9.js","@astrojs/react/client.js":"assets/client.gam2TTLE.js","/astro/hoisted.js?q=4":"assets/hoisted.C5l0eRAv.js","/astro/hoisted.js?q=5":"assets/hoisted.DliLo-Av.js","astro:scripts/before-hydration.js":""},"inlinedScripts":[],"assets":["/assets/about.DhrCEMgF.css","/assets/about.DDz0KJ9f.css","/assets/about.C6CaFc5h.css","/assets/about.D5TjaE5u.css","/assets/index.WcDji4Tw.css","/assets/projects.t1e0B4Ri.css","/Final_Hero_shot_website.jpg","/PSS.RES.Banner.jpg","/PSS.RES.Logo.jpg","/PizzaMania.Banner.jpg","/Pss.O_Logo_Cropped.png","/Pss.O_New_Logo_Transparent.png","/Tato.Banner.jpg","/YCUBE.IRR.Banner.jpg","/favicon.svg","/i-squared-capital-logo.png","/image.png","/pss-logo-black.png","/pss-logo-white.png","/News_Images/2024-01_2024-01-15_operations-india.jpg","/News_Images/2024-02_2024-02-20_maxion-wheels-completion.jpg","/News_Images/2024-09_2024-09-05_naraesuan-sign.jpg","/News_Images/2025-02_2025-02-15_isq-partnership-announcement.jpg","/Team/Ashish.jpg","/Team/Chudapak.jpg","/Team/Kapil.jpg","/Team/Nakkarin.jpg","/Team/Nikesh.jpg","/Team/Pimlapat.jpg","/Team/Sam.jpg","/Team/Suraphol.jpg","/assets/AdminDashboard.BOIi5wg9.js","/assets/ContactMap.BeE5Iw4X.js","/assets/MapComponent.eEN1VklG.js","/assets/MarkerCluster.4Oo7lyRB.css","/assets/MarkerCluster.BhFbdele.css","/assets/ZoomableContent.BYg54LdC.js","/assets/_commonjsHelpers.Cpj98o6Y.js","/assets/client.gam2TTLE.js","/assets/hoisted.BDG-QlZe.js","/assets/hoisted.C5l0eRAv.js","/assets/hoisted.C9xmCn8t.js","/assets/hoisted.CUBtl1K-.js","/assets/hoisted.DliLo-Av.js","/assets/hoisted.DvB2Xm2x.css","/assets/hoisted.Go14_aSM.js","/assets/index.DLVm3Rra.js","/assets/index.h85i37dG.js","/assets/jsx-runtime.DryX8W7K.js","/assets/leaflet-src.Ca-aQOu_.js","/assets/leaflet.Dgihpmma.css","/assets/leaflet.markercluster-src.C6nYp5jn.js","/assets/preload-helper.CLcXU_4U.js","/project-images/acts-studio.webp","/project-images/att-u-park.webp","/project-images/c2c.webp","/project-images/ck-corp.webp","/project-images/copper-cord.webp","/project-images/dynoflex.webp","/project-images/foamtec.webp","/project-images/hv-fila.webp","/project-images/irpc.webp","/project-images/kce-1.webp","/project-images/kce-2.webp","/project-images/krabi.webp","/project-images/lpf.webp","/project-images/maha-sarakham.webp","/project-images/maxion.webp","/project-images/mega-life.webp","/project-images/nanapan.webp","/project-images/prime-road.webp","/project-images/renaissance.webp","/project-images/sb-solar.webp","/project-images/seacon.webp","/project-images/sfc-scc.webp","/project-images/sfc.webp","/project-images/soltech.webp","/project-images/srisaket.webp","/project-images/ss.webp","/project-images/tf-tech-2.webp","/project-images/tf-tech-3.webp","/project-images/tf-tech-4.webp","/project-images/tf-tech.webp","/project-images/thai-churos.webp","/project-images/thai-food.webp","/project-images/thai-ruam-jai.webp","/project-images/vardhaman-steel.webp","/icons/services/energy-storage.png","/icons/services/energy-storage.svg","/icons/services/solar-energy.png","/icons/services/solar-energy.svg","/icons/services/wind-power.png","/icons/services/wind-power.svg","/icons/projects/png/CO2 reduction.png","/icons/projects/png/active-projects.png","/icons/projects/png/project-types.png","/icons/projects/png/total-capacity.png","/icons/projects/png/total-sites.png","/about/index.html","/admin/index.html","/example/index.html","/group/index.html","/services/index.html","/index.html"],"buildFormat":"directory","checkOrigin":false,"serverIslandNameMap":[],"key":"ygIA8dQFO5bQzri78zDagLdj8q/svdGwy15mP28XGDs=","experimentalEnvGetSecretEnabled":false});
+
+export { manifest };
