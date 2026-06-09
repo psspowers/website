@@ -2,7 +2,7 @@
 import { c as createComponent, r as renderTemplate, d as renderComponent, m as maybeRenderHead, a as addAttribute } from '../assets/astro/server.DYFYygLL.js';
 import 'kleur/colors';
 import 'html-escaper';
-import { $ as $$Layout } from '../assets/Layout.DTJ6L9y5.js';
+import { $ as $$Layout } from '../assets/Layout.DMsgz_fS.js';
 import { s as supabase } from '../assets/supabase.DTyfQ36f.js';
 import { $ as $$LinkText } from '../assets/LinkText.N3JovsEf.js';
 import { $ as $$OptimizedImage } from '../assets/OptimizedImage.BfeX-moT.js';

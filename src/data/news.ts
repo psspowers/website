@@ -33,7 +33,7 @@ export const newsItems: NewsItem[] = [
   {
     title: "PSS Powers Partners with I Squared Capital",
     date: "2025-02-15",
-    summary: "PSS Powers is pleased to announce a strategic partnership with I Squared Capital, a leading global infrastructure investment manager. This collaboration combines PSS Powers' local expertise and track record with I Squared Capital's global experience and financial strength. Together, we have established a joint venture with Berde, I Squared Capital's subsidiary, forming Berde PSS Renewable Investment. This entity will focus on renewable energy projects in Thailand, with plans for expansion across Asia. The partnership will prioritize utility-scale solar, wind, and energy storage projects, strengthening our pipeline and commitment to sustainability.",
+    summary: "PSS Powers is pleased to announce a strategic partnership with I Squared Capital, a leading global infrastructure investment manager. This collaboration combines PSS Powers' local expertise and track record with I Squared Capital's global experience and financial strength. Together, we have established a joint venture with Berde, I Squared Capital's subsidiary, forming Berde PSS Renewable Investment. This entity will focus on renewable energy projects in Thailand, with plans for expansion across Asia. The partnership will prioritize utility-scale solar, wind, BESS, and energy storage projects, strengthening our pipeline and commitment to sustainability.",
     image: {
       url: "/News_Images/2025-02_2025-02-15_isq-partnership-announcement.jpg",
       alt: "PSS Powers and I Squared Capital partnership announcement",
