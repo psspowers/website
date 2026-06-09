@@ -4,6 +4,7 @@ import LinkText from '../components/LinkText.astro';
 import FinancialPartnerBadge from '../components/FinancialPartnerBadge.astro';
 import AnimatedStats from '../components/AnimatedStats.astro';
 import OptimizedImage from '../components/OptimizedImage.astro';
+import { supabase } from '../lib/supabase';
 
 const stats = [
   { value: 450, label: 'Total Project Pipeline', format: 'MW' },
@@ -12,7 +13,7 @@ const stats = [
   { value: 100, label: 'Projects Completed', format: '+' },
 ];
 
-const leaders = [
+const staticLeaders = [
   { name: 'Sam Yamdagni', role: 'CEO & JMD', image: '/Team/Sam.jpg', bio: 'Leading PSS Powers with strategic vision and extensive industry experience.' },
   { name: 'Nikesh Sinha', role: 'JMD', image: '/Team/Nikesh.jpg', bio: 'Leading PSS Powers with strategic vision and extensive industry experience.' },
   { name: 'Nakkarin Saingarmsatit', role: 'GM & Director', image: '/Team/Nakkarin.jpg', bio: 'Overseeing Project Development & execution in Thailand.' },
@@ -22,6 +23,16 @@ const leaders = [
   { name: 'Kapil Joshi', role: 'Head, Finance & Accounts', image: '/Team/Kapil.jpg', bio: 'Overseeing financial operations and accounting excellence in India.' },
   { name: 'Pimlapat Boonthae', role: 'Renewable Energy Marketing Lead', image: '/Team/Pimlapat.jpg', bio: 'Drives brand decarbonization engagement and Marketing.' }
 ];
+
+const { data: dbLeaders } = await supabase
+  .from('team_members')
+  .select('name, role, bio, image_url')
+  .eq('is_visible', true)
+  .order('display_order', { ascending: true });
+
+const leaders = dbLeaders && dbLeaders.length > 0
+  ? dbLeaders.map(m => ({ name: m.name, role: m.role, bio: m.bio, image: m.image_url ?? '' }))
+  : staticLeaders;
 
 const milestones = [
   { year: '2012', event: 'APCA Powers invest in first 5.0 MW solar plant' },

@@ -5,6 +5,7 @@ import ProjectsTab from './ProjectsTab';
 import OfficesTab from './OfficesTab';
 import LeadsTab from './LeadsTab';
 import PopupTab from './PopupTab';
+import PeopleTab from './PeopleTab';
 import { newsItems as staticNews } from '../../data/news';
 import { projects as staticProjects } from '../../data/projects/projects';
 import { offices as staticOffices } from '../../data/offices';
@@ -14,7 +15,7 @@ const supabase = createClient(
   import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ4bnhpeHdhd3RkaGtqZHNpdmFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3ODE3NDEsImV4cCI6MjA5NjM1Nzc0MX0.t-UTAXhvHCeRTvTchhBS-MhbQw7wJ9Spx9O9jlSAVWQ'
 );
 
-type Tab = 'news' | 'projects' | 'offices' | 'leads' | 'popup';
+type Tab = 'news' | 'projects' | 'offices' | 'leads' | 'popup' | 'people';
 
 interface TableCounts { news: number; projects: number; offices: number; }
 
@@ -192,6 +193,7 @@ export default function AdminDashboard() {
     { id: 'news', label: 'News' },
     { id: 'projects', label: 'Projects' },
     { id: 'offices', label: 'Offices' },
+    { id: 'people', label: 'People' },
     { id: 'leads', label: 'Leads Inbox' },
     { id: 'popup', label: 'Popup' },
   ];
@@ -253,6 +255,7 @@ export default function AdminDashboard() {
         {activeTab === 'news' && <NewsTab supabase={supabase} />}
         {activeTab === 'projects' && <ProjectsTab supabase={supabase} />}
         {activeTab === 'offices' && <OfficesTab supabase={supabase} />}
+        {activeTab === 'people' && <PeopleTab supabase={supabase} />}
         {activeTab === 'leads' && <LeadsTab supabase={supabase} />}
         {activeTab === 'popup' && <PopupTab supabase={supabase} />}
       </main>

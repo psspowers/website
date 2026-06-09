@@ -1,0 +1,99 @@
+---
+import { supabase } from '../lib/supabase';
+
+const now = new Date().toISOString();
+const { data: popups } = await supabase
+  .from('popup_announcements')
+  .select('id, title, body, image_url, cta_label, cta_url, delay_seconds')
+  .eq('is_active', true)
+  .lte('show_from', now)
+  .gte('show_until', now)
+  .order('created_at', { ascending: false })
+  .limit(1);
+
+const popup = popups?.[0] ?? null;
+---
+
+{popup && (
+  <>
+    <div
+      id="site-popup"
+      class="fixed inset-0 z-[9999] flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-500"
+    >
+      <div id="site-popup-backdrop" class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm"></div>
+      <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden z-10">
+        {popup.image_url && (
+          <div class="w-full h-44 bg-gray-100 overflow-hidden">
+            <img
+              src={popup.image_url}
+              alt={popup.title}
+              class="w-full h-full object-cover"
+              loading="eager"
+            />
+          </div>
+        )}
+        <button
+          id="site-popup-close"
+          class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 hover:bg-white flex items-center justify-center shadow-sm transition-colors z-20"
+          aria-label="Close announcement"
+          style="min-height: auto; min-width: auto;"
+        >
+          <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        <div class="p-5">
+          <h3 class="font-bold text-gray-900 text-base leading-snug mb-2">{popup.title}</h3>
+          <p class="text-gray-600 text-sm leading-relaxed mb-4">{popup.body}</p>
+          <div class="flex gap-2">
+            <a
+              href={popup.cta_url}
+              class="flex-1 text-center px-3 py-2.5 rounded-lg bg-[#1550b6] hover:bg-[#1243a0] text-white font-semibold text-sm transition-colors"
+              style="min-height: auto;"
+            >
+              {popup.cta_label}
+            </a>
+            <a
+              href="https://www.linkedin.com/company/psspowers"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex-1 text-center px-3 py-2.5 rounded-lg bg-[#0077b5] hover:bg-[#006399] text-white font-semibold text-sm transition-colors"
+              style="min-height: auto;"
+            >
+              Follow on LinkedIn
+            </a>
+          </div>
+          <p class="text-xs text-gray-400 mt-3 text-center">Shown once per session</p>
+        </div>
+      </div>
+    </div>
+
+    <script define:vars={{ delayMs: (popup.delay_seconds ?? 5) * 1000, popupId: popup.id }}>
+      const storageKey = 'pss_popup_seen_' + popupId;
+      if (!sessionStorage.getItem(storageKey)) {
+        setTimeout(() => {
+          const el = document.getElementById('site-popup');
+          if (el) {
+            el.classList.remove('opacity-0', 'pointer-events-none');
+            el.classList.add('opacity-100');
+            document.body.style.overflow = 'hidden';
+          }
+        }, delayMs);
+
+        function closePopup() {
+          const el = document.getElementById('site-popup');
+          if (el) {
+            el.classList.add('opacity-0', 'pointer-events-none');
+            el.classList.remove('opacity-100');
+            document.body.style.overflow = '';
+            sessionStorage.setItem(storageKey, '1');
+          }
+        }
+
+        document.getElementById('site-popup-close')?.addEventListener('click', closePopup);
+        document.getElementById('site-popup-backdrop')?.addEventListener('click', closePopup);
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closePopup(); });
+      }
+    </script>
+  </>
+)}
