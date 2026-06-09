@@ -1,5 +1,25 @@
 ---
+import { supabase } from '../lib/supabase';
+
 const currentYear = new Date().getFullYear();
+
+interface OfficeRow {
+  country: string;
+  name: string;
+  address: string;
+  phone: string | null;
+  email: string | null;
+  show_in_list: boolean;
+}
+
+const { data: officeRows } = await supabase
+  .from('offices')
+  .select('country, name, address, phone, email, show_in_list')
+  .order('created_at', { ascending: true });
+
+const offices: OfficeRow[] = officeRows ?? [];
+const hq = offices[0] ?? null;
+const otherOffices = offices.slice(1).filter(o => o.show_in_list);
 ---
 
 <footer class="bg-slate-900 border-t border-slate-800 py-12">
@@ -11,7 +31,7 @@ const currentYear = new Date().getFullYear();
           <img src="/Pss.O_Logo_Cropped.png" alt="PssO" class="h-8 w-auto object-contain" />
         </a>
         <p class="text-slate-400 text-sm leading-relaxed">
-          Leading the transition to bankable renewable energy across Asia since 2015.
+          Leading the transition to bankable renewable energy across Asia since 2012.
         </p>
       </div>
 
@@ -28,31 +48,46 @@ const currentYear = new Date().getFullYear();
         </ul>
       </div>
 
-      <!-- Contact -->
+      <!-- HQ Contact -->
       <div>
         <h4 class="text-white font-semibold text-sm mb-4">Contact</h4>
-        <ul class="space-y-3 text-sm text-slate-400">
-          <li>
-            <span class="text-slate-300 font-medium block">Thailand (HQ)</span>
-            Ocean Tower 2, 26th Floor,<br />
-            75/56 Sukhumvit Soi 19, Bangkok 10110
-          </li>
-          <li class="pt-1">
-            <a href="tel:+66621062611" class="hover:text-emerald-400 transition-colors" style="min-height: auto;">+662 106 2611</a>
-          </li>
-          <li>
-            <a href="mailto:info@psspowers.com" class="hover:text-emerald-400 transition-colors" style="min-height: auto;">info@psspowers.com</a>
-          </li>
-        </ul>
+        {hq ? (
+          <ul class="space-y-3 text-sm text-slate-400">
+            <li>
+              <span class="text-slate-300 font-medium block">{hq.country} (HQ)</span>
+              {hq.address}
+            </li>
+            {hq.phone && (
+              <li class="pt-1">
+                <a href={`tel:${hq.phone.replace(/\s+/g, '')}`} class="hover:text-emerald-400 transition-colors" style="min-height: auto;">{hq.phone}</a>
+              </li>
+            )}
+            {hq.email && (
+              <li>
+                <a href={`mailto:${hq.email}`} class="hover:text-emerald-400 transition-colors" style="min-height: auto;">{hq.email}</a>
+              </li>
+            )}
+          </ul>
+        ) : (
+          <p class="text-slate-500 text-sm">No offices configured.</p>
+        )}
       </div>
 
       <!-- Other Offices & Social -->
       <div>
-        <h4 class="text-white font-semibold text-sm mb-4">Other Offices</h4>
-        <ul class="space-y-2 text-sm text-slate-400 mb-6">
-          <li><span class="text-slate-300 font-medium">India</span> &mdash; Gurgaon, Haryana</li>
-          <li><span class="text-slate-300 font-medium">Singapore</span> &mdash; Suntec Tower One</li>
-        </ul>
+        {otherOffices.length > 0 && (
+          <>
+            <h4 class="text-white font-semibold text-sm mb-4">Other Offices</h4>
+            <ul class="space-y-2 text-sm text-slate-400 mb-6">
+              {otherOffices.map(o => (
+                <li>
+                  <span class="text-slate-300 font-medium">{o.country}</span>
+                  {o.address ? <> &mdash; {o.address}</> : ''}
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
         <a
           href="https://www.linkedin.com/company/psspowers/"
           target="_blank"

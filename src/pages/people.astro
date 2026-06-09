@@ -10,18 +10,7 @@ const { data: members } = await supabase
   .eq('is_visible', true)
   .order('display_order', { ascending: true });
 
-const fallback = [
-  { name: 'Sam Yamdagni', role: 'CEO & JMD', bio: 'Leading PSS Powers with strategic vision and extensive industry experience.', image_url: '/Team/Sam.jpg', linkedin_url: '' },
-  { name: 'Nikesh Sinha', role: 'JMD', bio: 'Leading PSS Powers with strategic vision and extensive industry experience.', image_url: '/Team/Nikesh.jpg', linkedin_url: '' },
-  { name: 'Nakkarin Saingarmsatit', role: 'GM & Director', bio: 'Overseeing Project Development & execution in Thailand.', image_url: '/Team/Nakkarin.jpg', linkedin_url: '' },
-  { name: 'Suraphol Sanyom', role: 'Head, Construction O&M', bio: 'Leading construction operations and maintenance with proven expertise.', image_url: '/Team/Suraphol.jpg', linkedin_url: '' },
-  { name: 'Ashish Kumar', role: 'Head, Investment & Transac.', bio: 'Leading investment strategies and transaction management.', image_url: '/Team/Ashish.jpg', linkedin_url: '' },
-  { name: 'Chudapak Juthachutinan', role: 'Head, Finance & Accounts', bio: 'Overseeing financial operations and accounting excellence in Thailand.', image_url: '/Team/Chudapak.jpg', linkedin_url: '' },
-  { name: 'Kapil Joshi', role: 'Head, Finance & Accounts', bio: 'Overseeing financial operations and accounting excellence in India.', image_url: '/Team/Kapil.jpg', linkedin_url: '' },
-  { name: 'Pimlapat Boonthae', role: 'Renewable Energy Marketing Lead', bio: 'Drives brand decarbonization engagement and Marketing.', image_url: '/Team/Pimlapat.jpg', linkedin_url: '' },
-];
-
-const people = (members && members.length > 0 ? members : fallback);
+const people = members ?? [];
 ---
 
 <Layout
