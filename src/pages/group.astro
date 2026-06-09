@@ -63,7 +63,7 @@ const websites = [
     </section>
 
     <!-- Companies Showcase -->
-    <section class="py-24">
+    <section class="py-20">
       <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
         <div class="space-y-12">
           {websites.map((site, index) => (
@@ -83,24 +83,27 @@ const websites = [
                     </a>
                   </div>
                   {site.name === 'One PSS' && (
-                    <img
-                      src="/PSS.RES.Logo.jpg"
-                      alt="PSS Group Logo"
-                      class="h-12 w-auto object-contain flex-shrink-0"
-                    />
+                    <div class="bg-white rounded-xl px-3 py-2 flex-shrink-0">
+                      <img
+                        src="/PSS.RES.Logo.jpg"
+                        alt="PSS Group Logo"
+                        class="h-8 w-auto object-contain"
+                      />
+                    </div>
                   )}
                 </div>
                 <p class="text-slate-400 text-sm leading-relaxed">{site.description}</p>
               </div>
 
-              <div class="relative h-40 md:h-52 bg-slate-800/50 border-y border-slate-700/50">
+              <div class="relative h-40 md:h-52 overflow-hidden">
                 <OptimizedImage
                   src={site.headerImage}
                   alt={`${site.name} header`}
                   aspectRatio="16:5"
-                  class={`w-full h-full object-contain p-4 ${site.name === 'One PSS' ? 'opacity-90' : ''}`}
+                  class="w-full h-full object-cover"
                   priority={index < 2}
                 />
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent pointer-events-none"></div>
               </div>
 
               <div class="p-8">
