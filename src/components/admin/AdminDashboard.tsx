@@ -156,7 +156,7 @@ export default function AdminDashboard() {
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f1f5f9', padding: '16px' }}>
         <div style={{ width: '100%', maxWidth: '400px', background: '#fff', borderRadius: '16px', boxShadow: '0 4px 24px rgba(0,0,0,0.10)', padding: '40px 36px' }}>
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-            <img src="/pss-logo-black.png" alt="PSS Powers" style={{ height: '40px', margin: '0 auto 16px', display: 'block', objectFit: 'contain' }} />
+            <img src="/Pss.O_Logo.png" alt="PssO" style={{ height: '56px', margin: '0 auto 16px', display: 'block', objectFit: 'contain' }} />
             <h1 style={{ fontSize: '22px', fontWeight: 700, color: '#0f172a', margin: '0 0 6px', fontFamily: 'Inter, sans-serif' }}>Admin Portal</h1>
             <p style={{ fontSize: '14px', color: '#64748b', margin: 0 }}>Sign in to manage site content</p>
           </div>
@@ -203,7 +203,7 @@ export default function AdminDashboard() {
       {/* Header */}
       <header className="bg-[#1550b6] text-white px-6 py-3 flex items-center justify-between shadow">
         <div className="flex items-center gap-3">
-          <img src="/pss-logo-white.png" alt="PSS Powers" className="h-7 object-contain" />
+          <img src="/Pss.O_Logo.png" alt="PssO" className="h-9 object-contain" />
           <span className="font-semibold text-lg hidden sm:inline">Admin</span>
         </div>
         <div className="flex items-center gap-4">
