@@ -59,6 +59,11 @@ export default function MilestonesSection({ supabase }: { supabase: SupabaseClie
     setForm(prev => ({ ...prev, [field]: value }));
   }
 
+  function handleClose() {
+    if (fileRef.current) fileRef.current.value = '';
+    setShowForm(false);
+  }
+
   async function handleLogoUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -96,7 +101,7 @@ export default function MilestonesSection({ supabase }: { supabase: SupabaseClie
       : await supabase.from('milestones').insert(payload);
     setSaving(false);
     if (err) { setError(err.message); return; }
-    setShowForm(false);
+    handleClose();
     load();
   }
 
@@ -171,7 +176,7 @@ export default function MilestonesSection({ supabase }: { supabase: SupabaseClie
               className="bg-[#1550b6] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#1243a0] disabled:opacity-60 transition-colors">
               {saving ? 'Saving...' : 'Save'}
             </button>
-            <button type="button" onClick={() => setShowForm(false)}
+            <button type="button" onClick={handleClose}
               className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors">
               Cancel
             </button>

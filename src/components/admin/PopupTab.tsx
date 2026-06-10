@@ -150,6 +150,11 @@ export default function PopupTab({ supabase }: { supabase: SupabaseClient }) {
     setForm(prev => ({ ...prev, [field]: value }));
   }
 
+  function handleClose() {
+    if (fileRef.current) fileRef.current.value = '';
+    setShowForm(false);
+  }
+
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -177,7 +182,7 @@ export default function PopupTab({ supabase }: { supabase: SupabaseClient }) {
       : await supabase.from('popup_announcements').insert(payload);
     setSaving(false);
     if (err) { setError(err.message); return; }
-    setShowForm(false);
+    handleClose();
     load();
   }
 
@@ -313,7 +318,7 @@ export default function PopupTab({ supabase }: { supabase: SupabaseClient }) {
                   className="bg-[#1550b6] text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-[#1243a0] disabled:opacity-60 transition-colors">
                   {saving ? 'Saving...' : 'Save'}
                 </button>
-                <button type="button" onClick={() => setShowForm(false)}
+                <button type="button" onClick={handleClose}
                   className="px-5 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors">
                   Cancel
                 </button>

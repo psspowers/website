@@ -70,6 +70,11 @@ export default function PeopleTab({ supabase }: { supabase: SupabaseClient }) {
     setForm(prev => ({ ...prev, [field]: value }));
   }
 
+  function handleClose() {
+    if (fileInputRef.current) fileInputRef.current.value = '';
+    setShowForm(false);
+  }
+
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -115,7 +120,7 @@ export default function PeopleTab({ supabase }: { supabase: SupabaseClient }) {
       : await supabase.from('team_members').insert(payload);
     setSaving(false);
     if (err) { setError(err.message); return; }
-    setShowForm(false);
+    handleClose();
     load();
   }
 
@@ -279,7 +284,7 @@ export default function PeopleTab({ supabase }: { supabase: SupabaseClient }) {
                 </button>
                 <button
                   type="button"
-                  onClick={() => setShowForm(false)}
+                  onClick={handleClose}
                   className="px-5 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors"
                 >
                   Cancel
