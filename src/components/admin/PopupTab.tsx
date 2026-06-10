@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import type { SupabaseClient } from '@supabase/supabase-js';
+import { FieldLabel, InfoTooltip } from './InfoTooltip';
 
 interface PopupAnnouncement {
   id: string;
@@ -17,42 +18,6 @@ interface PopupAnnouncement {
 }
 
 type FormData = Omit<PopupAnnouncement, 'id' | 'created_at' | 'updated_at'>;
-
-const TOOLTIPS: Record<string, string> = {
-  title: 'Short, clear title that grabs attention (60 characters max recommended)',
-  body: 'Main announcement text. Keep it concise and action-oriented (150 characters max recommended).',
-  image_url: 'Image shown at the top of the popup. Recommended size: 600×400px or wider.',
-  cta_label: 'Label for the main call-to-action button (e.g. Learn More, Read Now)',
-  cta_url: 'Full path or URL for the button link (e.g. /news or https://example.com)',
-  show_until: 'When this popup automatically stops showing. Visitors will not see it after this date.',
-  delay_seconds: 'Seconds after page load before the popup appears. 3–5 s is recommended.',
-};
-
-function FieldLabel({ label, fieldKey, required }: { label: string; fieldKey: string; required?: boolean }) {
-  const [open, setOpen] = useState(false);
-  const tip = TOOLTIPS[fieldKey];
-  return (
-    <label className="flex items-center gap-1 text-xs font-medium text-gray-600 mb-1">
-      {label}{required && <span className="sr-only">(required)</span>}
-      {tip && (
-        <span className="relative inline-flex">
-          <button
-            type="button"
-            onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}
-            onFocus={() => setOpen(true)} onBlur={() => setOpen(false)}
-            className="w-4 h-4 rounded-full bg-gray-200 text-gray-500 hover:bg-gray-300 text-[10px] font-bold flex items-center justify-center leading-none focus:outline-none"
-            aria-label={`Help for ${label}`}
-          >i</button>
-          {open && (
-            <span className="absolute left-5 top-0 z-50 w-64 bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-lg pointer-events-none">
-              {tip}
-            </span>
-          )}
-        </span>
-      )}
-    </label>
-  );
-}
 
 function toLocalDatetimeInput(iso: string): string {
   const d = new Date(iso);
@@ -236,13 +201,13 @@ export default function PopupTab({ supabase }: { supabase: SupabaseClient }) {
             <form onSubmit={save} className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
 
               <div className="md:col-span-2">
-                <FieldLabel label="Title" fieldKey="title" required />
+                <FieldLabel label="Title*" tip="Short, attention-grabbing headline (max 60 characters). State the news or benefit clearly — avoid mystery titles." />
                 <input required value={form.title} onChange={e => set('title', e.target.value)}
                   placeholder="e.g. PSS Partners with I Squared Capital" className={inp} />
               </div>
 
               <div className="md:col-span-2">
-                <FieldLabel label="Body text" fieldKey="body" required />
+                <FieldLabel label="Body text*" tip="1–2 supporting sentences shown below the title. Keep it under 150 characters. Explain what the visitor gains by clicking." />
                 <textarea required rows={3} value={form.body} onChange={e => set('body', e.target.value)}
                   placeholder="Short announcement text shown in the popup (150 chars max recommended)"
                   className={`${inp} resize-y`} />
@@ -250,7 +215,7 @@ export default function PopupTab({ supabase }: { supabase: SupabaseClient }) {
 
               {/* Image upload */}
               <div className="md:col-span-2">
-                <FieldLabel label="Image (optional)" fieldKey="image_url" />
+                <FieldLabel label="Image (optional)" tip="Optional banner image shown at the top of the popup. Recommended 600×400 px or wider. JPG or WebP." />
                 <div className="flex items-start gap-4">
                   <div className="flex-1 space-y-2">
                     <label className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border cursor-pointer transition-colors ${uploading ? 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed' : 'border-[#1550b6] text-[#1550b6] hover:bg-blue-50'}`}>
@@ -274,31 +239,31 @@ export default function PopupTab({ supabase }: { supabase: SupabaseClient }) {
               </div>
 
               <div>
-                <FieldLabel label="CTA Button Label" fieldKey="cta_label" required />
+                <FieldLabel label="CTA Button Label*" tip="Text on the call-to-action button (e.g. Learn More, Read Now, Contact Us). Keep it under 25 characters." />
                 <input required value={form.cta_label} onChange={e => set('cta_label', e.target.value)}
                   placeholder="Learn More" className={inp} />
               </div>
 
               <div>
-                <FieldLabel label="CTA Button URL" fieldKey="cta_url" required />
+                <FieldLabel label="CTA Button URL*" tip="Where the button takes the visitor. Use a full URL (https://) for external links or a relative path (e.g. /news, /contact) for internal pages." />
                 <input required value={form.cta_url} onChange={e => set('cta_url', e.target.value)}
                   placeholder="/news or https://..." className={inp} />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">Show From*</label>
+                <FieldLabel label="Show From*" tip="Date and time when the popup starts showing to visitors. Set to now for immediate display." />
                 <input required type="datetime-local" value={toLocalDatetimeInput(form.show_from)}
                   onChange={e => set('show_from', toISO(e.target.value))} className={inp} />
               </div>
 
               <div>
-                <FieldLabel label="Show Until" fieldKey="show_until" required />
+                <FieldLabel label="Show Until*" tip="Date and time when the popup automatically stops showing. Visitors will not see it after this point." />
                 <input required type="datetime-local" value={toLocalDatetimeInput(form.show_until)}
                   onChange={e => set('show_until', toISO(e.target.value))} className={inp} />
               </div>
 
               <div>
-                <FieldLabel label="Delay before showing (seconds)" fieldKey="delay_seconds" />
+                <FieldLabel label="Delay before showing (seconds)" tip="How many seconds after page load before the popup appears. 0 = immediate. 3–5 seconds is recommended to avoid interrupting the visitor immediately." />
                 <input type="number" min={0} max={60} value={form.delay_seconds}
                   onChange={e => set('delay_seconds', Number(e.target.value))} className={inp} />
               </div>
@@ -309,6 +274,7 @@ export default function PopupTab({ supabase }: { supabase: SupabaseClient }) {
                 <label htmlFor="popup-active" className="text-sm text-gray-700 cursor-pointer">
                   Active (visitors will see this popup within the date window)
                 </label>
+                <InfoTooltip tip="Master on/off switch. The popup must be active AND within the Show From–Show Until window to appear to visitors." label="Active" />
               </div>
 
               {error && <p className="md:col-span-2 text-red-600 text-sm">{error}</p>}

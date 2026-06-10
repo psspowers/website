@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import type { SupabaseClient } from '@supabase/supabase-js';
+import { FieldLabel, InfoTooltip } from './InfoTooltip';
 
 interface OfficeRow {
   id: string;
@@ -72,13 +73,7 @@ export default function OfficesTab({ supabase }: { supabase: SupabaseClient }) {
     load();
   }
 
-  const inp = (label: string, f: keyof FormData, extra?: React.InputHTMLAttributes<HTMLInputElement>) => (
-    <div>
-      <label className="block text-xs font-medium text-gray-600 mb-1">{label}</label>
-      <input value={(form[f] as string) ?? ''} onChange={e => set(f, e.target.value)} {...extra}
-        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6]" />
-    </div>
-  );
+  const inpCls = 'w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6]';
 
   return (
     <div>
@@ -91,20 +86,47 @@ export default function OfficesTab({ supabase }: { supabase: SupabaseClient }) {
         <div className="bg-white border border-gray-200 rounded-xl p-6 mb-6 shadow-sm">
           <h3 className="font-semibold text-gray-900 mb-4">{editingId ? 'Edit Office' : 'New Office'}</h3>
           <form onSubmit={save} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {inp('Country*', 'country', { required: true, placeholder: 'Thailand' })}
-            {inp('Office Name*', 'name', { required: true, placeholder: 'Bangkok HQ' })}
+            <div>
+              <FieldLabel label="Country*" tip="Country where this office is located. Used to group offices on the Contact page (e.g. Thailand, India)." />
+              <input required value={form.country} onChange={e => set('country', e.target.value)}
+                placeholder="Thailand" className={inpCls} />
+            </div>
+            <div>
+              <FieldLabel label="Office Name*" tip="Descriptive name for this location as it will appear on the Contact page (e.g. Bangkok HQ, New Delhi Office)." />
+              <input required value={form.name} onChange={e => set('name', e.target.value)}
+                placeholder="Bangkok HQ" className={inpCls} />
+            </div>
             <div className="md:col-span-2">
-              <label className="block text-xs font-medium text-gray-600 mb-1">Address*</label>
+              <FieldLabel label="Address*" tip="Full street address as shown on the Contact page. Include building name, street, district, and postal code." />
               <textarea required rows={2} value={form.address} onChange={e => set('address', e.target.value)}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6] resize-none" />
             </div>
-            {inp('Phone', 'phone', { type: 'tel' })}
-            {inp('Email', 'email', { type: 'email' })}
-            {inp('Latitude*', 'coordinates_lat', { required: true, type: 'number', step: 'any', placeholder: '13.7375' })}
-            {inp('Longitude*', 'coordinates_lng', { required: true, type: 'number', step: 'any', placeholder: '100.5617' })}
+            <div>
+              <FieldLabel label="Phone" tip="Main phone number for this office. International format recommended (e.g. +66 2 123 4567). Will be publicly visible." />
+              <input type="tel" value={form.phone ?? ''} onChange={e => set('phone', e.target.value)}
+                className={inpCls} />
+            </div>
+            <div>
+              <FieldLabel label="Email" tip="Primary contact email for this office. Will be publicly visible on the Contact page." />
+              <input type="email" value={form.email ?? ''} onChange={e => set('email', e.target.value)}
+                className={inpCls} />
+            </div>
+            <div>
+              <FieldLabel label="Latitude*" tip="Decimal latitude for the map pin (e.g. 13.7375). Right-click your office location in Google Maps to copy the coordinates." />
+              <input required type="number" step="any" value={form.coordinates_lat}
+                onChange={e => set('coordinates_lat', e.target.value)}
+                placeholder="13.7375" className={inpCls} />
+            </div>
+            <div>
+              <FieldLabel label="Longitude*" tip="Decimal longitude for the map pin (e.g. 100.5617). Right-click your office location in Google Maps to copy the coordinates." />
+              <input required type="number" step="any" value={form.coordinates_lng}
+                onChange={e => set('coordinates_lng', e.target.value)}
+                placeholder="100.5617" className={inpCls} />
+            </div>
             <div className="flex items-center gap-2 pt-2">
               <input type="checkbox" id="showInList" checked={form.show_in_list} onChange={e => set('show_in_list', e.target.checked)} className="w-4 h-4 accent-[#1550b6]" />
               <label htmlFor="showInList" className="text-sm text-gray-700 cursor-pointer">Show on Contact page</label>
+              <InfoTooltip tip="Toggle off to hide this office from the public Contact page without deleting the record." label="Show on Contact page" />
             </div>
             {error && <p className="md:col-span-2 text-red-600 text-sm">{error}</p>}
             <div className="md:col-span-2 flex gap-3">

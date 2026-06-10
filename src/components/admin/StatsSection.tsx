@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import type { SupabaseClient } from '@supabase/supabase-js';
+import { FieldLabel } from './InfoTooltip';
 
 interface Stat {
   id: string;
@@ -90,7 +91,7 @@ export default function StatsSection({ supabase }: { supabase: SupabaseClient })
       {showForm && (
         <form onSubmit={save} className="bg-white border border-gray-200 rounded-xl p-5 mb-4 shadow-sm grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">Value*</label>
+            <FieldLabel label="Value*" tip="The numeric value shown prominently (e.g. 150, 1200). Numbers only — suffix or unit is added via the Format field." />
             <input
               required type="number"
               value={form.value}
@@ -99,7 +100,7 @@ export default function StatsSection({ supabase }: { supabase: SupabaseClient })
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">Label*</label>
+            <FieldLabel label="Label*" tip="Descriptive text shown below the value on the About page (e.g. Projects Completed, MW Installed, Tons CO₂ Saved)." />
             <input
               required
               value={form.label}
@@ -109,7 +110,7 @@ export default function StatsSection({ supabase }: { supabase: SupabaseClient })
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">Format</label>
+            <FieldLabel label="Format" tip="Optional suffix appended to the value (e.g. MW, +, tons). Choose None if the value stands alone." />
             <select
               value={form.format}
               onChange={e => set('format', e.target.value)}
@@ -122,7 +123,7 @@ export default function StatsSection({ supabase }: { supabase: SupabaseClient })
             </select>
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">Order</label>
+            <FieldLabel label="Order" tip="Controls left-to-right display order on the About page banner. Lower numbers appear first." />
             <input
               type="number" min={1}
               value={form.display_order}

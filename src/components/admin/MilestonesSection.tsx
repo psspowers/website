@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import type { SupabaseClient } from '@supabase/supabase-js';
+import { FieldLabel } from './InfoTooltip';
 
 interface Milestone {
   id: string;
@@ -131,24 +132,24 @@ export default function MilestonesSection({ supabase }: { supabase: SupabaseClie
       {showForm && (
         <form onSubmit={save} className="bg-white border border-gray-200 rounded-xl p-5 mb-4 shadow-sm grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">Year*</label>
+            <FieldLabel label="Year*" tip="The year this milestone occurred (e.g. 2021). Used as the timeline marker on the About page." />
             <input required value={form.year} onChange={e => set('year', e.target.value)}
               placeholder="2025" className={inp} />
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">Display Order</label>
+            <FieldLabel label="Display Order" tip="Controls left-to-right order on the timeline. Lower numbers appear first. Use gaps (10, 20, 30) to allow easy reordering." />
             <input type="number" min={1} value={form.display_order}
               onChange={e => set('display_order', Number(e.target.value))} className={inp} />
           </div>
           <div className="sm:col-span-2">
-            <label className="block text-xs font-medium text-gray-600 mb-1">Event description*</label>
+            <FieldLabel label="Event description*" tip="1–2 sentences describing the achievement clearly and factually (e.g. 'Completed first 10 MW solar rooftop project in Thailand')." />
             <input required value={form.event} onChange={e => set('event', e.target.value)}
               placeholder="Signed agreement to partner with I Squared Capital" className={inp} />
           </div>
 
           {/* Logo upload */}
           <div className="sm:col-span-2">
-            <label className="block text-xs font-medium text-gray-600 mb-1">Partner Logo (optional)</label>
+            <FieldLabel label="Partner Logo (optional)" tip="Optional logo of a key partner involved in this milestone. PNG or SVG with transparent background preferred. Max 2 MB." />
             <div className="flex items-center gap-3 flex-wrap">
               <label className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium border cursor-pointer transition-colors ${uploading ? 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed' : 'border-[#1550b6] text-[#1550b6] hover:bg-blue-50'}`}>
                 {uploading ? (

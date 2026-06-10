@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import type { SupabaseClient } from '@supabase/supabase-js';
+import { FieldLabel, InfoTooltip } from './InfoTooltip';
 
 interface TeamMember {
   id: string;
@@ -164,7 +165,7 @@ export default function PeopleTab({ supabase }: { supabase: SupabaseClient }) {
               </h3>
 
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">Full Name*</label>
+                <FieldLabel label="Full Name*" tip="Use the person's preferred professional name exactly as it should appear on the website." />
                 <input
                   required
                   value={form.name}
@@ -175,7 +176,7 @@ export default function PeopleTab({ supabase }: { supabase: SupabaseClient }) {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">Role / Title*</label>
+                <FieldLabel label="Role / Title*" tip="Their job title as it should appear publicly (e.g. CEO & JMD, Project Manager, Director). Keep it concise." />
                 <input
                   required
                   value={form.role}
@@ -186,7 +187,7 @@ export default function PeopleTab({ supabase }: { supabase: SupabaseClient }) {
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-xs font-medium text-gray-600 mb-1">Bio*</label>
+                <FieldLabel label="Bio*" tip="2–4 sentence professional summary. Focus on expertise, background, and their contribution to PSS. Avoid first-person — write in third person." />
                 <textarea
                   required
                   rows={2}
@@ -198,7 +199,7 @@ export default function PeopleTab({ supabase }: { supabase: SupabaseClient }) {
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-xs font-medium text-gray-600 mb-1">Photo</label>
+                <FieldLabel label="Photo" tip="Professional headshot. Square crop works best. Minimum 400×400 px, max 2 MB. JPG or PNG preferred." />
                 <div className="flex items-center gap-3">
                   <label
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border cursor-pointer transition-colors ${
@@ -237,7 +238,7 @@ export default function PeopleTab({ supabase }: { supabase: SupabaseClient }) {
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-xs font-medium text-gray-600 mb-1">LinkedIn URL</label>
+                <FieldLabel label="LinkedIn URL" tip="Full LinkedIn profile URL (e.g. https://linkedin.com/in/username). Optional — only add if the person actively uses LinkedIn." />
                 <input
                   type="url"
                   value={form.linkedin_url}
@@ -248,7 +249,7 @@ export default function PeopleTab({ supabase }: { supabase: SupabaseClient }) {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">Display Order</label>
+                <FieldLabel label="Display Order" tip="Controls the left-to-right order on the About page. Lower numbers appear first. Use gaps (10, 20, 30) to allow easy reordering later." />
                 <input
                   type="number"
                   min={1}
@@ -270,6 +271,7 @@ export default function PeopleTab({ supabase }: { supabase: SupabaseClient }) {
                 <label htmlFor="person-visible" className="text-sm text-gray-700 cursor-pointer">
                   Visible on About page
                 </label>
+                <InfoTooltip tip="Toggle off to hide this person from the public About page without deleting their record." label="Visible on About page" />
               </div>
 
               {error && <p className="md:col-span-2 text-red-600 text-sm">{error}</p>}

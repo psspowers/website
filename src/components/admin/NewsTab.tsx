@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import type { SupabaseClient } from '@supabase/supabase-js';
+import { FieldLabel } from './InfoTooltip';
 
 
 type NewsStatus = 'draft' | 'published' | 'complete';
@@ -37,47 +38,8 @@ const STATUS_CONFIG: Record<NewsStatus, { label: string; bg: string; text: strin
   complete:  { label: 'Complete',  bg: 'bg-blue-100',  text: 'text-blue-600' },
 };
 
-const TOOLTIPS: Partial<Record<keyof FormData, string>> = {
-  title:     'Clear, concise, and SEO-friendly title (max 70 characters recommended)',
-  slug:      'URL-friendly version of the title (auto-generated from title)',
-  summary:   'Short 1-2 sentence teaser for the news card (max 160 characters)',
-  image_alt: 'Descriptive text for accessibility and SEO',
-  tags:      'Comma-separated keywords (e.g. Solar, Partnership, Milestone)',
-};
-
 function toSlug(t: string) {
   return t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-}
-
-function FieldLabel({ label, field, required }: { label: string; field: keyof FormData; required?: boolean }) {
-  const [open, setOpen] = useState(false);
-  const tip = TOOLTIPS[field];
-  return (
-    <label className="flex items-center gap-1 text-xs font-medium text-gray-600 mb-1">
-      {label}
-      {required && <span className="sr-only">(required)</span>}
-      {tip && (
-        <span className="relative inline-flex">
-          <button
-            type="button"
-            onMouseEnter={() => setOpen(true)}
-            onMouseLeave={() => setOpen(false)}
-            onFocus={() => setOpen(true)}
-            onBlur={() => setOpen(false)}
-            className="w-4 h-4 rounded-full bg-gray-200 text-gray-500 hover:bg-gray-300 text-[10px] font-bold flex items-center justify-center leading-none focus:outline-none"
-            aria-label={`Help for ${label}`}
-          >
-            i
-          </button>
-          {open && (
-            <span className="absolute left-5 top-0 z-50 w-60 bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-lg pointer-events-none">
-              {tip}
-            </span>
-          )}
-        </span>
-      )}
-    </label>
-  );
 }
 
 export default function NewsTab({ supabase }: { supabase: SupabaseClient }) {
@@ -203,37 +165,37 @@ export default function NewsTab({ supabase }: { supabase: SupabaseClient }) {
           <div className="flex items-start gap-6">
             <form onSubmit={save} className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2">
-                <FieldLabel label="Title" field="title" required />
+                <FieldLabel label="Title*" tip="Clear, concise headline (max 70 characters). Describe the event factually — avoid clickbait." />
                 <input required value={form.title} onChange={e => set('title', e.target.value)}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6]" />
               </div>
               <div>
-                <FieldLabel label="Slug" field="slug" required />
+                <FieldLabel label="Slug*" tip="Auto-generated URL path from the title (e.g. my-article). Keep it short and lowercase — editing is rarely needed." />
                 <input required value={form.slug} onChange={e => set('slug', e.target.value)}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6] font-mono" />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">Date (YYYY-MM-DD)</label>
+                <FieldLabel label="Date*" tip="Publication date. Use the actual announcement or event date, not today's date." />
                 <input required type="date" value={form.date} onChange={e => set('date', e.target.value)}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6]" />
               </div>
               <div className="md:col-span-2">
-                <FieldLabel label="Summary" field="summary" required />
+                <FieldLabel label="Summary*" tip="1–2 sentence teaser shown on the news card. Max 160 characters. No HTML — plain text only." />
                 <textarea required rows={4} value={form.summary} onChange={e => set('summary', e.target.value)}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6] resize-y" />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">Source</label>
+                <FieldLabel label="Source" tip="Name of the publication or organisation that reported the story (e.g. Bangkok Post, Reuters)." />
                 <input value={form.source} onChange={e => set('source', e.target.value)}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6]" />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">Source URL</label>
+                <FieldLabel label="Source URL" tip="Direct link to the original article. Must start with https://. Leave blank if there is no external source." />
                 <input type="url" value={form.source_url} onChange={e => set('source_url', e.target.value)}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6]" />
               </div>
               <div className="md:col-span-2">
-                <FieldLabel label="Image" field="image_url" />
+                <FieldLabel label="Image" tip="Banner image for the news card. Ideal ratio 16:9, minimum 1200×675 px. JPG or WebP preferred." />
                 <div className="flex items-center gap-3 mb-2">
                   <label className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border cursor-pointer transition-colors ${uploading ? 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed' : 'border-[#1550b6] text-[#1550b6] hover:bg-blue-50'}`}>
                     {uploading ? (
@@ -250,17 +212,17 @@ export default function NewsTab({ supabase }: { supabase: SupabaseClient }) {
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6]" />
               </div>
               <div>
-                <FieldLabel label="Image Alt Text" field="image_alt" />
+                <FieldLabel label="Image Alt Text" tip="Describe the image for screen readers and SEO (e.g. 'Signing ceremony at Naresuan University'). Keep it under 100 characters." />
                 <input value={form.image_alt ?? ''} onChange={e => set('image_alt', e.target.value)}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6]" />
               </div>
               <div>
-                <FieldLabel label="Tags (comma-separated)" field="tags" />
+                <FieldLabel label="Tags (comma-separated)" tip="Keywords used to filter news (e.g. Solar, Partnership, Milestone). Separate with commas. Capitalise each tag." />
                 <input value={form.tags} onChange={e => set('tags', e.target.value)} placeholder="e.g. Solar, Partnership"
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6]" />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">Status</label>
+                <FieldLabel label="Status" tip="Draft = saved but not public. Published = live on the site. Complete = archived after the news cycle." />
                 <div className="flex items-center gap-2">
                   <select value={form.status} onChange={e => set('status', e.target.value as NewsStatus)}
                     className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6] bg-white">

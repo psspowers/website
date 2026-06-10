@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import type { SupabaseClient } from '@supabase/supabase-js';
+import { FieldLabel, InfoTooltip } from './InfoTooltip';
 
 interface ProjectRow {
   id: string;
@@ -54,17 +55,6 @@ const MAX_FEATURED = 9;
 const MAX_GALLERY = 5;
 const MAX_FILE_BYTES = 5 * 1024 * 1024;
 
-const TOOLTIPS: Record<string, string> = {
-  name: 'Full project name as used in proposals and reports',
-  capacity: 'Installed peak power including unit (e.g. 1.50 MWp)',
-  cod: 'Commercial Operation Date — the month the plant went live',
-  role: "PSS.O's role on the project (e.g. Developer, EPC and O&M)",
-  location: 'City, Country format (e.g. Bangkok, Thailand)',
-  description: 'One or two sentences describing the project for public display',
-  coordinates_lat: 'Decimal latitude (e.g. 13.7563). Use Google Maps to find the exact pin.',
-  coordinates_lng: 'Decimal longitude (e.g. 100.5018). Use Google Maps to find the exact pin.',
-};
-
 const EMPTY: FormData = {
   name: '', capacity: '', type: '', status: '', cod_month: '', cod_year: '',
   role: '', location: '', image_url: '', gallery_urls: [],
@@ -85,32 +75,6 @@ function parseCod(cod: string): { month: string; year: string } {
     year: yearM ? yearM[1] : '',
     month: mi >= 0 ? String(mi + 1).padStart(2, '0') : (qM ? qMap[qM[1]] : '01'),
   };
-}
-
-function FieldLabel({ label, fieldKey, required }: { label: string; fieldKey: string; required?: boolean }) {
-  const [open, setOpen] = useState(false);
-  const tip = TOOLTIPS[fieldKey];
-  return (
-    <label className="flex items-center gap-1 text-xs font-medium text-gray-600 mb-1">
-      {label}{required && <span className="sr-only">(required)</span>}
-      {tip && (
-        <span className="relative inline-flex">
-          <button
-            type="button"
-            onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}
-            onFocus={() => setOpen(true)} onBlur={() => setOpen(false)}
-            className="w-4 h-4 rounded-full bg-gray-200 text-gray-500 hover:bg-gray-300 text-[10px] font-bold flex items-center justify-center leading-none focus:outline-none"
-            aria-label={`Help for ${label}`}
-          >i</button>
-          {open && (
-            <span className="absolute left-5 top-0 z-50 w-64 bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-lg pointer-events-none">
-              {tip}
-            </span>
-          )}
-        </span>
-      )}
-    </label>
-  );
 }
 
 export default function ProjectsTab({ supabase }: { supabase: SupabaseClient }) {
@@ -294,19 +258,19 @@ export default function ProjectsTab({ supabase }: { supabase: SupabaseClient }) 
 
             {/* Name */}
             <div>
-              <FieldLabel label="Project Name" fieldKey="name" required />
+              <FieldLabel label="Project Name*" tip="Official project name as used in contracts and client communications." />
               <input required value={form.name} onChange={e => set('name', e.target.value)} className={inp} />
             </div>
 
             {/* Capacity */}
             <div>
-              <FieldLabel label="Capacity" fieldKey="capacity" required />
+              <FieldLabel label="Capacity*" tip="Installed peak power including unit (e.g. 1.50 MWp). Enter the full string — it is displayed as-is." />
               <input required value={form.capacity} onChange={e => set('capacity', e.target.value)} placeholder="1.50 MWp" className={inp} />
             </div>
 
             {/* Type */}
             <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">Type*</label>
+              <FieldLabel label="Type*" tip="Energy type shown on the projects page filter. Choose the option that best matches the primary technology." />
               <select required value={form.type} onChange={e => set('type', e.target.value)} className={sel}>
                 <option value="">Select type</option>
                 {TYPES.map(t => <option key={t} value={t}>{t}</option>)}
@@ -315,7 +279,7 @@ export default function ProjectsTab({ supabase }: { supabase: SupabaseClient }) 
 
             {/* Status */}
             <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">Status*</label>
+              <FieldLabel label="Status*" tip="In Progress = currently being built. Completed = live and generating. Planning = not yet started." />
               <select required value={form.status} onChange={e => set('status', e.target.value)} className={sel}>
                 <option value="">Select status</option>
                 {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
@@ -324,7 +288,7 @@ export default function ProjectsTab({ supabase }: { supabase: SupabaseClient }) 
 
             {/* COD Month + Year picker */}
             <div>
-              <FieldLabel label="COD" fieldKey="cod" required />
+              <FieldLabel label="COD*" tip="Commercial Operation Date — the month and year the plant first started generating power." />
               <div className="flex gap-2">
                 <select value={form.cod_month} onChange={e => set('cod_month', e.target.value)}
                   className="flex-1 min-w-0 border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6] bg-white">
@@ -341,42 +305,42 @@ export default function ProjectsTab({ supabase }: { supabase: SupabaseClient }) 
 
             {/* Role */}
             <div>
-              <FieldLabel label="Role" fieldKey="role" required />
+              <FieldLabel label="Role*" tip="PSS.O's role on this project (e.g. Developer, EPC and O&M). Use the format from proposals." />
               <input required value={form.role} onChange={e => set('role', e.target.value)} placeholder="Developer, EPC and O&M" className={inp} />
             </div>
 
             {/* Location */}
             <div>
-              <FieldLabel label="Location" fieldKey="location" required />
+              <FieldLabel label="Location*" tip="City and country shown on the project map and card (e.g. Chonburi, Thailand)." />
               <input required value={form.location} onChange={e => set('location', e.target.value)} placeholder="Bangkok, Thailand" className={inp} />
             </div>
 
             {/* Client */}
             <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">Client</label>
+              <FieldLabel label="Client" tip="Client or asset owner name as it should appear publicly. Leave blank if confidential." />
               <input value={form.client} onChange={e => set('client', e.target.value)} className={inp} />
             </div>
 
             {/* Coordinates */}
             <div>
-              <FieldLabel label="Latitude" fieldKey="coordinates_lat" required />
+              <FieldLabel label="Latitude*" tip="Decimal latitude for the map pin (e.g. 13.7563). Right-click in Google Maps and copy the coordinates." />
               <input required type="number" step="any" value={form.coordinates_lat} onChange={e => set('coordinates_lat', e.target.value)} placeholder="13.7563" className={inp} />
             </div>
             <div>
-              <FieldLabel label="Longitude" fieldKey="coordinates_lng" required />
+              <FieldLabel label="Longitude*" tip="Decimal longitude for the map pin (e.g. 100.5018). Right-click in Google Maps and copy the coordinates." />
               <input required type="number" step="any" value={form.coordinates_lng} onChange={e => set('coordinates_lng', e.target.value)} placeholder="100.5018" className={inp} />
             </div>
 
             {/* Description */}
             <div className="md:col-span-2">
-              <FieldLabel label="Description" fieldKey="description" />
+              <FieldLabel label="Description" tip="2–3 sentences about the project — scope, key highlights, and outcome. Shown on the public projects page." />
               <textarea rows={3} value={form.description} onChange={e => set('description', e.target.value)}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6] resize-y" />
             </div>
 
             {/* Main Image */}
             <div className="md:col-span-2">
-              <label className="block text-xs font-medium text-gray-600 mb-2">Main Image</label>
+              <FieldLabel label="Main Image" tip="Primary project photo shown on the card. Ideal ratio 16:9, minimum 1200×675 px. JPG or WebP preferred." />
               <div className="flex items-start gap-4">
                 <div className="flex-1 space-y-2">
                   <label className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border cursor-pointer transition-colors ${mainUploading ? 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed' : 'border-[#1550b6] text-[#1550b6] hover:bg-blue-50'}`}>
@@ -400,9 +364,7 @@ export default function ProjectsTab({ supabase }: { supabase: SupabaseClient }) 
 
             {/* Gallery */}
             <div className="md:col-span-2">
-              <label className="block text-xs font-medium text-gray-600 mb-2">
-                Gallery Photos <span className="font-normal text-gray-400">(up to {MAX_GALLERY})</span>
-              </label>
+              <FieldLabel label={`Gallery Photos (up to ${MAX_GALLERY})`} tip="Additional photos shown in the project detail view. Upload in order — first image appears first. Max 5 images." />
               <div className="flex flex-wrap gap-3 items-center">
                 {form.gallery_urls.map((url, i) => (
                   <div key={i} className="relative shrink-0">
@@ -443,11 +405,13 @@ export default function ProjectsTab({ supabase }: { supabase: SupabaseClient }) 
                 <input type="checkbox" checked={form.is_featured} onChange={e => set('is_featured', e.target.checked)}
                   className="w-4 h-4 accent-emerald-500" />
                 Featured on homepage
+                <InfoTooltip tip="Promotes this project into the Featured Projects section on the homepage. Maximum 9 featured projects." label="Featured on homepage" />
               </label>
               <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer select-none">
                 <input type="checkbox" checked={form.is_website_only} onChange={e => set('is_website_only', e.target.checked)}
                   className="w-4 h-4 accent-amber-500" />
                 Totals only (hidden from public)
+                <InfoTooltip tip="Hides the project card from the public projects page, but includes its capacity in aggregated statistics." label="Totals only" />
               </label>
             </div>
 
