@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
+
 type NewsStatus = 'draft' | 'published' | 'complete';
 
 interface NewsPost {
