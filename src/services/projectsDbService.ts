@@ -23,7 +23,23 @@ interface ProjectRow {
   co2_reduction: number | null;
   trees_equivalent: number | null;
   energy_savings: number | null;
+  is_featured: boolean;
+  featured_order: number;
+  is_website_only: boolean;
   created_at: string;
+}
+
+export interface FeaturedProject {
+  id: string;
+  name: string;
+  capacity: string;
+  type: string;
+  location: string;
+  country: string;
+  image: string;
+  description: string;
+  year: string;
+  featured_order: number;
 }
 
 function rowToProject(row: ProjectRow): Project {
@@ -55,12 +71,59 @@ function rowToProject(row: ProjectRow): Project {
   };
 }
 
+function extractYear(cod: string): string {
+  const m = cod.match(/\d{4}/);
+  return m ? m[0] : '';
+}
+
+function extractCountry(location: string): string {
+  const parts = location.split(',');
+  return parts.length > 1 ? parts[parts.length - 1].trim() : location;
+}
+
+/** Public projects page — excludes is_website_only rows */
 export async function fetchProjects(): Promise<Project[]> {
   const { data, error } = await supabase
     .from('projects')
     .select('*')
+    .eq('is_website_only', false)
     .order('created_at', { ascending: true });
 
   if (error) throw new Error(`Failed to fetch projects: ${error.message}`);
   return (data as ProjectRow[]).map(rowToProject);
+}
+
+/** Homepage featured grid — up to 8, ordered by featured_order */
+export async function fetchFeaturedProjects(): Promise<FeaturedProject[]> {
+  const { data, error } = await supabase
+    .from('projects')
+    .select('id,name,capacity,type,location,image_url,description,cod,featured_order')
+    .eq('is_featured', true)
+    .order('featured_order', { ascending: true })
+    .limit(8);
+
+  if (error) throw new Error(`Failed to fetch featured projects: ${error.message}`);
+
+  return (data as Pick<ProjectRow, 'id' | 'name' | 'capacity' | 'type' | 'location' | 'image_url' | 'description' | 'cod' | 'featured_order'>[]).map(row => ({
+    id: row.id,
+    name: row.name,
+    capacity: row.capacity,
+    type: row.type,
+    location: row.location,
+    image: row.image_url ?? '',
+    description: row.description ?? '',
+    year: extractYear(row.cod),
+    country: extractCountry(row.location),
+    featured_order: row.featured_order,
+  }));
+}
+
+/** All projects including is_website_only — used only for pipeline MW totals */
+export async function fetchAllProjectsForMetrics(): Promise<{ capacity: string; location: string }[]> {
+  const { data, error } = await supabase
+    .from('projects')
+    .select('capacity, location');
+
+  if (error) throw new Error(`Failed to fetch project metrics: ${error.message}`);
+  return data as { capacity: string; location: string }[];
 }

@@ -1,82 +1,43 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { supabase } from '../lib/supabase';
+import { fetchFeaturedProjects, fetchAllProjectsForMetrics } from '../services/projectsDbService';
 
 const [
   { data: dbStats },
   { data: dbMilestones },
+  { data: dbSettings },
+  featuredProjects,
+  allProjectMetrics,
 ] = await Promise.all([
   supabase.from('about_stats').select('*').order('display_order', { ascending: true }),
   supabase.from('milestones').select('*').order('display_order', { ascending: true }),
+  supabase.from('site_settings').select('key,value'),
+  fetchFeaturedProjects(),
+  fetchAllProjectsForMetrics(),
 ]);
 
 const heroStats = (dbStats ?? []) as { value: number; label: string; format: string }[];
 const milestones = (dbMilestones ?? []) as { year: string; event: string; logo_url: string | null }[];
 
-const featuredProjects = [
-  {
-    id: 'vardhaman',
-    name: 'Vardhaman Steel',
-    capacity: '60.0',
-    type: 'Ground Mount',
-    country: 'India',
-    image: '/project-images/vardhaman-steel.webp',
-    description: 'Large-scale ground mount solar installation for one of India\'s leading steel manufacturers, delivering significant energy cost reductions.',
-    year: '2023',
-  },
-  {
-    id: 'irpc',
-    name: 'IRPC PLC',
-    capacity: '12.0',
-    type: 'Floating Solar',
-    country: 'Thailand',
-    image: '/project-images/irpc.webp',
-    description: 'Pioneering floating solar array on industrial reservoir, demonstrating innovative land-use solutions for large industrial clients.',
-    year: '2022',
-  },
-  {
-    id: 'seacon',
-    name: 'Seacon Srinakharin',
-    capacity: '6.0',
-    type: 'Solar Rooftop',
-    country: 'Thailand',
-    image: '/project-images/seacon.webp',
-    description: 'Premium rooftop solar system for one of Bangkok\'s largest shopping centers, covering a significant portion of facility energy needs.',
-    year: '2021',
-  },
-  {
-    id: 'prime-road',
-    name: 'Prime Road Solar',
-    capacity: '18.0',
-    type: 'Re.Powering',
-    country: 'Thailand',
-    image: '/project-images/prime-road.webp',
-    description: 'Full repowering of aging solar farm to restore and exceed original performance using modern bifacial modules and updated inverters.',
-    year: '2023',
-  },
-  {
-    id: 'hv-fila',
-    name: 'HV Fila',
-    capacity: '2.5',
-    type: 'Floating Solar',
-    country: 'Thailand',
-    image: '/project-images/hv-fila.webp',
-    description: 'Compact floating solar solution for industrial wastewater pond, combining renewable generation with reduced evaporation benefits.',
-    year: '2022',
-  },
-  {
-    id: 'mars-solar',
-    name: 'Mars Solar — Krabi',
-    capacity: '5.0',
-    type: 'Ground Mount',
-    country: 'Thailand',
-    image: '/project-images/krabi.webp',
-    description: 'Ground mount solar farm in southern Thailand, optimised for the region\'s high irradiance and contributing to provincial clean energy targets.',
-    year: '2021',
-  },
-];
+const settingsMap: Record<string, string> = {};
+(dbSettings ?? []).forEach((row: { key: string; value: string }) => { settingsMap[row.key] = row.value; });
 
-const filterTypes = ['All', 'Ground Mount', 'Floating Solar', 'Solar Rooftop', 'Re.Powering'];
+const heroBadgeText = settingsMap['hero_badge_text'] ?? 'Now active across 6 countries in Asia';
+const heroParagraph = settingsMap['hero_paragraph'] ?? 'Pss.Orange delivers bankable renewable energy solutions across Asia — from initial development and financing through to EPC execution, O&M, and repowering. 450+ MW installed since 2015.';
+const heroTeamCount = settingsMap['hero_team_count'] ?? '50+';
+
+function parseCapacityMW(capacity: string): number {
+  const m = capacity.match(/[\d.]+/);
+  return m ? parseFloat(m[0]) : 0;
+}
+
+const totalCapacityMW = allProjectMetrics.reduce((sum, p) => sum + parseCapacityMW(p.capacity), 0);
+const cleanEnergyGWh = Math.round(totalCapacityMW * 488 / 1000);
+const co2AvoidedTonnes = Math.round(totalCapacityMW * 488 * 0.63 / 1000);
+const co2Label = co2AvoidedTonnes >= 1000 ? `${Math.round(co2AvoidedTonnes / 1000 * 10) / 10}k` : String(co2AvoidedTonnes);
+
+const filterTypes = ['All', ...Array.from(new Set(featuredProjects.map(p => p.type)))];
 ---
 
 <Layout
@@ -93,7 +54,7 @@ const filterTypes = ['All', 'Ground Mount', 'Floating Solar', 'Solar Rooftop', '
         <!-- announcement badge -->
         <div class="inline-flex items-center gap-x-2 px-3.5 py-1.5 rounded-full glass text-sm text-emerald-300 font-medium mb-8" data-aos="fade-down">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          Now active across 6 countries in Asia
+          {heroBadgeText}
         </div>
 
         <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-[1.05] tracking-[-0.03em] max-w-4xl mb-8" data-aos="fade-up" data-aos-delay="50">
@@ -103,9 +64,7 @@ const filterTypes = ['All', 'Ground Mount', 'Floating Solar', 'Solar Rooftop', '
         </h1>
 
         <p class="text-xl text-slate-300 max-w-2xl mb-10 leading-relaxed" data-aos="fade-up" data-aos-delay="100">
-          Pss.Orange delivers bankable renewable energy solutions across Asia — from
-          initial development and financing through to EPC execution, O&amp;M, and
-          repowering. 450+ MW installed since 2015.
+          {heroParagraph}
         </p>
 
         <div class="flex flex-wrap gap-4 mb-16" data-aos="fade-up" data-aos-delay="150">
@@ -128,7 +87,7 @@ const filterTypes = ['All', 'Ground Mount', 'Floating Solar', 'Solar Rooftop', '
             <img src="/Team/Ashish.jpg" alt="Ashish" class="w-10 h-10 rounded-full border-2 border-slate-800 object-cover" onerror="this.style.display='none'" />
             <div class="w-10 h-10 rounded-full border-2 border-slate-800 bg-slate-700 flex items-center justify-center text-xs font-semibold text-slate-300">+5</div>
           </div>
-          <p class="text-slate-400 text-sm">50+ energy professionals across Asia</p>
+          <p class="text-slate-400 text-sm">{heroTeamCount} energy professionals across Asia</p>
         </div>
       </div>
     </section>
@@ -356,8 +315,8 @@ const filterTypes = ['All', 'Ground Mount', 'Floating Solar', 'Solar Rooftop', '
         </div>
         <div class="grid md:grid-cols-3 gap-6">
           {[
-            { value: '~220', unit: 'GWh', label: 'Clean Energy Generated Annually', icon: 'M13 10V3L4 14h7v7l9-11h-7z' },
-            { value: '138k', unit: 'tonnes', label: 'CO₂ Emissions Avoided Per Year', icon: 'M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
+            { value: `~${cleanEnergyGWh}`, unit: 'GWh', label: 'Clean Energy Generated Annually', icon: 'M13 10V3L4 14h7v7l9-11h-7z' },
+            { value: `~${co2Label}`, unit: 'tonnes', label: 'CO₂ Emissions Avoided Per Year', icon: 'M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
             { value: '50+', unit: 'partners', label: 'Strategic Partners Across Asia', icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z' },
           ].map((stat, i) => (
             <div class="glass rounded-2xl p-8 text-center" data-aos="fade-up" data-aos-delay={i * 100}>
