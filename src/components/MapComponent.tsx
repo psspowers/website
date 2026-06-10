@@ -1,7 +1,14 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import type { Project } from '../data/projects/types';
-import { debounce } from 'lodash';
 import type { Map as LeafletMap, LeafletMouseEvent, MarkerClusterGroup, Marker, DivIcon } from 'leaflet';
+
+function debounce<T extends (...args: unknown[]) => void>(fn: T, ms: number): T {
+  let timer: ReturnType<typeof setTimeout>;
+  return ((...args: unknown[]) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), ms);
+  }) as T;
+}
 
 interface Props {
   projects: Project[];
