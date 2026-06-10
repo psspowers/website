@@ -27,7 +27,13 @@ const settingsMap: Record<string, string> = {};
 
 const heroBadgeText = settingsMap['hero_badge_text'] ?? 'Now active across 6 countries in Asia';
 const heroParagraph = settingsMap['hero_paragraph'] ?? 'Pss.Orange delivers bankable renewable energy solutions across Asia — from initial development and financing through to EPC execution, O&M, and repowering. 450+ MW installed since 2015.';
-const heroTeamCount = settingsMap['hero_team_count'] ?? '50+';
+
+const employeesStat = heroStats.find(s =>
+  s.label.toLowerCase().includes('employee') || s.label.toLowerCase().includes('team')
+);
+const heroTeamCount = employeesStat
+  ? `${employeesStat.value.toLocaleString()}${employeesStat.format ?? ''}`
+  : (settingsMap['hero_team_count'] ?? '50+');
 
 function parseCapacityMW(capacity: string): number {
   const m = capacity.match(/[\d.]+/);

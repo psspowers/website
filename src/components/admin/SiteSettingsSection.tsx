@@ -4,7 +4,6 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 const SETTING_KEYS = [
   { key: 'hero_badge_text', label: 'Hero Badge Text', multiline: false, placeholder: 'Now active across 6 countries in Asia' },
   { key: 'hero_paragraph', label: 'Hero Paragraph', multiline: true, placeholder: 'Pss.Orange delivers...' },
-  { key: 'hero_team_count', label: 'Team Count (e.g. 50+)', multiline: false, placeholder: '50+' },
 ];
 
 export default function SiteSettingsSection({ supabase }: { supabase: SupabaseClient }) {
@@ -41,9 +40,8 @@ export default function SiteSettingsSection({ supabase }: { supabase: SupabaseCl
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="text-lg font-semibold text-gray-900">Hero & Homepage Text</h3>
-          <p className="text-xs text-gray-500 mt-0.5">Controls the hero badge, paragraph, and team count on the homepage.</p>
+          <p className="text-xs text-gray-500 mt-0.5">Controls the hero badge and paragraph on the homepage. Team count is managed via the Stats section below.</p>
         </div>
-        {saved && <span className="text-sm text-emerald-600 font-medium">Saved!</span>}
       </div>
       {loading ? (
         <div className="flex justify-center py-6"><div className="w-5 h-5 border-2 border-[#1550b6] border-t-transparent rounded-full animate-spin" /></div>
@@ -71,10 +69,13 @@ export default function SiteSettingsSection({ supabase }: { supabase: SupabaseCl
             </div>
           ))}
           {error && <p className="text-red-600 text-sm">{error}</p>}
-          <button type="submit" disabled={saving}
-            className="bg-[#1550b6] text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-[#1243a0] disabled:opacity-60 transition-colors">
-            {saving ? 'Saving...' : 'Save Settings'}
-          </button>
+          <div className="flex items-center gap-4">
+            <button type="submit" disabled={saving}
+              className={`px-5 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-60 ${saved ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : 'bg-[#1550b6] hover:bg-[#1243a0] text-white'}`}>
+              {saving ? 'Saving...' : saved ? 'Saved!' : 'Save Settings'}
+            </button>
+            {saved && <span className="text-sm text-emerald-600 font-medium">Settings saved successfully.</span>}
+          </div>
         </form>
       )}
     </div>
