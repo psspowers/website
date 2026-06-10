@@ -11,6 +11,7 @@ const LeadsTab = lazy(() => import('./LeadsTab'));
 const PopupTab = lazy(() => import('./PopupTab'));
 const PeopleTab = lazy(() => import('./PeopleTab'));
 const AboutTab = lazy(() => import('./AboutTab'));
+const PartnerInquiriesTab = lazy(() => import('./PartnerInquiriesTab'));
 
 function TabSpinner() {
   return (
@@ -25,7 +26,7 @@ const supabase = createClient(
   import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ4bnhpeHdhd3RkaGtqZHNpdmFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3ODE3NDEsImV4cCI6MjA5NjM1Nzc0MX0.t-UTAXhvHCeRTvTchhBS-MhbQw7wJ9Spx9O9jlSAVWQ'
 );
 
-type Tab = 'news' | 'projects' | 'offices' | 'leads' | 'popup' | 'people' | 'about';
+type Tab = 'news' | 'projects' | 'offices' | 'leads' | 'partners' | 'popup' | 'people' | 'about';
 
 interface TableCounts { news: number; projects: number; offices: number; }
 
@@ -206,6 +207,7 @@ export default function AdminDashboard() {
     { id: 'people', label: 'People' },
     { id: 'about', label: 'About' },
     { id: 'leads', label: 'Leads Inbox' },
+    { id: 'partners', label: 'Partner Inquiries' },
     { id: 'popup', label: 'Popup' },
   ];
 
@@ -269,6 +271,7 @@ export default function AdminDashboard() {
         {activeTab === 'people' && <Suspense fallback={<TabSpinner />}><PeopleTab supabase={supabase} /></Suspense>}
         {activeTab === 'about' && <Suspense fallback={<TabSpinner />}><AboutTab supabase={supabase} /></Suspense>}
         {activeTab === 'leads' && <Suspense fallback={<TabSpinner />}><LeadsTab supabase={supabase} /></Suspense>}
+        {activeTab === 'partners' && <Suspense fallback={<TabSpinner />}><PartnerInquiriesTab supabase={supabase} /></Suspense>}
         {activeTab === 'popup' && <Suspense fallback={<TabSpinner />}><PopupTab supabase={supabase} /></Suspense>}
       </main>
     </div>
