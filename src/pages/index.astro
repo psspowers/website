@@ -1,5 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import SolarCalculator from '../components/SolarCalculator.astro';
+import FeaturedProjects from '../components/FeaturedProjects.astro';
 import { supabase } from '../lib/supabase';
 import { fetchFeaturedProjects, fetchAllProjectsForMetrics } from '../services/projectsDbService';
 
@@ -47,11 +49,9 @@ const filterTypes = ['All', ...Array.from(new Set(featuredProjects.map(p => p.ty
   <main>
     <!-- ── Hero ─────────────────────────────────────────────── -->
     <section class="relative min-h-screen flex items-center bg-cover bg-center bg-no-repeat overflow-hidden" style="background-image: url('/Final_Hero_shot_website.jpg');">
-      <!-- gradient overlay: dark on left for text contrast, fades right to reveal image -->
       <div class="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/65 to-slate-950/25 sm:from-slate-950/85"></div>
 
       <div class="relative max-w-screen-2xl mx-auto px-6 lg:px-8 py-32 md:py-40">
-        <!-- announcement badge -->
         <div class="inline-flex items-center gap-x-2 px-3.5 py-1.5 rounded-full glass text-sm text-emerald-300 font-medium mb-8" data-aos="fade-down">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
           {heroBadgeText}
@@ -79,7 +79,6 @@ const filterTypes = ['All', ...Array.from(new Set(featuredProjects.map(p => p.ty
           </a>
         </div>
 
-        <!-- team avatars strip -->
         <div class="flex items-center gap-x-4" data-aos="fade-up" data-aos-delay="200">
           <div class="flex -space-x-2.5">
             <img src="/Team/Sam.jpg" alt="Sam Yamdagni" class="w-10 h-10 rounded-full border-2 border-slate-800 object-cover" onerror="this.style.display='none'" />
@@ -213,98 +212,7 @@ const filterTypes = ['All', ...Array.from(new Set(featuredProjects.map(p => p.ty
       </div>
     </section>
 
-    <!-- ── Featured Projects ─────────────────────────────────── -->
-    <section class="py-28 max-w-screen-2xl mx-auto px-6 lg:px-8">
-      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12" data-aos="fade-up">
-        <div>
-          <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-3">Track Record</p>
-          <h2 class="font-display text-4xl md:text-5xl font-bold text-white tracking-tight">Featured Projects</h2>
-        </div>
-        <a href="/projects" class="inline-flex items-center gap-x-2 text-slate-400 hover:text-white transition-colors text-sm font-medium flex-shrink-0" style="min-height: auto;">
-          View all projects
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-          </svg>
-        </a>
-      </div>
-
-      <!-- filter tabs -->
-      <div class="flex flex-wrap gap-2 mb-8" id="project-filters" data-aos="fade-up">
-        {filterTypes.map((type, i) => (
-          <button
-            data-filter={type}
-            class={`px-4 py-1.5 rounded-full text-sm font-medium transition-all border ${i === 0 ? 'bg-emerald-500 border-emerald-500 text-slate-950' : 'glass border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200'}`}
-            style="min-height: auto; min-width: auto;"
-          >
-            {type}
-          </button>
-        ))}
-      </div>
-
-      <!-- grid -->
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="projects-grid">
-        {featuredProjects.map((project, i) => (
-          <article
-            class="group relative rounded-2xl overflow-hidden cursor-pointer project-item"
-            data-type={project.type}
-            data-project={JSON.stringify(project)}
-            data-aos="fade-up"
-            data-aos-delay={i * 60}
-            id={`proj-${project.id}`}
-          >
-            <div class="aspect-[4/3] overflow-hidden bg-slate-800">
-              <img
-                src={project.image}
-                alt={project.name}
-                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                loading="lazy"
-              />
-            </div>
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent"></div>
-            <div class="absolute bottom-0 left-0 right-0 p-5">
-              <div class="flex items-center gap-x-2 mb-2">
-                <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">{project.type}</span>
-                <span class="text-slate-400 text-xs">{project.country}</span>
-              </div>
-              <h3 class="text-white font-semibold text-lg leading-tight">{project.name}</h3>
-              <p class="text-emerald-400 font-bold text-2xl mt-0.5">{project.capacity} <span class="text-sm font-normal text-slate-400">MW</span></p>
-            </div>
-            <div class="absolute inset-0 border border-emerald-500/0 group-hover:border-emerald-500/30 rounded-2xl transition-colors duration-300 pointer-events-none"></div>
-          </article>
-        ))}
-      </div>
-    </section>
-
-    <!-- ── Project Modal ─────────────────────────────────────── -->
-    <div id="project-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
-      <div id="modal-backdrop" class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm"></div>
-      <div class="relative glass rounded-3xl max-w-2xl w-full overflow-hidden">
-        <button id="modal-close" class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-full bg-slate-800 hover:bg-slate-700 transition-colors text-slate-300 z-10" style="min-height: auto; min-width: auto;" aria-label="Close">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-          </svg>
-        </button>
-        <div id="modal-img-wrap" class="aspect-video bg-slate-800">
-          <img id="modal-img" src="" alt="" class="w-full h-full object-cover" />
-        </div>
-        <div class="p-7">
-          <div class="flex flex-wrap items-center gap-x-3 gap-y-2 mb-3">
-            <span id="modal-type" class="px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"></span>
-            <span id="modal-country" class="text-slate-400 text-sm"></span>
-            <span id="modal-year" class="text-slate-500 text-sm"></span>
-          </div>
-          <h2 id="modal-name" class="font-display text-2xl font-bold text-white mb-1"></h2>
-          <p id="modal-capacity" class="text-emerald-400 text-3xl font-bold mb-4"></p>
-          <p id="modal-desc" class="text-slate-400 leading-relaxed"></p>
-          <a href="/projects" class="inline-flex items-center gap-x-2 mt-6 text-emerald-400 text-sm font-semibold hover:text-emerald-300 transition-colors" style="min-height: auto;">
-            See full project portfolio
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-            </svg>
-          </a>
-        </div>
-      </div>
-    </div>
+    <FeaturedProjects projects={featuredProjects} filterTypes={filterTypes} />
 
     <!-- ── Impact ────────────────────────────────────────────── -->
     <section class="bg-slate-900 py-24">
@@ -335,59 +243,7 @@ const filterTypes = ['All', ...Array.from(new Set(featuredProjects.map(p => p.ty
       </div>
     </section>
 
-    <!-- ── Solar Savings Calculator ──────────────────────────── -->
-    <section class="py-28 max-w-screen-2xl mx-auto px-6 lg:px-8">
-      <div class="grid lg:grid-cols-2 gap-16 items-center">
-        <div data-aos="fade-right">
-          <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-4">Quick Estimate</p>
-          <h2 class="font-display text-4xl md:text-5xl font-bold text-white leading-tight tracking-tight mb-4">
-            How much could you save?
-          </h2>
-          <p class="text-slate-400 text-lg leading-relaxed mb-8">
-            Adjust the slider to your facility's annual electricity consumption and
-            see an indicative solar generation estimate and payback period.
-          </p>
-          <p class="text-slate-500 text-sm">
-            Estimates assume 1,450 peak sun hours/yr (Thailand average), 15% system losses,
-            USD 0.09/kWh tariff, and USD 0.75/Wp installed cost. For a site-specific
-            assessment, <a href="/contact" class="text-emerald-400 hover:underline">contact our team</a>.
-          </p>
-        </div>
-
-        <div class="glass rounded-3xl p-8" data-aos="fade-left">
-          <label class="block text-white font-semibold mb-2" for="energy-slider">
-            Annual consumption: <span id="slider-value" class="text-emerald-400">500,000</span> kWh
-          </label>
-          <input
-            id="energy-slider"
-            type="range"
-            min="50000"
-            max="2000000"
-            step="50000"
-            value="500000"
-            class="w-full accent-emerald-500 mb-8"
-            style="min-height: auto;"
-          />
-          <div class="grid grid-cols-3 gap-4 mb-6">
-            <div class="bg-slate-800/60 rounded-xl p-4 text-center">
-              <p class="text-slate-400 text-xs mb-1">Est. Solar Generation</p>
-              <p id="calc-gen" class="text-white font-bold text-lg">362,500 kWh</p>
-            </div>
-            <div class="bg-slate-800/60 rounded-xl p-4 text-center">
-              <p class="text-slate-400 text-xs mb-1">Annual Savings</p>
-              <p id="calc-savings" class="text-emerald-400 font-bold text-lg">$32,625</p>
-            </div>
-            <div class="bg-slate-800/60 rounded-xl p-4 text-center">
-              <p class="text-slate-400 text-xs mb-1">Payback Period</p>
-              <p id="calc-payback" class="text-white font-bold text-lg">3.8 yrs</p>
-            </div>
-          </div>
-          <a href="/contact" class="block w-full text-center px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-semibold rounded-xl transition-colors text-sm" style="min-height: auto;">
-            Get a Detailed Assessment
-          </a>
-        </div>
-      </div>
-    </section>
+    <SolarCalculator />
 
     <!-- ── Journey Timeline ──────────────────────────────────── -->
     <section class="bg-slate-900 py-24">
@@ -447,96 +303,3 @@ const filterTypes = ['All', ...Array.from(new Set(featuredProjects.map(p => p.ty
     </section>
   </main>
 </Layout>
-
-<script>
-  // ── Project filter tabs ───────────────────────────────────────
-  const filterBtns = document.querySelectorAll<HTMLButtonElement>('#project-filters button');
-  const projectItems = document.querySelectorAll<HTMLElement>('.project-item');
-
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const filter = btn.dataset.filter;
-
-      filterBtns.forEach(b => {
-        b.classList.remove('bg-emerald-500', 'border-emerald-500', 'text-slate-950');
-        b.classList.add('glass', 'border-slate-700', 'text-slate-400');
-      });
-      btn.classList.add('bg-emerald-500', 'border-emerald-500', 'text-slate-950');
-      btn.classList.remove('glass', 'border-slate-700', 'text-slate-400');
-
-      projectItems.forEach(item => {
-        if (filter === 'All' || item.dataset.type === filter) {
-          item.style.display = '';
-        } else {
-          item.style.display = 'none';
-        }
-      });
-    });
-  });
-
-  // ── Project modal ─────────────────────────────────────────────
-  const modal = document.getElementById('project-modal');
-  const backdrop = document.getElementById('modal-backdrop');
-  const closeBtn = document.getElementById('modal-close');
-
-  function openModal(data: any) {
-    if (!modal) return;
-    (document.getElementById('modal-img') as HTMLImageElement).src = data.image;
-    (document.getElementById('modal-img') as HTMLImageElement).alt = data.name;
-    document.getElementById('modal-type')!.textContent = data.type;
-    document.getElementById('modal-country')!.textContent = data.country;
-    document.getElementById('modal-year')!.textContent = data.year;
-    document.getElementById('modal-name')!.textContent = data.name;
-    document.getElementById('modal-capacity')!.textContent = data.capacity + ' MW';
-    document.getElementById('modal-desc')!.textContent = data.description;
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeModal() {
-    if (!modal) return;
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-    document.body.style.overflow = '';
-  }
-
-  projectItems.forEach(item => {
-    item.addEventListener('click', () => {
-      try {
-        const data = JSON.parse(item.dataset.project || '{}');
-        openModal(data);
-      } catch (_) {}
-    });
-  });
-
-  closeBtn?.addEventListener('click', closeModal);
-  backdrop?.addEventListener('click', closeModal);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-  // ── Solar Savings Calculator ──────────────────────────────────
-  const slider = document.getElementById('energy-slider') as HTMLInputElement;
-  const sliderValue = document.getElementById('slider-value');
-  const calcGen = document.getElementById('calc-gen');
-  const calcSavings = document.getElementById('calc-savings');
-  const calcPayback = document.getElementById('calc-payback');
-
-  function updateCalculator() {
-    const consumption = parseInt(slider.value);
-    const coverage = 0.725; // 72.5% coverage ratio
-    const generation = Math.round(consumption * coverage);
-    const tariff = 0.09; // USD per kWh
-    const annualSavings = generation * tariff;
-    const systemSizeKwp = generation / 1450; // peak sun hours
-    const installCost = systemSizeKwp * 750; // USD 0.75/Wp
-    const payback = installCost / annualSavings;
-
-    if (sliderValue) sliderValue.textContent = consumption.toLocaleString();
-    if (calcGen) calcGen.textContent = generation.toLocaleString() + ' kWh';
-    if (calcSavings) calcSavings.textContent = '$' + Math.round(annualSavings).toLocaleString();
-    if (calcPayback) calcPayback.textContent = payback.toFixed(1) + ' yrs';
-  }
-
-  slider?.addEventListener('input', updateCalculator);
-  updateCalculator();
-</script>

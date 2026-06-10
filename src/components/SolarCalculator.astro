@@ -1,0 +1,82 @@
+---
+---
+
+<section class="py-28 max-w-screen-2xl mx-auto px-6 lg:px-8">
+  <div class="grid lg:grid-cols-2 gap-16 items-center">
+    <div data-aos="fade-right">
+      <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-4">Quick Estimate</p>
+      <h2 class="font-display text-4xl md:text-5xl font-bold text-white leading-tight tracking-tight mb-4">
+        How much could you save?
+      </h2>
+      <p class="text-slate-400 text-lg leading-relaxed mb-8">
+        Adjust the slider to your facility's annual electricity consumption and
+        see an indicative solar generation estimate and payback period.
+      </p>
+      <p class="text-slate-500 text-sm">
+        Estimates assume 1,450 peak sun hours/yr (Thailand average), 15% system losses,
+        USD 0.09/kWh tariff, and USD 0.75/Wp installed cost. For a site-specific
+        assessment, <a href="/contact" class="text-emerald-400 hover:underline">contact our team</a>.
+      </p>
+    </div>
+
+    <div class="glass rounded-3xl p-8" data-aos="fade-left">
+      <label class="block text-white font-semibold mb-2" for="energy-slider">
+        Annual consumption: <span id="slider-value" class="text-emerald-400">500,000</span> kWh
+      </label>
+      <input
+        id="energy-slider"
+        type="range"
+        min="50000"
+        max="2000000"
+        step="50000"
+        value="500000"
+        class="w-full accent-emerald-500 mb-8"
+        style="min-height: auto;"
+      />
+      <div class="grid grid-cols-3 gap-4 mb-6">
+        <div class="bg-slate-800/60 rounded-xl p-4 text-center">
+          <p class="text-slate-400 text-xs mb-1">Est. Solar Generation</p>
+          <p id="calc-gen" class="text-white font-bold text-lg">362,500 kWh</p>
+        </div>
+        <div class="bg-slate-800/60 rounded-xl p-4 text-center">
+          <p class="text-slate-400 text-xs mb-1">Annual Savings</p>
+          <p id="calc-savings" class="text-emerald-400 font-bold text-lg">$32,625</p>
+        </div>
+        <div class="bg-slate-800/60 rounded-xl p-4 text-center">
+          <p class="text-slate-400 text-xs mb-1">Payback Period</p>
+          <p id="calc-payback" class="text-white font-bold text-lg">3.8 yrs</p>
+        </div>
+      </div>
+      <a href="/contact" class="block w-full text-center px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-semibold rounded-xl transition-colors text-sm" style="min-height: auto;">
+        Get a Detailed Assessment
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  const slider = document.getElementById('energy-slider') as HTMLInputElement;
+  const sliderValue = document.getElementById('slider-value');
+  const calcGen = document.getElementById('calc-gen');
+  const calcSavings = document.getElementById('calc-savings');
+  const calcPayback = document.getElementById('calc-payback');
+
+  function updateCalculator() {
+    const consumption = parseInt(slider.value);
+    const coverage = 0.725;
+    const generation = Math.round(consumption * coverage);
+    const tariff = 0.09;
+    const annualSavings = generation * tariff;
+    const systemSizeKwp = generation / 1450;
+    const installCost = systemSizeKwp * 750;
+    const payback = installCost / annualSavings;
+
+    if (sliderValue) sliderValue.textContent = consumption.toLocaleString();
+    if (calcGen) calcGen.textContent = generation.toLocaleString() + ' kWh';
+    if (calcSavings) calcSavings.textContent = '$' + Math.round(annualSavings).toLocaleString();
+    if (calcPayback) calcPayback.textContent = payback.toFixed(1) + ' yrs';
+  }
+
+  slider?.addEventListener('input', updateCalculator);
+  updateCalculator();
+</script>

@@ -2,7 +2,6 @@
 import '../styles/global.css';
 import Navigation from '../components/Navigation.astro';
 import Footer from '../components/Footer.astro';
-import NewsModal from '../components/NewsModal.astro';
 import PopupAnnouncement from '../components/PopupAnnouncement.astro';
 
 interface Props {
@@ -101,7 +100,6 @@ const canonicalURL = Astro.url.pathname;
     <Navigation />
     <slot />
     <Footer />
-    <NewsModal />
     {!noPopup && <PopupAnnouncement />}
     <script>
       import AOS from 'aos';
