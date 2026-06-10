@@ -1,15 +1,24 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import NewsTab from './NewsTab';
-import ProjectsTab from './ProjectsTab';
-import OfficesTab from './OfficesTab';
-import LeadsTab from './LeadsTab';
-import PopupTab from './PopupTab';
-import PeopleTab from './PeopleTab';
-import AboutTab from './AboutTab';
 import { newsItems as staticNews } from '../../data/news';
 import { projects as staticProjects } from '../../data/projects/projects';
 import { offices as staticOffices } from '../../data/offices';
+
+const NewsTab = lazy(() => import('./NewsTab'));
+const ProjectsTab = lazy(() => import('./ProjectsTab'));
+const OfficesTab = lazy(() => import('./OfficesTab'));
+const LeadsTab = lazy(() => import('./LeadsTab'));
+const PopupTab = lazy(() => import('./PopupTab'));
+const PeopleTab = lazy(() => import('./PeopleTab'));
+const AboutTab = lazy(() => import('./AboutTab'));
+
+function TabSpinner() {
+  return (
+    <div className="flex justify-center py-16">
+      <div className="w-6 h-6 border-2 border-[#1550b6] border-t-transparent rounded-full animate-spin" />
+    </div>
+  );
+}
 
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL || 'https://vxnxixwawtdhkjdsivak.supabase.co',
@@ -254,13 +263,13 @@ export default function AdminDashboard() {
       </nav>
 
       <main className="flex-1 p-6 max-w-7xl w-full mx-auto">
-        {activeTab === 'news' && <NewsTab supabase={supabase} />}
-        {activeTab === 'projects' && <ProjectsTab supabase={supabase} />}
-        {activeTab === 'offices' && <OfficesTab supabase={supabase} />}
-        {activeTab === 'people' && <PeopleTab supabase={supabase} />}
-        {activeTab === 'about' && <AboutTab supabase={supabase} />}
-        {activeTab === 'leads' && <LeadsTab supabase={supabase} />}
-        {activeTab === 'popup' && <PopupTab supabase={supabase} />}
+        {activeTab === 'news' && <Suspense fallback={<TabSpinner />}><NewsTab supabase={supabase} /></Suspense>}
+        {activeTab === 'projects' && <Suspense fallback={<TabSpinner />}><ProjectsTab supabase={supabase} /></Suspense>}
+        {activeTab === 'offices' && <Suspense fallback={<TabSpinner />}><OfficesTab supabase={supabase} /></Suspense>}
+        {activeTab === 'people' && <Suspense fallback={<TabSpinner />}><PeopleTab supabase={supabase} /></Suspense>}
+        {activeTab === 'about' && <Suspense fallback={<TabSpinner />}><AboutTab supabase={supabase} /></Suspense>}
+        {activeTab === 'leads' && <Suspense fallback={<TabSpinner />}><LeadsTab supabase={supabase} /></Suspense>}
+        {activeTab === 'popup' && <Suspense fallback={<TabSpinner />}><PopupTab supabase={supabase} /></Suspense>}
       </main>
     </div>
   );

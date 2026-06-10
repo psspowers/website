@@ -2,7 +2,7 @@
 import { c as createComponent, r as renderTemplate, m as maybeRenderHead, a as addAttribute, d as renderComponent, b as createAstro } from '../assets/astro/server.DYFYygLL.js';
 import 'kleur/colors';
 import 'html-escaper';
-import { $ as $$Layout } from '../assets/Layout.CZtVw7rA.js';
+import { $ as $$Layout } from '../assets/Layout.Cxy9wlzP.js';
 import { $ as $$AnimatedStats } from '../assets/AnimatedStats.COJCaFeN.js';
 import { $ as $$OptimizedImage } from '../assets/OptimizedImage.BfeX-moT.js';
 /* empty css                                   */
