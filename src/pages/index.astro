@@ -1,5 +1,17 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { supabase } from '../lib/supabase';
+
+const [
+  { data: dbStats },
+  { data: dbMilestones },
+] = await Promise.all([
+  supabase.from('about_stats').select('*').order('display_order', { ascending: true }),
+  supabase.from('milestones').select('*').order('display_order', { ascending: true }),
+]);
+
+const heroStats = (dbStats ?? []) as { value: number; label: string; format: string }[];
+const milestones = (dbMilestones ?? []) as { year: string; event: string; logo_url: string | null }[];
 
 const featuredProjects = [
   {
@@ -68,7 +80,7 @@ const filterTypes = ['All', 'Ground Mount', 'Floating Solar', 'Solar Rooftop', '
 ---
 
 <Layout
-  title="PSS Powers — Bankable Renewable Energy Across Asia"
+  title="Pss.Orange — Bankable Renewable Energy Across Asia"
   description="Leading the transition to bankable renewable energy across Asia since 2015. Over 450 MW installed, serving industrial and utility clients in Thailand, India, and Singapore."
 >
   <main>
@@ -91,7 +103,7 @@ const filterTypes = ['All', 'Ground Mount', 'Floating Solar', 'Solar Rooftop', '
         </h1>
 
         <p class="text-xl text-slate-300 max-w-2xl mb-10 leading-relaxed" data-aos="fade-up" data-aos-delay="100">
-          PSS Powers delivers bankable renewable energy solutions across Asia — from
+          Pss.Orange delivers bankable renewable energy solutions across Asia — from
           initial development and financing through to EPC execution, O&amp;M, and
           repowering. 450+ MW installed since 2015.
         </p>
@@ -124,15 +136,10 @@ const filterTypes = ['All', 'Ground Mount', 'Floating Solar', 'Solar Rooftop', '
     <!-- ── Stats strip ───────────────────────────────────────── -->
     <section class="relative z-10 max-w-screen-2xl mx-auto px-6 lg:px-8 -mt-8">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4" data-aos="fade-up">
-        {[
-          { value: '450+', unit: 'MW', label: 'Total Capacity Installed' },
-          { value: '100+', unit: '', label: 'Projects Delivered' },
-          { value: '6', unit: '', label: 'Countries Active' },
-          { value: '2015', unit: '', label: 'Founded in Bangkok' },
-        ].map(stat => (
+        {heroStats.map(stat => (
           <div class="glass rounded-2xl p-6 text-center">
             <p class="font-display text-3xl md:text-4xl font-bold text-white mb-1">
-              {stat.value}<span class="text-emerald-400">{stat.unit}</span>
+              {stat.value}<span class="text-emerald-400">{stat.format}</span>
             </p>
             <p class="text-slate-400 text-sm">{stat.label}</p>
           </div>
@@ -149,7 +156,7 @@ const filterTypes = ['All', 'Ground Mount', 'Floating Solar', 'Solar Rooftop', '
             Making clean energy<br />bankable across Asia
           </h2>
           <p class="text-slate-400 text-lg leading-relaxed mb-6">
-            Founded in Bangkok in 2015, PSS Powers bridges the gap between ambitious
+            Founded in Bangkok in 2015, Pss.Orange bridges the gap between ambitious
             renewable energy targets and the rigorous financial standards demanded by
             institutional investors. We combine deep local market knowledge with
             international project finance expertise.
@@ -433,20 +440,14 @@ const filterTypes = ['All', 'Ground Mount', 'Floating Solar', 'Solar Rooftop', '
         <div class="relative max-w-3xl mx-auto">
           <div class="absolute left-5 top-0 bottom-0 w-px bg-slate-700"></div>
           <div class="space-y-10">
-            {[
-              { year: '2015', title: 'Founded in Bangkok', desc: 'PSS Powers established with a mission to make renewable energy bankable across Southeast Asia.' },
-              { year: '2018', title: '100 MW Milestone', desc: 'Crossed 100 MW of cumulative installed capacity, establishing PSS as a Tier-1 EPC contractor in Thailand.' },
-              { year: '2021', title: 'Regional Expansion', desc: 'Expanded operations into India and Singapore, with first floating solar projects commissioned for IRPC PLC.' },
-              { year: '2025', title: '450 MW & Growing', desc: 'Over 450 MW installed across 6 countries, with 550+ MW pipeline and backing from I Squared Capital.' },
-            ].map((mile, i) => (
+            {milestones.map((mile, i) => (
               <div class="flex gap-x-8 pl-12 relative" data-aos="fade-up" data-aos-delay={i * 80}>
                 <div class="absolute left-0 top-1 w-10 h-10 rounded-full bg-slate-900 border-2 border-emerald-500 flex items-center justify-center flex-shrink-0">
                   <div class="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
                 </div>
                 <div>
                   <span class="text-emerald-400 text-sm font-semibold">{mile.year}</span>
-                  <h3 class="text-white font-semibold text-lg mt-0.5 mb-1">{mile.title}</h3>
-                  <p class="text-slate-400 text-sm leading-relaxed">{mile.desc}</p>
+                  <p class="text-slate-400 text-sm leading-relaxed mt-1">{mile.event}</p>
                 </div>
               </div>
             ))}
@@ -481,7 +482,7 @@ const filterTypes = ['All', 'Ground Mount', 'Floating Solar', 'Solar Rooftop', '
           <span class="hidden sm:inline text-slate-700">·</span>
           <span>Singapore</span>
           <span class="hidden sm:inline text-slate-700">·</span>
-          <a href="mailto:info@psspowers.com" class="text-emerald-500 hover:text-emerald-400 transition-colors" style="min-height: auto;">info@psspowers.com</a>
+          <a href="mailto:info@pssorange.com" class="text-emerald-500 hover:text-emerald-400 transition-colors" style="min-height: auto;">info@pssorange.com</a>
         </div>
       </div>
     </section>
