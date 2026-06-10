@@ -93,14 +93,14 @@ export async function fetchProjects(): Promise<Project[]> {
   return (data as ProjectRow[]).map(rowToProject);
 }
 
-/** Homepage featured grid — up to 8, ordered by featured_order */
+/** Homepage featured grid — up to 9, ordered by featured_order */
 export async function fetchFeaturedProjects(): Promise<FeaturedProject[]> {
   const { data, error } = await supabase
     .from('projects')
     .select('id,name,capacity,type,location,image_url,description,cod,featured_order')
     .eq('is_featured', true)
     .order('featured_order', { ascending: true })
-    .limit(8);
+    .limit(9);
 
   if (error) throw new Error(`Failed to fetch featured projects: ${error.message}`);
 

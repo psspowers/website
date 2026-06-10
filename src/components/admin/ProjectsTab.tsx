@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 interface ProjectRow {
@@ -11,6 +11,7 @@ interface ProjectRow {
   role: string;
   location: string;
   image_url: string | null;
+  gallery_urls: string[];
   coordinates_lat: number;
   coordinates_lng: number;
   description: string | null;
@@ -21,23 +22,96 @@ interface ProjectRow {
   created_at: string;
 }
 
-type FormData = Omit<ProjectRow, 'id' | 'coordinates_lat' | 'coordinates_lng' | 'is_featured' | 'featured_order' | 'is_website_only' | 'created_at'> & {
+interface FormData {
+  name: string;
+  capacity: string;
+  type: string;
+  status: string;
+  cod_month: string;
+  cod_year: string;
+  role: string;
+  location: string;
+  image_url: string;
+  gallery_urls: string[];
   coordinates_lat: string;
   coordinates_lng: string;
+  description: string;
+  client: string;
   is_featured: boolean;
-  featured_order: string;
   is_website_only: boolean;
+}
+
+const MONTHS = [
+  { v: '01', l: 'January' }, { v: '02', l: 'February' }, { v: '03', l: 'March' },
+  { v: '04', l: 'April' },   { v: '05', l: 'May' },      { v: '06', l: 'June' },
+  { v: '07', l: 'July' },    { v: '08', l: 'August' },   { v: '09', l: 'September' },
+  { v: '10', l: 'October' }, { v: '11', l: 'November' }, { v: '12', l: 'December' },
+];
+const YEARS = Array.from({ length: 21 }, (_, i) => String(2015 + i));
+const TYPES = ['Solar Rooftop', 'Ground Mount', 'Floating Solar', 'Solar Pump', 'Re.Powering', 'Wind', 'Energy Storage'];
+const STATUSES = ['In Progress', 'Completed', 'Planning'];
+const MAX_FEATURED = 9;
+const MAX_GALLERY = 5;
+const MAX_FILE_BYTES = 5 * 1024 * 1024;
+
+const TOOLTIPS: Record<string, string> = {
+  name: 'Full project name as used in proposals and reports',
+  capacity: 'Installed peak power including unit (e.g. 1.50 MWp)',
+  cod: 'Commercial Operation Date — the month the plant went live',
+  role: "PSS.O's role on the project (e.g. Developer, EPC and O&M)",
+  location: 'City, Country format (e.g. Bangkok, Thailand)',
+  description: 'One or two sentences describing the project for public display',
+  coordinates_lat: 'Decimal latitude (e.g. 13.7563). Use Google Maps to find the exact pin.',
+  coordinates_lng: 'Decimal longitude (e.g. 100.5018). Use Google Maps to find the exact pin.',
 };
 
 const EMPTY: FormData = {
-  name: '', capacity: '', type: '', status: '', cod: '', role: '',
-  location: '', image_url: '', coordinates_lat: '', coordinates_lng: '',
-  description: '', client: '', is_featured: false, featured_order: '99', is_website_only: false,
+  name: '', capacity: '', type: '', status: '', cod_month: '', cod_year: '',
+  role: '', location: '', image_url: '', gallery_urls: [],
+  coordinates_lat: '', coordinates_lng: '', description: '', client: '',
+  is_featured: false, is_website_only: false,
 };
 
-const TYPES = ['Solar Rooftop', 'Ground Mount', 'Floating Solar', 'Solar Pump', 'Re.Powering', 'Wind', 'Energy Storage'];
-const STATUSES = ['In Progress', 'Completed', 'Planning'];
-const MAX_FEATURED = 8;
+function parseCod(cod: string): { month: string; year: string } {
+  const iso = cod.match(/^(\d{4})-(\d{2})$/);
+  if (iso) return { year: iso[1], month: iso[2] };
+  const yearM = cod.match(/\b(20\d{2})\b/);
+  const lower = cod.toLowerCase();
+  const monthNames = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+  const mi = monthNames.findIndex(mn => lower.includes(mn));
+  const qMap: Record<string, string> = { '1': '03', '2': '06', '3': '09', '4': '12' };
+  const qM = lower.match(/q([1-4])/);
+  return {
+    year: yearM ? yearM[1] : '',
+    month: mi >= 0 ? String(mi + 1).padStart(2, '0') : (qM ? qMap[qM[1]] : '01'),
+  };
+}
+
+function FieldLabel({ label, fieldKey, required }: { label: string; fieldKey: string; required?: boolean }) {
+  const [open, setOpen] = useState(false);
+  const tip = TOOLTIPS[fieldKey];
+  return (
+    <label className="flex items-center gap-1 text-xs font-medium text-gray-600 mb-1">
+      {label}{required && <span className="sr-only">(required)</span>}
+      {tip && (
+        <span className="relative inline-flex">
+          <button
+            type="button"
+            onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}
+            onFocus={() => setOpen(true)} onBlur={() => setOpen(false)}
+            className="w-4 h-4 rounded-full bg-gray-200 text-gray-500 hover:bg-gray-300 text-[10px] font-bold flex items-center justify-center leading-none focus:outline-none"
+            aria-label={`Help for ${label}`}
+          >i</button>
+          {open && (
+            <span className="absolute left-5 top-0 z-50 w-64 bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-lg pointer-events-none">
+              {tip}
+            </span>
+          )}
+        </span>
+      )}
+    </label>
+  );
+}
 
 export default function ProjectsTab({ supabase }: { supabase: SupabaseClient }) {
   const [items, setItems] = useState<ProjectRow[]>([]);
@@ -46,8 +120,12 @@ export default function ProjectsTab({ supabase }: { supabase: SupabaseClient }) 
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState<FormData>(EMPTY);
   const [saving, setSaving] = useState(false);
+  const [mainUploading, setMainUploading] = useState(false);
+  const [galleryUploading, setGalleryUploading] = useState(false);
   const [error, setError] = useState('');
   const [featuredError, setFeaturedError] = useState('');
+  const mainFileRef = useRef<HTMLInputElement>(null);
+  const galleryFileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => { load(); }, []);
 
@@ -55,31 +133,77 @@ export default function ProjectsTab({ supabase }: { supabase: SupabaseClient }) 
     setLoading(true);
     const { data } = await supabase
       .from('projects')
-      .select('id,name,capacity,type,status,cod,role,location,image_url,coordinates_lat,coordinates_lng,description,client,is_featured,featured_order,is_website_only,created_at')
+      .select('id,name,capacity,type,status,cod,role,location,image_url,gallery_urls,coordinates_lat,coordinates_lng,description,client,is_featured,featured_order,is_website_only,created_at')
       .order('created_at', { ascending: false });
     setItems((data as ProjectRow[]) ?? []);
     setLoading(false);
   }
 
-  function openNew() { setForm(EMPTY); setEditingId(null); setError(''); setShowForm(true); }
+  function openNew() {
+    setForm(EMPTY);
+    setEditingId(null);
+    setError('');
+    setShowForm(true);
+    if (mainFileRef.current) mainFileRef.current.value = '';
+    if (galleryFileRef.current) galleryFileRef.current.value = '';
+  }
 
   function openEdit(item: ProjectRow) {
+    const { month, year } = parseCod(item.cod ?? '');
     setForm({
-      ...item,
-      image_url: item.image_url ?? '',
-      description: item.description ?? '',
-      client: item.client ?? '',
-      coordinates_lat: String(item.coordinates_lat),
-      coordinates_lng: String(item.coordinates_lng),
-      featured_order: String(item.featured_order),
+      name: item.name, capacity: item.capacity, type: item.type, status: item.status,
+      cod_month: month, cod_year: year, role: item.role, location: item.location,
+      image_url: item.image_url ?? '', gallery_urls: item.gallery_urls ?? [],
+      coordinates_lat: String(item.coordinates_lat), coordinates_lng: String(item.coordinates_lng),
+      description: item.description ?? '', client: item.client ?? '',
+      is_featured: item.is_featured, is_website_only: item.is_website_only,
     });
     setEditingId(item.id);
     setError('');
     setShowForm(true);
+    if (mainFileRef.current) mainFileRef.current.value = '';
+    if (galleryFileRef.current) galleryFileRef.current.value = '';
   }
 
-  function set(field: keyof FormData, value: string | boolean) {
+  function set<K extends keyof FormData>(field: K, value: FormData[K]) {
     setForm(prev => ({ ...prev, [field]: value }));
+  }
+
+  async function uploadToStorage(file: File, prefix: string): Promise<string | null> {
+    if (file.size > MAX_FILE_BYTES) { setError('Image must be 5 MB or smaller.'); return null; }
+    const ext = file.name.split('.').pop()?.toLowerCase() ?? 'jpg';
+    const safeName = (form.name || 'project').toLowerCase().replace(/[^a-z0-9]/g, '-').slice(0, 30);
+    const path = `${prefix}-${safeName}-${Date.now()}.${ext}`;
+    const { error: uploadErr } = await supabase.storage.from('project-images').upload(path, file, { upsert: true });
+    if (uploadErr) { setError(`Upload failed: ${uploadErr.message}`); return null; }
+    const { data } = supabase.storage.from('project-images').getPublicUrl(path);
+    return data.publicUrl;
+  }
+
+  async function handleMainImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setError('');
+    setMainUploading(true);
+    const url = await uploadToStorage(file, 'main');
+    if (url) set('image_url', url);
+    setMainUploading(false);
+    if (mainFileRef.current) mainFileRef.current.value = '';
+  }
+
+  async function handleGalleryImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file || form.gallery_urls.length >= MAX_GALLERY) return;
+    setError('');
+    setGalleryUploading(true);
+    const url = await uploadToStorage(file, 'gallery');
+    if (url) set('gallery_urls', [...form.gallery_urls, url]);
+    setGalleryUploading(false);
+    if (galleryFileRef.current) galleryFileRef.current.value = '';
+  }
+
+  function removeGalleryImage(i: number) {
+    set('gallery_urls', form.gallery_urls.filter((_, idx) => idx !== i));
   }
 
   async function toggleFeatured(item: ProjectRow) {
@@ -100,19 +224,21 @@ export default function ProjectsTab({ supabase }: { supabase: SupabaseClient }) 
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
-    setSaving(true); setError('');
+    setSaving(true);
+    setError('');
+    const cod = form.cod_year && form.cod_month ? `${form.cod_year}-${form.cod_month}` : (form.cod_year || '');
     const payload = {
-      ...form,
-      image_url: form.image_url || null,
-      description: form.description || null,
-      client: form.client || null,
+      name: form.name, capacity: form.capacity, type: form.type, status: form.status,
+      cod, role: form.role, location: form.location,
+      image_url: form.image_url || null, gallery_urls: form.gallery_urls,
+      description: form.description || null, client: form.client || null,
       coordinates_lat: parseFloat(form.coordinates_lat) || 0,
       coordinates_lng: parseFloat(form.coordinates_lng) || 0,
-      featured_order: parseInt(form.featured_order) || 99,
+      is_featured: form.is_featured, is_website_only: form.is_website_only,
     };
     const { error: err } = editingId
       ? await supabase.from('projects').update(payload).eq('id', editingId)
-      : await supabase.from('projects').insert({ ...payload, scope: [], features: [], challenges: [], solutions: [], results: [] });
+      : await supabase.from('projects').insert({ ...payload, featured_order: 99, scope: [], features: [], challenges: [], solutions: [], results: [] });
     setSaving(false);
     if (err) { setError(err.message); return; }
     setShowForm(false);
@@ -125,14 +251,6 @@ export default function ProjectsTab({ supabase }: { supabase: SupabaseClient }) 
     load();
   }
 
-  const field = (label: string, f: keyof FormData, extra?: React.InputHTMLAttributes<HTMLInputElement>) => (
-    <div>
-      <label className="block text-xs font-medium text-gray-600 mb-1">{label}</label>
-      <input value={(form[f] as string) ?? ''} onChange={e => set(f, e.target.value)} {...extra}
-        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6]" />
-    </div>
-  );
-
   const sortedItems = [...items].sort((a, b) => {
     if (a.is_featured !== b.is_featured) return a.is_featured ? -1 : 1;
     if (a.is_featured && b.is_featured) return a.featured_order - b.featured_order;
@@ -141,6 +259,8 @@ export default function ProjectsTab({ supabase }: { supabase: SupabaseClient }) 
 
   const featuredCount = items.filter(i => i.is_featured).length;
   const hiddenCount = items.filter(i => i.is_website_only).length;
+  const inp = 'w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6]';
+  const sel = `${inp} bg-white`;
 
   return (
     <div>
@@ -165,33 +285,153 @@ export default function ProjectsTab({ supabase }: { supabase: SupabaseClient }) 
         <div className="bg-white border border-gray-200 rounded-xl p-6 mb-6 shadow-sm">
           <h3 className="font-semibold text-gray-900 mb-4">{editingId ? 'Edit Project' : 'New Project'}</h3>
           <form onSubmit={save} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {field('Project Name*', 'name', { required: true })}
-            {field('Capacity* (e.g. 1.5 MWp)', 'capacity', { required: true, placeholder: '1.50 MWp' })}
+
+            {/* Name */}
+            <div>
+              <FieldLabel label="Project Name" fieldKey="name" required />
+              <input required value={form.name} onChange={e => set('name', e.target.value)} className={inp} />
+            </div>
+
+            {/* Capacity */}
+            <div>
+              <FieldLabel label="Capacity" fieldKey="capacity" required />
+              <input required value={form.capacity} onChange={e => set('capacity', e.target.value)} placeholder="1.50 MWp" className={inp} />
+            </div>
+
+            {/* Type */}
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">Type*</label>
-              <select required value={form.type} onChange={e => set('type', e.target.value)}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6] bg-white">
+              <select required value={form.type} onChange={e => set('type', e.target.value)} className={sel}>
                 <option value="">Select type</option>
                 {TYPES.map(t => <option key={t} value={t}>{t}</option>)}
               </select>
             </div>
+
+            {/* Status */}
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">Status*</label>
-              <select required value={form.status} onChange={e => set('status', e.target.value)}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6] bg-white">
+              <select required value={form.status} onChange={e => set('status', e.target.value)} className={sel}>
                 <option value="">Select status</option>
                 {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
-            {field('COD* (e.g. Q2 2025)', 'cod', { required: true, placeholder: 'Q2 2025' })}
-            {field('Role*', 'role', { required: true, placeholder: 'Developer, EPC and O&M' })}
-            {field('Location*', 'location', { required: true, placeholder: 'Bangkok, Thailand' })}
-            {field('Image URL', 'image_url', { placeholder: '/project-images/example.webp' })}
-            {field('Latitude*', 'coordinates_lat', { required: true, type: 'number', step: 'any', placeholder: '13.7563' })}
-            {field('Longitude*', 'coordinates_lng', { required: true, type: 'number', step: 'any', placeholder: '100.5018' })}
-            {field('Client', 'client')}
-            {field('Description', 'description')}
-            {field('Featured Order', 'featured_order', { type: 'number', min: '1', placeholder: '99' })}
+
+            {/* COD Month + Year picker */}
+            <div>
+              <FieldLabel label="COD" fieldKey="cod" required />
+              <div className="flex gap-2">
+                <select value={form.cod_month} onChange={e => set('cod_month', e.target.value)}
+                  className="flex-1 min-w-0 border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6] bg-white">
+                  <option value="">Month</option>
+                  {MONTHS.map(m => <option key={m.v} value={m.v}>{m.l}</option>)}
+                </select>
+                <select value={form.cod_year} onChange={e => set('cod_year', e.target.value)}
+                  className="flex-1 min-w-0 border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6] bg-white">
+                  <option value="">Year</option>
+                  {YEARS.map(y => <option key={y} value={y}>{y}</option>)}
+                </select>
+              </div>
+            </div>
+
+            {/* Role */}
+            <div>
+              <FieldLabel label="Role" fieldKey="role" required />
+              <input required value={form.role} onChange={e => set('role', e.target.value)} placeholder="Developer, EPC and O&M" className={inp} />
+            </div>
+
+            {/* Location */}
+            <div>
+              <FieldLabel label="Location" fieldKey="location" required />
+              <input required value={form.location} onChange={e => set('location', e.target.value)} placeholder="Bangkok, Thailand" className={inp} />
+            </div>
+
+            {/* Client */}
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1">Client</label>
+              <input value={form.client} onChange={e => set('client', e.target.value)} className={inp} />
+            </div>
+
+            {/* Coordinates */}
+            <div>
+              <FieldLabel label="Latitude" fieldKey="coordinates_lat" required />
+              <input required type="number" step="any" value={form.coordinates_lat} onChange={e => set('coordinates_lat', e.target.value)} placeholder="13.7563" className={inp} />
+            </div>
+            <div>
+              <FieldLabel label="Longitude" fieldKey="coordinates_lng" required />
+              <input required type="number" step="any" value={form.coordinates_lng} onChange={e => set('coordinates_lng', e.target.value)} placeholder="100.5018" className={inp} />
+            </div>
+
+            {/* Description */}
+            <div className="md:col-span-2">
+              <FieldLabel label="Description" fieldKey="description" />
+              <textarea rows={3} value={form.description} onChange={e => set('description', e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6] resize-y" />
+            </div>
+
+            {/* Main Image */}
+            <div className="md:col-span-2">
+              <label className="block text-xs font-medium text-gray-600 mb-2">Main Image</label>
+              <div className="flex items-start gap-4">
+                <div className="flex-1 space-y-2">
+                  <label className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border cursor-pointer transition-colors ${mainUploading ? 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed' : 'border-[#1550b6] text-[#1550b6] hover:bg-blue-50'}`}>
+                    {mainUploading ? (
+                      <><span className="w-4 h-4 border-2 border-[#1550b6] border-t-transparent rounded-full animate-spin inline-block" />Uploading...</>
+                    ) : (
+                      <><svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M12 12V4m0 0L8 8m4-4l4 4" /></svg>{form.image_url ? 'Replace image' : 'Upload image'}</>
+                    )}
+                    <input ref={mainFileRef} type="file" accept="image/jpeg,image/jpg,image/png,image/webp" className="sr-only" disabled={mainUploading} onChange={handleMainImageChange} />
+                  </label>
+                  <p className="text-xs text-gray-400">JPG, PNG or WebP · max 5 MB · or paste a URL below:</p>
+                  <input value={form.image_url} onChange={e => set('image_url', e.target.value)}
+                    placeholder="https:// or /project-images/..." className={inp} />
+                </div>
+                {form.image_url && !mainUploading && (
+                  <img src={form.image_url} alt="preview" className="w-28 h-20 rounded-xl object-cover border border-gray-200 shrink-0"
+                    onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                )}
+              </div>
+            </div>
+
+            {/* Gallery */}
+            <div className="md:col-span-2">
+              <label className="block text-xs font-medium text-gray-600 mb-2">
+                Gallery Photos <span className="font-normal text-gray-400">(up to {MAX_GALLERY})</span>
+              </label>
+              <div className="flex flex-wrap gap-3 items-center">
+                {form.gallery_urls.map((url, i) => (
+                  <div key={i} className="relative shrink-0">
+                    <img src={url} alt={`gallery ${i + 1}`} className="w-24 h-16 rounded-lg object-cover border border-gray-200"
+                      onError={e => { (e.target as HTMLImageElement).style.opacity = '0.3'; }} />
+                    <button type="button" onClick={() => removeGalleryImage(i)}
+                      className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center hover:bg-red-600 leading-none shadow">
+                      ×
+                    </button>
+                  </div>
+                ))}
+                {form.gallery_urls.length < MAX_GALLERY && (
+                  <label className={`w-24 h-16 border-2 border-dashed rounded-lg flex flex-col items-center justify-center gap-1 shrink-0 transition-colors ${galleryUploading ? 'border-gray-200 opacity-50 cursor-not-allowed' : 'border-gray-300 hover:border-[#1550b6] hover:bg-blue-50 cursor-pointer'}`}>
+                    {galleryUploading ? (
+                      <span className="w-5 h-5 border-2 border-[#1550b6] border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      <>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                        </svg>
+                        <span className="text-xs text-gray-400">Add</span>
+                      </>
+                    )}
+                    <input ref={galleryFileRef} type="file" accept="image/jpeg,image/jpg,image/png,image/webp"
+                      className="sr-only" disabled={galleryUploading || form.gallery_urls.length >= MAX_GALLERY}
+                      onChange={handleGalleryImageChange} />
+                  </label>
+                )}
+                {form.gallery_urls.length > 0 && (
+                  <span className="text-xs text-gray-400">{form.gallery_urls.length}/{MAX_GALLERY}</span>
+                )}
+              </div>
+            </div>
+
+            {/* Toggles */}
             <div className="flex items-center gap-6">
               <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer select-none">
                 <input type="checkbox" checked={form.is_featured} onChange={e => set('is_featured', e.target.checked)}
@@ -204,14 +444,17 @@ export default function ProjectsTab({ supabase }: { supabase: SupabaseClient }) 
                 Totals only (hidden from public)
               </label>
             </div>
+
             {error && <p className="md:col-span-2 text-red-600 text-sm">{error}</p>}
             <div className="md:col-span-2 flex gap-3">
-              <button type="submit" disabled={saving}
+              <button type="submit" disabled={saving || mainUploading || galleryUploading}
                 className="bg-[#1550b6] text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-[#1243a0] disabled:opacity-60 transition-colors">
                 {saving ? 'Saving...' : 'Save'}
               </button>
               <button type="button" onClick={() => setShowForm(false)}
-                className="px-5 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors">Cancel</button>
+                className="px-5 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors">
+                Cancel
+              </button>
             </div>
           </form>
         </div>
