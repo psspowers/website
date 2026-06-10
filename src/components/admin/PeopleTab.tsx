@@ -55,6 +55,7 @@ export default function PeopleTab({ supabase }: { supabase: SupabaseClient }) {
     setEditingId(null);
     setError('');
     setShowForm(true);
+    if (fileInputRef.current) fileInputRef.current.value = '';
   }
 
   function openEdit(item: TeamMember) {
@@ -62,6 +63,7 @@ export default function PeopleTab({ supabase }: { supabase: SupabaseClient }) {
     setEditingId(item.id);
     setError('');
     setShowForm(true);
+    if (fileInputRef.current) fileInputRef.current.value = '';
   }
 
   function set<K extends keyof FormData>(field: K, value: FormData[K]) {
