@@ -5,19 +5,19 @@ import FeaturedProjects from '../components/FeaturedProjects.astro';
 import { supabase } from '../lib/supabase';
 import { fetchFeaturedProjects, fetchAllProjectsForMetrics } from '../services/projectsDbService';
 
-const [
-  { data: dbStats },
-  { data: dbMilestones },
-  { data: dbSettings },
-  featuredProjects,
-  allProjectMetrics,
-] = await Promise.all([
+const results = await Promise.allSettled([
   supabase.from('about_stats').select('*').order('display_order', { ascending: true }),
   supabase.from('milestones').select('*').order('display_order', { ascending: true }),
   supabase.from('site_settings').select('key,value'),
   fetchFeaturedProjects(),
   fetchAllProjectsForMetrics(),
 ]);
+
+const { data: dbStats }      = results[0].status === 'fulfilled' ? results[0].value : { data: null };
+const { data: dbMilestones } = results[1].status === 'fulfilled' ? results[1].value : { data: null };
+const { data: dbSettings }   = results[2].status === 'fulfilled' ? results[2].value : { data: null };
+const featuredProjects       = results[3].status === 'fulfilled' ? results[3].value : [];
+const allProjectMetrics      = results[4].status === 'fulfilled' ? results[4].value : [];
 
 const heroStats = (dbStats ?? []) as { value: number; label: string; format: string }[];
 const milestones = (dbMilestones ?? []) as { year: string; event: string; logo_url: string | null }[];

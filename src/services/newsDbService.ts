@@ -38,12 +38,17 @@ function rowToNewsItem(row: NewsPostRow): NewsItem {
 }
 
 export async function fetchNewsItems(): Promise<NewsItem[]> {
-  const { data, error } = await supabase
-    .from('news_posts')
-    .select('*')
-    .eq('is_published', true)
-    .order('date', { ascending: false });
+  try {
+    const { data, error } = await supabase
+      .from('news_posts')
+      .select('*')
+      .eq('is_published', true)
+      .order('date', { ascending: false });
 
-  if (error) throw new Error(`Failed to fetch news: ${error.message}`);
-  return (data as NewsPostRow[]).map(rowToNewsItem);
+    if (error) throw new Error(error.message);
+    return (data as NewsPostRow[]).map(rowToNewsItem);
+  } catch (e) {
+    console.error('fetchNewsItems:', e);
+    return [];
+  }
 }
