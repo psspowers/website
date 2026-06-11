@@ -1,0 +1,198 @@
+---
+export const prerender = false;
+import Layout from '../layouts/Layout.astro';
+import { fetchNewsItems } from '../services/newsDbService';
+import LinkText from '../components/LinkText.astro';
+import OptimizedImage from '../components/OptimizedImage.astro';
+import Icon from '../components/Icon.astro';
+
+const newsItems = await fetchNewsItems();
+const allTags = [...new Set(newsItems.flatMap(item => item.tags))].sort();
+
+const sortedNews = [...newsItems].sort((a, b) =>
+  new Date(b.date).getTime() - new Date(a.date).getTime()
+);
+
+const newsWithoutImages = sortedNews.filter(item => !item.image?.url);
+
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+---
+
+<Layout
+  title="Latest News & Updates - Pss.Orange"
+  description="Stay informed about Pss.Orange's latest projects, partnerships, and achievements in renewable energy."
+  image="/News_Images/2025-02_2025-02-15_isq-partnership-announcement.jpg"
+  type="article"
+>
+  <main class="pt-20">
+    <!-- Hero -->
+    <section class="dark-gradient-header">
+      <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
+        <div class="max-w-3xl text-white" data-aos="fade-up">
+          <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-4">Press & Media</p>
+          <h1 class="font-display text-4xl md:text-5xl font-bold tracking-tight mb-6">
+            Latest News & Updates
+          </h1>
+          <p class="text-xl text-slate-300 leading-relaxed">
+            Stay informed about our latest projects, partnerships, and achievements in renewable energy.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- News Content -->
+    <section class="py-20">
+      <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
+        <div class="grid lg:grid-cols-4 gap-10">
+          <!-- Articles -->
+          <div class="lg:col-span-3">
+            <div class="grid md:grid-cols-2 gap-6 mb-12">
+              {newsItems.map((item, index) => (
+                <div
+                  key={`news-${item.date}-${index}`}
+                  class="glass rounded-2xl overflow-hidden"
+                  data-aos="fade-up"
+                  data-aos-delay={index * 80}
+                >
+                  <div class="relative bg-slate-800 overflow-hidden rounded-t-2xl">
+                    <OptimizedImage
+                      src={item.image.url}
+                      alt={item.image.alt}
+                      aspectRatio={item.image.aspectRatio}
+                      priority={index < 2}
+                    />
+                  </div>
+                  <div class="p-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
+                      <time datetime={item.date} class="text-sm text-slate-500">
+                        {formatDate(item.date)}
+                      </time>
+                      <a
+                        href={item.sourceUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-sm text-emerald-400 hover:text-emerald-300 transition-colors whitespace-nowrap"
+                        style="min-height: auto;"
+                      >
+                        View on {item.source}
+                      </a>
+                    </div>
+                    <h2 class="text-lg font-bold text-white mb-3 line-clamp-2">
+                      <LinkText text={item.title} />
+                    </h2>
+                    <p class="text-slate-400 text-sm mb-4 leading-relaxed whitespace-pre-line line-clamp-3">
+                      <LinkText text={item.summary} />
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                      {item.tags.map((tag, index) => (
+                        <span key={`tag-${index}`} class="px-2.5 py-0.5 bg-slate-800/60 text-slate-400 rounded-full text-xs border border-slate-700">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {newsWithoutImages.length > 0 && (
+              <div class="space-y-6">
+                <h2 class="text-white font-bold text-2xl mb-4">More News</h2>
+                {newsWithoutImages.map((item, index) => (
+                  <div
+                    class="glass rounded-2xl p-6"
+                    data-aos="fade-up"
+                    data-aos-delay={index * 80}
+                  >
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 gap-2">
+                      <time datetime={item.date} class="text-sm text-slate-500">{formatDate(item.date)}</time>
+                      <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer" class="text-sm text-emerald-400 hover:text-emerald-300 transition-colors whitespace-nowrap" style="min-height: auto;">
+                        View on {item.source}
+                      </a>
+                    </div>
+                    <h2 class="text-white font-bold text-lg mb-3">
+                      <LinkText text={item.title} />
+                    </h2>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                      <LinkText text={item.summary} />
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                      {item.tags.map(tag => (
+                        <span class="px-2.5 py-0.5 bg-slate-800/60 text-slate-400 rounded-full text-xs border border-slate-700">{tag}</span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <!-- Sidebar -->
+          <div class="lg:col-span-1">
+            <div class="glass rounded-2xl p-6 sticky top-24">
+              <h2 class="text-white font-bold text-lg mb-4">Categories</h2>
+              <div class="space-y-1">
+                {allTags.map(tag => (
+                  <button
+                    class="w-full text-left px-3 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-colors text-sm"
+                    data-tag={tag}
+                    style="min-height: auto; min-width: auto;"
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
+
+              <div class="mt-8 pt-6 border-t border-slate-700/50">
+                <h2 class="text-white font-bold text-lg mb-4">Follow Us</h2>
+                <a
+                  href="https://www.linkedin.com/company/pssorange"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-x-2 text-slate-400 hover:text-emerald-400 transition-colors"
+                  style="min-height: auto;"
+                >
+                  <Icon name="linkedin" size={20} class="w-5 h-5" />
+                  <span class="text-sm">Follow on LinkedIn</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const tagButtons = document.querySelectorAll('[data-tag]');
+    const newsCards = document.querySelectorAll('.glass.rounded-2xl[data-aos]');
+
+    tagButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const tag = button.getAttribute('data-tag');
+        const isActive = button.classList.contains('bg-emerald-500');
+
+        tagButtons.forEach(btn => {
+          btn.classList.remove('bg-emerald-500', 'text-slate-950');
+          btn.classList.add('text-slate-400');
+        });
+
+        if (!isActive) {
+          button.classList.add('bg-emerald-500', 'text-slate-950');
+          button.classList.remove('text-slate-400');
+
+          newsCards.forEach(item => {
+            const tags = Array.from(item.querySelectorAll('.rounded-full')).map(t => t.textContent?.trim());
+            (item as HTMLElement).style.display = tags.includes(tag) ? '' : 'none';
+          });
+        } else {
+          newsCards.forEach(item => { (item as HTMLElement).style.display = ''; });
+        }
+      });
+    });
+  });
+</script>
