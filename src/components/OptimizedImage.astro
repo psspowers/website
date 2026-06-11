@@ -21,21 +21,11 @@ const {
   aspectRatio,
   sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
   fallback = "/pss-logo-black.png",
-  preload = false
 } = Astro.props;
 
-const imageUrl = new URL(src, Astro.url);
+// Guard against empty src — resolve relative paths against the request origin
+const resolvedSrc = src ? new URL(src, Astro.url).toString() : '';
 
-// Preload critical images
-if (preload) {
-  const link = document.createElement('link');
-  link.rel = 'preload';
-  link.as = 'image';
-  link.href = imageUrl.toString();
-  document.head.appendChild(link);
-}
-
-// Calculate aspect ratio padding
 let paddingBottom = "100%";
 if (aspectRatio) {
   const [w, h] = aspectRatio.split(":");
@@ -44,53 +34,62 @@ if (aspectRatio) {
   paddingBottom = `${(height / width) * 100}%`;
 }
 
-// Determine loading strategy
 const loading = priority ? "eager" : "lazy";
 const fetchPriority = priority ? "high" : "auto";
 ---
 
-<div class={`relative overflow-hidden ${className}`} style={`padding-bottom: ${paddingBottom};`}>
-  <div class="absolute inset-0 bg-slate-700 animate-pulse skeleton"></div>
-  <img
-    src={imageUrl}
-    alt={alt}
-    loading={loading}
-    decoding="async"
-    fetchpriority={fetchPriority}
-    sizes={sizes}
-    loading={priority ? "eager" : "lazy"}
-    onerror="this.onerror=null; this.src='${fallback}'; this.classList.add('error');"
-    width={width}
-    height={height}
-    class={`absolute inset-0 w-full h-full object-cover will-change-transform ${className}`}
-    onload="this.parentElement.querySelector('.skeleton')?.remove();
-           this.style.opacity = 1;
-           this.style.transform = 'scale(1)';
-           this.classList.add('loaded');"
-    style="opacity: 0;"
-  />
+<div class={`opt-img-wrap relative overflow-hidden ${className}`} style={`padding-bottom: ${paddingBottom};`}>
+  <div class="skeleton absolute inset-0 bg-slate-700"></div>
+  {resolvedSrc && (
+    <img
+      src={resolvedSrc}
+      alt={alt}
+      loading={loading}
+      decoding="async"
+      fetchpriority={fetchPriority}
+      sizes={sizes}
+      onerror={`this.onerror=null; this.src='${fallback}'; this.classList.add('error');`}
+      onload="this.parentElement.querySelector('.skeleton')?.remove(); this.classList.add('loaded');"
+      width={width}
+      height={height}
+      class={`opt-img absolute inset-0 w-full h-full object-cover will-change-transform ${className}`}
+    />
+  )}
 </div>
 
 <style>
+  /*
+   * CSS animation guarantees the image becomes visible regardless of browser
+   * cache state. If the image loads over the network, onload fires and the
+   * 'loaded' class snaps it to full opacity instantly. If the image was already
+   * cached and onload never fires, the animation completes after 0.4s.
+   */
+  .opt-img {
+    opacity: 0;
+    animation: optImgFadeIn 0.4s ease 0.05s forwards;
+  }
+
+  .opt-img.loaded {
+    animation: none;
+    opacity: 1;
+  }
+
+  @keyframes optImgFadeIn {
+    to { opacity: 1; }
+  }
+
   .skeleton {
-    @apply bg-slate-700;
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    animation: skeletonPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
-  @keyframes pulse {
-    0%, 100% {
-      opacity: 0.3;
-    }
-    50% {
-      opacity: 0.5;
-    }
+  @keyframes skeletonPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.5; }
   }
 
-  img.loaded {
-    @apply scale-100 blur-none;
-  }
-  
-  img.error {
-    @apply object-contain p-4 bg-slate-800;
+  .opt-img.error {
+    object-fit: contain;
+    padding: 1rem;
+    background: rgb(30 41 59);
   }
 </style>
