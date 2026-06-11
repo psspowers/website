@@ -30,7 +30,6 @@ export default defineConfig({
             leaflet: ['leaflet', 'leaflet.markercluster'],
             react: ['react', 'react-dom'],
             aos: ['aos'],
-            vendor: ['lodash'],
           },
         },
       },

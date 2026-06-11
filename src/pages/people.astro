@@ -4,13 +4,13 @@ import OptimizedImage from '../components/OptimizedImage.astro';
 import FinancialPartnerBadge from '../components/FinancialPartnerBadge.astro';
 import { supabase } from '../lib/supabase';
 
-const { data: members } = await supabase
+const result = await supabase
   .from('team_members')
   .select('name, role, bio, image_url, linkedin_url')
   .eq('is_visible', true)
   .order('display_order', { ascending: true });
 
-const people = members ?? [];
+const people = result.data ?? [];
 ---
 
 <Layout

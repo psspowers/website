@@ -37,11 +37,16 @@ function rowToOffice(row: OfficeRow): Office {
 }
 
 export async function fetchOffices(): Promise<Office[]> {
-  const { data, error } = await supabase
-    .from('offices')
-    .select('*')
-    .order('created_at', { ascending: true });
+  try {
+    const { data, error } = await supabase
+      .from('offices')
+      .select('*')
+      .order('created_at', { ascending: true });
 
-  if (error) throw new Error(`Failed to fetch offices: ${error.message}`);
-  return (data as OfficeRow[]).map(rowToOffice);
+    if (error) throw new Error(error.message);
+    return (data as OfficeRow[]).map(rowToOffice);
+  } catch (e) {
+    console.error('fetchOffices:', e);
+    return [];
+  }
 }
