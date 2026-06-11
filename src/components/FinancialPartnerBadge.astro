@@ -1,11 +1,20 @@
 ---
 import OptimizedImage from './OptimizedImage.astro';
 
-interface Props {
-  class?: string;
+interface PartnerStat {
+  value: string;
+  label: string;
 }
 
-const { class: className = "" } = Astro.props;
+interface Props {
+  class?: string;
+  stats?: PartnerStat[];
+}
+
+const { class: className = "", stats = [] } = Astro.props;
+
+const topRow = stats.slice(0, 3);
+const bottomRow = stats.slice(3, 6);
 ---
 
 <div class={`w-[280px] ${className}`} data-aos="fade-left">
@@ -15,61 +24,53 @@ const { class: className = "" } = Astro.props;
       <p class="text-white text-[14px] uppercase tracking-wider font-semibold mb-1">Our Financial Partner</p>
       <p class="text-white text-[12px] uppercase tracking-wider">for Thailand</p>
     </div>
-    
+
     <!-- Logo -->
     <div class="relative">
-      <a 
+      <a
         href="https://isquaredcapital.com/"
         target="_blank"
         rel="noopener noreferrer"
         class="block bg-white rounded-b-xl p-2"
       >
         <OptimizedImage
-          src="/i-squared-capital-logo.png" 
-          alt="I Squared Capital Logo" 
+          src="/i-squared-capital-logo.png"
+          alt="I Squared Capital Logo"
           aspectRatio="5.2:1"
           class="w-[200px] h-auto mx-auto hover:opacity-80 transition-all duration-300"
           priority={true}
         />
       </a>
     </div>
-    
+
     <!-- Stats Popup -->
-    <div class="absolute opacity-0 invisible group-hover:opacity-100 group-hover:visible -bottom-2 right-0 transform translate-y-full transition-all duration-300 w-[280px] md:w-[320px] bg-white rounded-xl shadow-2xl p-4">
-      <!-- Top Row -->
-      <div class="grid grid-cols-3 gap-4 mb-6">
-        <div class="text-center">
-          <div class="text-lg font-bold text-[#0B1F3F]">$40B+</div>
-          <div class="text-[9px] text-gray-600 mt-1">ASSETS UNDER MANAGEMENT</div>
-        </div>
-        <div class="text-center">
-          <div class="text-lg font-bold text-[#0B1F3F]">66,000+</div>
-          <div class="text-[9px] text-gray-600 mt-1">PORTFOLIO COMPANY EMPLOYEES</div>
-        </div>
-        <div class="text-center">
-          <div class="text-lg font-bold text-[#0B1F3F]">89</div>
-          <div class="text-[9px] text-gray-600 mt-1">PORTFOLIO COMPANIES</div>
-        </div>
-      </div>
-      <!-- Bottom Row -->
-      <div class="grid grid-cols-3 gap-4">
-        <div class="text-center">
-          <div class="text-xl font-bold text-[#0B1F3F]">9</div>
-          <div class="text-[9px] text-gray-600 mt-1">GLOBAL OFFICES</div>
-        </div>
-        <div class="text-center">
-          <div class="text-xl font-bold text-[#0B1F3F]">280+</div>
-          <div class="text-[9px] text-gray-600 mt-1">EMPLOYEES</div>
-        </div>
-        <div class="text-center">
-          <div class="text-xl font-bold text-[#0B1F3F]">70+</div>
-          <div class="text-[9px] text-gray-600 mt-1">COUNTRIES WITH INVESTMENTS</div>
+    {stats.length > 0 && (
+      <div class="absolute opacity-0 invisible group-hover:opacity-100 group-hover:visible -bottom-2 right-0 transform translate-y-full transition-all duration-300 w-[280px] md:w-[320px] bg-white rounded-xl shadow-2xl p-4">
+        {topRow.length > 0 && (
+          <div class={`grid grid-cols-${topRow.length} gap-4 ${bottomRow.length > 0 ? 'mb-6' : ''}`}>
+            {topRow.map(stat => (
+              <div class="text-center">
+                <div class="text-lg font-bold text-[#0B1F3F]">{stat.value}</div>
+                <div class="text-[9px] text-gray-600 mt-1 uppercase">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        )}
+        {bottomRow.length > 0 && (
+          <div class={`grid grid-cols-${bottomRow.length} gap-4`}>
+            {bottomRow.map(stat => (
+              <div class="text-center">
+                <div class="text-xl font-bold text-[#0B1F3F]">{stat.value}</div>
+                <div class="text-[9px] text-gray-600 mt-1 uppercase">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        )}
+        <!-- Arrow -->
+        <div class="absolute -top-2 right-12 transform -translate-y-full">
+          <div class="border-8 border-transparent border-b-white"></div>
         </div>
       </div>
-      <!-- Arrow -->
-      <div class="absolute -top-2 right-12 transform -translate-y-full">
-        <div class="border-8 border-transparent border-b-white"></div>
-      </div>
-    </div>
+    )}
   </div>
 </div>

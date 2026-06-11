@@ -2,6 +2,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import SiteSettingsSection from './SiteSettingsSection';
 import StatsSection from './StatsSection';
 import MilestonesSection from './MilestonesSection';
+import PartnerStatsSection from './PartnerStatsSection';
 
 export default function AboutTab({ supabase }: { supabase: SupabaseClient }) {
   return (
@@ -16,6 +17,8 @@ export default function AboutTab({ supabase }: { supabase: SupabaseClient }) {
       <StatsSection supabase={supabase} />
       <div className="border-b border-gray-200 mb-8" />
       <MilestonesSection supabase={supabase} />
+      <div className="border-b border-gray-200 mb-8" />
+      <PartnerStatsSection supabase={supabase} />
     </div>
   );
 }
