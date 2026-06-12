@@ -36,7 +36,7 @@ const partnerLogoUrl = ((dbLogoSetting ?? []) as { key: string; value: string }[
   <main class="pt-20">
     <!-- Hero -->
     <section class="dark-gradient-header relative">
-      <FinancialPartnerBadge stats={partnerStats} logoUrl={partnerLogoUrl} class="absolute top-6 right-6 lg:top-8 lg:right-12 z-50" />
+      <FinancialPartnerBadge stats={partnerStats} logoUrl={partnerLogoUrl} class="hidden lg:block absolute top-8 right-12 z-50" />
       <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
         <div class="max-w-3xl text-white" data-aos="fade-up">
           <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-4">Who We Are</p>
@@ -47,6 +47,7 @@ const partnerLogoUrl = ((dbLogoSetting ?? []) as { key: string; value: string }[
             Since 2012, Pss.Orange has been at the forefront of the renewable energy revolution,
             delivering innovative solutions and driving sustainable change across Asia.
           </p>
+          <FinancialPartnerBadge logoUrl={partnerLogoUrl} compact={true} class="mt-8 lg:hidden" />
         </div>
       </div>
     </section>

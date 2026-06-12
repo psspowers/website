@@ -10,68 +10,93 @@ interface Props {
   class?: string;
   stats?: PartnerStat[];
   logoUrl?: string;
+  compact?: boolean;
 }
 
-const { class: className = "", stats = [], logoUrl = '' } = Astro.props;
+const { class: className = "", stats = [], logoUrl = '', compact = false } = Astro.props;
 
 const topRow = stats.slice(0, 3);
 const bottomRow = stats.slice(3, 6);
 ---
 
-<div class={`w-[280px] ${className}`} data-aos="fade-left">
-  <div class="bg-[#0B1F3F] rounded-xl shadow-xl transform hover:scale-105 transition-all duration-300 relative group">
-    <!-- Header -->
-    <div class="bg-[#0B1F3F] rounded-t-xl p-4 text-center">
-      <p class="text-white text-[14px] uppercase tracking-wider font-semibold mb-1">Our Financial Partner</p>
-      <p class="text-white text-[12px] uppercase tracking-wider">for Thailand</p>
+{compact ? (
+  <a
+    href="https://isquaredcapital.com/"
+    target="_blank"
+    rel="noopener noreferrer"
+    class={`inline-flex items-center gap-0 bg-[#0B1F3F] rounded-xl overflow-hidden hover:opacity-90 transition-opacity ${className}`}
+    data-aos="fade-up"
+  >
+    <div class="px-4 py-3 flex-shrink-0">
+      <p class="text-white text-[10px] uppercase tracking-wider font-semibold leading-tight">Financial Partner</p>
+      <p class="text-slate-400 text-[9px] uppercase tracking-wider leading-tight mt-0.5">for Thailand</p>
     </div>
-
-    <!-- Logo -->
-    <div class="relative">
-      <a
-        href="https://isquaredcapital.com/"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="block bg-white rounded-b-xl p-2"
-      >
-        <OptimizedImage
-          src={logoUrl || '/i-squared-capital-logo.png'}
-          alt="I Squared Capital Logo"
-          aspectRatio="5.2:1"
-          class="w-[200px] h-auto mx-auto hover:opacity-80 transition-all duration-300"
-          priority={true}
-        />
-      </a>
+    <div class="bg-white px-3 py-2.5 self-stretch flex items-center">
+      <OptimizedImage
+        src={logoUrl || '/i-squared-capital-logo.png'}
+        alt="I Squared Capital"
+        aspectRatio="5.2:1"
+        class="w-[88px] h-auto"
+        priority={true}
+      />
     </div>
-
-    <!-- Stats Popup -->
-    {stats.length > 0 && (
-      <div class="absolute opacity-0 invisible group-hover:opacity-100 group-hover:visible -bottom-2 right-0 transform translate-y-full transition-all duration-300 w-[280px] md:w-[320px] bg-white rounded-xl shadow-2xl p-4">
-        {topRow.length > 0 && (
-          <div class={`grid grid-cols-${topRow.length} gap-4 ${bottomRow.length > 0 ? 'mb-6' : ''}`}>
-            {topRow.map(stat => (
-              <div class="text-center">
-                <div class="text-lg font-bold text-[#0B1F3F]">{stat.value}</div>
-                <div class="text-[9px] text-gray-600 mt-1 uppercase">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        )}
-        {bottomRow.length > 0 && (
-          <div class={`grid grid-cols-${bottomRow.length} gap-4`}>
-            {bottomRow.map(stat => (
-              <div class="text-center">
-                <div class="text-xl font-bold text-[#0B1F3F]">{stat.value}</div>
-                <div class="text-[9px] text-gray-600 mt-1 uppercase">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        )}
-        <!-- Arrow -->
-        <div class="absolute -top-2 right-12 transform -translate-y-full">
-          <div class="border-8 border-transparent border-b-white"></div>
-        </div>
+  </a>
+) : (
+  <div class={`w-[280px] ${className}`} data-aos="fade-left">
+    <div class="bg-[#0B1F3F] rounded-xl shadow-xl transform hover:scale-105 transition-all duration-300 relative group">
+      <!-- Header -->
+      <div class="bg-[#0B1F3F] rounded-t-xl p-4 text-center">
+        <p class="text-white text-[14px] uppercase tracking-wider font-semibold mb-1">Our Financial Partner</p>
+        <p class="text-white text-[12px] uppercase tracking-wider">for Thailand</p>
       </div>
-    )}
+
+      <!-- Logo -->
+      <div class="relative">
+        <a
+          href="https://isquaredcapital.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block bg-white rounded-b-xl p-2"
+        >
+          <OptimizedImage
+            src={logoUrl || '/i-squared-capital-logo.png'}
+            alt="I Squared Capital Logo"
+            aspectRatio="5.2:1"
+            class="w-[200px] h-auto mx-auto hover:opacity-80 transition-all duration-300"
+            priority={true}
+          />
+        </a>
+      </div>
+
+      <!-- Stats Popup -->
+      {stats.length > 0 && (
+        <div class="absolute opacity-0 invisible group-hover:opacity-100 group-hover:visible -bottom-2 right-0 transform translate-y-full transition-all duration-300 w-[280px] md:w-[320px] bg-white rounded-xl shadow-2xl p-4">
+          {topRow.length > 0 && (
+            <div class={`grid grid-cols-${topRow.length} gap-4 ${bottomRow.length > 0 ? 'mb-6' : ''}`}>
+              {topRow.map(stat => (
+                <div class="text-center">
+                  <div class="text-lg font-bold text-[#0B1F3F]">{stat.value}</div>
+                  <div class="text-[9px] text-gray-600 mt-1 uppercase">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          )}
+          {bottomRow.length > 0 && (
+            <div class={`grid grid-cols-${bottomRow.length} gap-4`}>
+              {bottomRow.map(stat => (
+                <div class="text-center">
+                  <div class="text-xl font-bold text-[#0B1F3F]">{stat.value}</div>
+                  <div class="text-[9px] text-gray-600 mt-1 uppercase">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          )}
+          <!-- Arrow -->
+          <div class="absolute -top-2 right-12 transform -translate-y-full">
+            <div class="border-8 border-transparent border-b-white"></div>
+          </div>
+        </div>
+      )}
+    </div>
   </div>
-</div>
+)}

@@ -20,7 +20,7 @@ const partnerLogoUrl = ((logoResult.status === 'fulfilled' ? logoResult.value.da
   <main class="pt-20">
     <!-- Hero -->
     <section class="dark-gradient-header relative">
-      <FinancialPartnerBadge logoUrl={partnerLogoUrl} class="absolute top-6 right-6 lg:top-8 lg:right-12 z-50" />
+      <FinancialPartnerBadge logoUrl={partnerLogoUrl} class="hidden lg:block absolute top-8 right-12 z-50" />
       <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
         <div class="max-w-3xl text-white" data-aos="fade-up">
           <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-4">The Team</p>
@@ -30,6 +30,7 @@ const partnerLogoUrl = ((logoResult.status === 'fulfilled' ? logoResult.value.da
           <p class="text-xl text-slate-300 leading-relaxed">
             Our leadership team brings decades of combined experience in renewable energy development, investment, and operations across Asia.
           </p>
+          <FinancialPartnerBadge logoUrl={partnerLogoUrl} compact={true} class="mt-8 lg:hidden" />
         </div>
       </div>
     </section>
