@@ -9,9 +9,10 @@ interface PartnerStat {
 interface Props {
   class?: string;
   stats?: PartnerStat[];
+  logoUrl?: string;
 }
 
-const { class: className = "", stats = [] } = Astro.props;
+const { class: className = "", stats = [], logoUrl = '' } = Astro.props;
 
 const topRow = stats.slice(0, 3);
 const bottomRow = stats.slice(3, 6);
@@ -34,7 +35,7 @@ const bottomRow = stats.slice(3, 6);
         class="block bg-white rounded-b-xl p-2"
       >
         <OptimizedImage
-          src="/i-squared-capital-logo.png"
+          src={logoUrl || '/i-squared-capital-logo.png'}
           alt="I Squared Capital Logo"
           aspectRatio="5.2:1"
           class="w-[200px] h-auto mx-auto hover:opacity-80 transition-all duration-300"

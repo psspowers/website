@@ -11,17 +11,20 @@ const results = await Promise.allSettled([
   supabase.from('team_members').select('name, role, bio, image_url, linkedin_url').eq('is_visible', true).order('display_order', { ascending: true }),
   supabase.from('milestones').select('*').order('display_order', { ascending: true }),
   supabase.from('partner_stats').select('value, label, sort_order').order('sort_order', { ascending: true }),
+  supabase.from('site_settings').select('key,value').eq('key', 'partner_logo_url'),
 ]);
 
 const { data: dbStats }        = results[0].status === 'fulfilled' ? results[0].value : { data: null };
 const { data: dbLeaders }      = results[1].status === 'fulfilled' ? results[1].value : { data: null };
 const { data: dbMilestones }   = results[2].status === 'fulfilled' ? results[2].value : { data: null };
 const { data: dbPartnerStats } = results[3].status === 'fulfilled' ? results[3].value : { data: null };
+const { data: dbLogoSetting }  = results[4].status === 'fulfilled' ? results[4].value : { data: null };
 
 const stats = (dbStats ?? []) as { value: number; label: string; format: string }[];
 const leaders = (dbLeaders ?? []).map(m => ({ name: m.name, role: m.role, bio: m.bio, image: m.image_url ?? '', linkedin: m.linkedin_url ?? '' }));
 const milestones = (dbMilestones ?? []) as { year: string; event: string; logo_url: string | null }[];
 const partnerStats = (dbPartnerStats ?? []) as { value: string; label: string }[];
+const partnerLogoUrl = ((dbLogoSetting ?? []) as { key: string; value: string }[])[0]?.value ?? '';
 ---
 
 <Layout
@@ -33,7 +36,7 @@ const partnerStats = (dbPartnerStats ?? []) as { value: string; label: string }[
   <main class="pt-20">
     <!-- Hero -->
     <section class="dark-gradient-header relative">
-      <FinancialPartnerBadge stats={partnerStats} class="absolute top-6 right-6 lg:top-8 lg:right-12 z-50" />
+      <FinancialPartnerBadge stats={partnerStats} logoUrl={partnerLogoUrl} class="absolute top-6 right-6 lg:top-8 lg:right-12 z-50" />
       <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
         <div class="max-w-3xl text-white" data-aos="fade-up">
           <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-4">Who We Are</p>
@@ -199,7 +202,7 @@ const partnerStats = (dbPartnerStats ?? []) as { value: string; label: string }[
                         src={milestone.logo_url}
                         alt="Partner logo"
                         class="h-8 w-auto transition-all duration-300 hover:opacity-80"
-                        style="mix-blend-mode: multiply; filter: brightness(1.8) contrast(1.2);"
+                        style="filter: brightness(0) invert(1);"
                       />
                     </a>
                   )}

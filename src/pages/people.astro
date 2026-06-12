@@ -4,13 +4,13 @@ import OptimizedImage from '../components/OptimizedImage.astro';
 import FinancialPartnerBadge from '../components/FinancialPartnerBadge.astro';
 import { supabase } from '../lib/supabase';
 
-const result = await supabase
-  .from('team_members')
-  .select('name, role, bio, image_url, linkedin_url')
-  .eq('is_visible', true)
-  .order('display_order', { ascending: true });
+const [teamResult, logoResult] = await Promise.allSettled([
+  supabase.from('team_members').select('name, role, bio, image_url, linkedin_url').eq('is_visible', true).order('display_order', { ascending: true }),
+  supabase.from('site_settings').select('key,value').eq('key', 'partner_logo_url'),
+]);
 
-const people = result.data ?? [];
+const people = (teamResult.status === 'fulfilled' ? teamResult.value.data : null) ?? [];
+const partnerLogoUrl = ((logoResult.status === 'fulfilled' ? logoResult.value.data : null) ?? [] as { key: string; value: string }[])[0]?.value ?? '';
 ---
 
 <Layout
@@ -20,7 +20,7 @@ const people = result.data ?? [];
   <main class="pt-20">
     <!-- Hero -->
     <section class="dark-gradient-header relative">
-      <FinancialPartnerBadge class="absolute top-6 right-6 lg:top-8 lg:right-12 z-50" />
+      <FinancialPartnerBadge logoUrl={partnerLogoUrl} class="absolute top-6 right-6 lg:top-8 lg:right-12 z-50" />
       <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
         <div class="max-w-3xl text-white" data-aos="fade-up">
           <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-4">The Team</p>

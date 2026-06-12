@@ -23,8 +23,7 @@ const {
   fallback = "/pss-logo-black.png",
 } = Astro.props;
 
-// Guard against empty src — resolve relative paths against the request origin
-const resolvedSrc = src ? new URL(src, Astro.url).toString() : '';
+const resolvedSrc = src || '';
 
 let paddingBottom = "100%";
 if (aspectRatio) {
