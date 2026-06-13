@@ -229,6 +229,11 @@ export default function ProjectsTab({ supabase }: { supabase: SupabaseClient }) 
 
   const featuredCount = items.filter(i => i.is_featured).length;
   const hiddenCount = items.filter(i => i.is_website_only).length;
+  const totalMWp = items.reduce((sum, i) => {
+    if (!i.capacity || i.capacity.toLowerCase().includes('well')) return sum;
+    const n = parseFloat(i.capacity.replace(/[^\d.]/g, ''));
+    return sum + (isNaN(n) ? 0 : n);
+  }, 0);
   const inp = 'w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6]';
   const sel = `${inp} bg-white`;
 
@@ -243,6 +248,16 @@ export default function ProjectsTab({ supabase }: { supabase: SupabaseClient }) 
         <span className="mx-2 text-gray-300">·</span>
         Hidden from public page: <span className="font-semibold text-gray-700">{hiddenCount}</span>
       </p>
+      <div className="flex flex-wrap gap-4 mb-5">
+        <div className="bg-white border border-gray-200 rounded-xl px-5 py-3 shadow-sm">
+          <p className="text-xs text-gray-500 mb-0.5">Total Projects Secured</p>
+          <p className="text-2xl font-bold text-gray-900">{items.length}</p>
+        </div>
+        <div className="bg-white border border-gray-200 rounded-xl px-5 py-3 shadow-sm">
+          <p className="text-xs text-gray-500 mb-0.5">Total Capacity</p>
+          <p className="text-2xl font-bold text-gray-900">{totalMWp % 1 === 0 ? totalMWp.toFixed(0) : totalMWp.toFixed(2)} <span className="text-sm font-medium text-gray-500">MWp</span></p>
+        </div>
+      </div>
 
       {featuredError && (
         <div className="bg-orange-50 border border-orange-200 text-orange-700 text-sm rounded-lg px-4 py-3 mb-4 flex items-center justify-between">
