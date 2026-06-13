@@ -1,0 +1,170 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const lastUpdated = 'June 2026';
+---
+
+<Layout
+  title="Privacy Policy — Pss.Orange"
+  description="How Pss.Orange collects, uses, and protects your personal information."
+>
+  <main class="pt-20">
+    <!-- Hero -->
+    <section class="dark-gradient-header">
+      <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
+        <div class="max-w-3xl text-white" data-aos="fade-up">
+          <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-4">Legal</p>
+          <h1 class="font-display text-4xl md:text-5xl font-bold tracking-tight mb-4">
+            Privacy Policy
+          </h1>
+          <p class="text-slate-400 text-sm">Last updated: {lastUpdated}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Content -->
+    <section class="py-20">
+      <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
+        <div class="max-w-3xl mx-auto space-y-10">
+
+          <div class="glass rounded-2xl p-8 md:p-10" data-aos="fade-up">
+            <h2 class="text-white font-bold text-xl mb-4">1. Introduction</h2>
+            <p class="text-slate-400 leading-relaxed">
+              This Privacy Policy explains how Power Systems &amp; Solutions Co., Ltd. and its related entities
+              ("Pss.Orange", "we", "our", or "us") collect, use, and protect personal information gathered
+              through this website (pssorange.com), our contact and partner enquiry forms, and the course of
+              our commercial relationships. We are committed to handling your data responsibly and in
+              accordance with applicable privacy laws, including Thailand's Personal Data Protection Act
+              (PDPA) and, where applicable, the General Data Protection Regulation (GDPR).
+            </p>
+          </div>
+
+          <div class="glass rounded-2xl p-8 md:p-10" data-aos="fade-up">
+            <h2 class="text-white font-bold text-xl mb-4">2. Information We Collect</h2>
+            <p class="text-slate-400 leading-relaxed mb-4">
+              We may collect personal information in the following ways:
+            </p>
+            <ul class="space-y-3 text-slate-400 text-sm">
+              {[
+                'Information you submit through our website contact form or partner enquiry form (name, email address, phone number, company, country, role, and message content).',
+                'Information you provide during the course of a commercial relationship, including project discussions, due diligence, or contractual negotiations.',
+                'Technical usage data automatically collected when you visit our website, such as IP address, browser type, pages visited, and referring URL. This data is used in aggregate and is not linked to individuals.',
+                'Information provided when you correspond with us by email, phone, or in person.',
+              ].map(item => (
+                <li class="flex gap-x-3">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0 mt-1.5"></span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="glass rounded-2xl p-8 md:p-10" data-aos="fade-up">
+            <h2 class="text-white font-bold text-xl mb-4">3. How We Use Your Information</h2>
+            <p class="text-slate-400 leading-relaxed mb-4">We use the information we collect to:</p>
+            <ul class="space-y-3 text-slate-400 text-sm">
+              {[
+                'Respond to your enquiries and provide information about our services.',
+                'Evaluate and progress business opportunities, partnerships, or project collaborations.',
+                'Fulfil contractual obligations where a commercial relationship exists.',
+                'Improve our website and user experience through aggregated analytics.',
+                'Comply with legal and regulatory obligations.',
+              ].map(item => (
+                <li class="flex gap-x-3">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0 mt-1.5"></span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <p class="text-slate-400 leading-relaxed mt-4">
+              We do not use your personal information for unsolicited marketing communications without
+              your explicit consent.
+            </p>
+          </div>
+
+          <div class="glass rounded-2xl p-8 md:p-10" data-aos="fade-up">
+            <h2 class="text-white font-bold text-xl mb-4">4. Legal Basis for Processing</h2>
+            <p class="text-slate-400 leading-relaxed">
+              Where GDPR or equivalent legislation applies, we process your personal data on the following
+              legal bases: (a) <span class="text-slate-300 font-medium">Legitimate interests</span> — to
+              respond to business enquiries and manage commercial relationships; (b)
+              <span class="text-slate-300 font-medium">Contractual necessity</span> — where processing is
+              required to perform or prepare a contract with you; (c)
+              <span class="text-slate-300 font-medium">Consent</span> — where you have explicitly agreed
+              to specific processing activities such as receiving communications from us; and (d)
+              <span class="text-slate-300 font-medium">Legal obligation</span> — where we are required to
+              process data to comply with applicable law.
+            </p>
+          </div>
+
+          <div class="glass rounded-2xl p-8 md:p-10" data-aos="fade-up">
+            <h2 class="text-white font-bold text-xl mb-4">5. Data Sharing</h2>
+            <p class="text-slate-400 leading-relaxed">
+              We do not sell, rent, or trade your personal information to third parties. We may share data
+              with trusted service providers who assist us in operating our website and managing
+              communications (such as cloud hosting and database services), strictly for those purposes
+              and subject to appropriate data processing agreements. We may also disclose information
+              where required by law, regulation, or a lawful government request, or to protect the rights
+              and safety of Pss.Orange, our partners, or the public.
+            </p>
+          </div>
+
+          <div class="glass rounded-2xl p-8 md:p-10" data-aos="fade-up">
+            <h2 class="text-white font-bold text-xl mb-4">6. Data Retention</h2>
+            <p class="text-slate-400 leading-relaxed">
+              We retain personal information only for as long as is necessary for the purposes set out in
+              this policy, or as required by applicable law. Enquiry and contact form submissions are
+              typically retained for up to three years. Data held in connection with an active commercial
+              relationship is retained for the duration of that relationship and a reasonable period
+              thereafter for legal and audit purposes.
+            </p>
+          </div>
+
+          <div class="glass rounded-2xl p-8 md:p-10" data-aos="fade-up">
+            <h2 class="text-white font-bold text-xl mb-4">7. Your Rights</h2>
+            <p class="text-slate-400 leading-relaxed mb-4">
+              Depending on your jurisdiction, you may have the right to:
+            </p>
+            <ul class="space-y-3 text-slate-400 text-sm">
+              {[
+                'Request access to the personal data we hold about you.',
+                'Request correction of inaccurate or incomplete data.',
+                'Request deletion of your personal data, subject to legal retention obligations.',
+                'Object to or restrict certain types of processing.',
+                'Withdraw consent at any time where processing is based on consent.',
+                'Lodge a complaint with a relevant data protection authority.',
+              ].map(item => (
+                <li class="flex gap-x-3">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0 mt-1.5"></span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="glass rounded-2xl p-8 md:p-10" data-aos="fade-up">
+            <h2 class="text-white font-bold text-xl mb-4">8. Contact Us</h2>
+            <p class="text-slate-400 leading-relaxed">
+              To exercise your rights, ask questions about this policy, or raise a privacy concern, please
+              contact us at:
+            </p>
+            <div class="mt-4 p-4 rounded-xl bg-slate-800/50 text-sm text-slate-300 space-y-1">
+              <p class="font-semibold text-white">Power Systems &amp; Solutions Co., Ltd. (Pss.Orange)</p>
+              <p>Ocean Tower 2 (26th Floor), 75/56 Sukhumvit Soi 19, Bangkok 10110, Thailand</p>
+              <p>
+                Email:&nbsp;
+                <a href="mailto:info@pssorange.com" class="text-emerald-400 hover:text-emerald-300 transition-colors" style="min-height: auto;">
+                  info@pssorange.com
+                </a>
+              </p>
+            </div>
+            <p class="text-slate-400 leading-relaxed mt-4">
+              We aim to respond to all privacy-related requests within 30 days.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>
