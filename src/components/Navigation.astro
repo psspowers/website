@@ -9,10 +9,11 @@ const links = [
   { text: 'Projects', href: '/projects' },
   { text: 'News', href: '/news' },
   { text: 'Group', href: '/group' },
+  { text: 'Contact', href: '/contact' },
 ];
 ---
 
-<header class="fixed w-full z-50 transition-all duration-300" id="main-nav">
+<header class="fixed w-full z-50 transition-all duration-300 bg-slate-950/70 backdrop-blur-md border-b border-white/5" id="main-nav">
   <nav class="max-w-screen-2xl mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
     <!-- Logo -->
     <a href="/" class="flex items-center flex-shrink-0">
@@ -20,11 +21,11 @@ const links = [
     </a>
 
     <!-- Desktop Nav -->
-    <div class="hidden md:flex items-center gap-x-5 text-sm font-medium">
+    <div class="hidden md:flex items-center gap-x-5">
       {links.map(link => (
         <a
           href={link.href}
-          class={`transition-colors duration-200 ${
+          class={`text-[13px] font-medium tracking-normal transition-colors duration-200 ${
             (currentPath === link.href) || (currentPath.startsWith(link.href) && link.href !== '/')
               ? 'text-emerald-400 font-semibold'
               : 'text-slate-300 hover:text-white'
@@ -38,15 +39,8 @@ const links = [
     <!-- CTA Buttons -->
     <div class="flex items-center gap-x-3">
       <a
-        href="/contact"
-        class="hidden md:inline-flex items-center px-5 py-2 text-sm font-semibold rounded-full border border-slate-600 hover:border-slate-400 text-slate-300 hover:text-white transition-all duration-200"
-        style="min-height: auto;"
-      >
-        Contact
-      </a>
-      <a
         href="/partner-with-us"
-        class="hidden md:inline-flex items-center px-5 py-2 bg-emerald-500 hover:bg-emerald-600 transition-colors text-slate-950 font-semibold text-sm rounded-full"
+        class="hidden md:inline-flex items-center px-5 py-2 bg-[#059669] hover:bg-[#047857] transition-colors text-white font-semibold text-sm rounded-full"
         style="min-height: auto;"
       >
         Partner With Us
@@ -85,13 +79,6 @@ const links = [
           {link.text}
         </a>
       ))}
-      <a
-        href="/contact"
-        class="py-3 text-base font-medium text-slate-300 hover:text-white transition-colors border-b border-slate-800/60"
-        style="min-height: auto;"
-      >
-        Contact
-      </a>
       <a
         href="/partner-with-us"
         class="py-3 text-base font-medium text-emerald-400 hover:text-emerald-300 transition-colors"
