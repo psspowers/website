@@ -1,6 +1,7 @@
 ---
 import { supabase } from '../lib/supabase';
 import Icon from './Icon.astro';
+import { detectOffice } from '../utils/geoOffice';
 
 const currentYear = new Date().getFullYear();
 
@@ -11,16 +12,30 @@ interface OfficeRow {
   phone: string | null;
   email: string | null;
   show_in_list: boolean;
+  country_code: string | null;
 }
 
 const { data: officeRows } = await supabase
   .from('offices')
-  .select('country, name, address, phone, email, show_in_list')
+  .select('country, name, address, phone, email, show_in_list, country_code')
   .order('created_at', { ascending: true });
 
-const offices: OfficeRow[] = officeRows ?? [];
-const hq = offices[0] ?? null;
+const offices = (officeRows ?? []) as OfficeRow[];
 const otherOffices = offices.slice(1).filter(o => o.show_in_list);
+
+const allOfficesMapped = offices.map(o => ({
+  country: o.country,
+  name: o.name,
+  address: o.address,
+  phone: o.phone ?? undefined,
+  email: o.email ?? undefined,
+  coordinates: [0, 0] as [number, number],
+  showInList: o.show_in_list,
+  countryCode: o.country_code ?? undefined,
+}));
+
+const contactOffice = detectOffice(Astro.request.headers, allOfficesMapped);
+const isHQ = contactOffice === allOfficesMapped[0] || contactOffice.country === allOfficesMapped[0]?.country;
 ---
 
 <footer class="bg-slate-900 border-t border-slate-800 py-12">
@@ -50,23 +65,25 @@ const otherOffices = offices.slice(1).filter(o => o.show_in_list);
         </ul>
       </div>
 
-      <!-- HQ Contact -->
+      <!-- Contact (geo-localised) -->
       <div>
         <h4 class="text-white font-semibold text-sm mb-4">Contact</h4>
-        {hq ? (
+        {contactOffice ? (
           <ul class="space-y-3 text-sm text-slate-400">
             <li>
-              <span class="text-slate-300 font-medium block">{hq.country} (HQ)</span>
-              {hq.address}
+              <span class="text-slate-300 font-medium block">
+                {contactOffice.country}{isHQ ? ' (HQ)' : ` — ${contactOffice.name}`}
+              </span>
+              {contactOffice.address}
             </li>
-            {hq.phone && (
+            {contactOffice.phone && (
               <li class="pt-1">
-                <a href={`tel:${hq.phone.replace(/\s+/g, '')}`} class="hover:text-emerald-400 transition-colors" style="min-height: auto;">{hq.phone}</a>
+                <a href={`tel:${contactOffice.phone.replace(/\s+/g, '')}`} class="hover:text-emerald-400 transition-colors" style="min-height: auto;">{contactOffice.phone}</a>
               </li>
             )}
-            {hq.email && (
+            {contactOffice.email && (
               <li>
-                <a href={`mailto:${hq.email}`} class="hover:text-emerald-400 transition-colors" style="min-height: auto;">{hq.email}</a>
+                <a href={`mailto:${contactOffice.email}`} class="hover:text-emerald-400 transition-colors" style="min-height: auto;">{contactOffice.email}</a>
               </li>
             )}
           </ul>

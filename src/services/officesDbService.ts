@@ -8,6 +8,7 @@ export interface Office {
   email?: string;
   coordinates: [number, number];
   showInList: boolean;
+  countryCode?: string;
 }
 
 interface OfficeRow {
@@ -20,6 +21,7 @@ interface OfficeRow {
   coordinates_lat: number;
   coordinates_lng: number;
   show_in_list: boolean;
+  country_code: string | null;
   created_at: string;
 }
 
@@ -33,6 +35,7 @@ function rowToOffice(row: OfficeRow): Office {
     // Match original [lng, lat] tuple order expected by ContactMap
     coordinates: [Number(row.coordinates_lng), Number(row.coordinates_lat)],
     showInList: row.show_in_list,
+    countryCode: row.country_code ?? undefined,
   };
 }
 
