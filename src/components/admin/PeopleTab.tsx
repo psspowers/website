@@ -9,6 +9,7 @@ interface TeamMember {
   bio: string;
   image_url: string | null;
   linkedin_url: string | null;
+  region: 'india' | 'sea' | 'global';
   display_order: number;
   is_visible: boolean;
 }
@@ -21,6 +22,7 @@ const EMPTY: FormData = {
   bio: '',
   image_url: '',
   linkedin_url: '',
+  region: 'global',
   display_order: 1,
   is_visible: true,
 };
@@ -249,6 +251,19 @@ export default function PeopleTab({ supabase }: { supabase: SupabaseClient }) {
               </div>
 
               <div>
+                <FieldLabel label="Region" tip="Controls geo-based ordering: India visitors see India team members first; SEA visitors see SEA members first. Global = no regional preference." />
+                <select
+                  value={form.region}
+                  onChange={e => set('region', e.target.value as FormData['region'])}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1550b6] bg-white"
+                >
+                  <option value="global">Global (no preference)</option>
+                  <option value="india">India</option>
+                  <option value="sea">Southeast Asia</option>
+                </select>
+              </div>
+
+              <div>
                 <FieldLabel label="Display Order" tip="Controls the left-to-right order on the About page. Lower numbers appear first. Use gaps (10, 20, 30) to allow easy reordering later." />
                 <input
                   type="number"
@@ -346,6 +361,11 @@ export default function PeopleTab({ supabase }: { supabase: SupabaseClient }) {
                         </div>
                       )}
                       <span className="font-medium text-gray-900">{item.name}</span>
+                      {item.region !== 'global' && (
+                        <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${item.region === 'india' ? 'bg-orange-100 text-orange-700' : 'bg-sky-100 text-sky-700'}`}>
+                          {item.region === 'india' ? 'IN' : 'SEA'}
+                        </span>
+                      )}
                     </div>
                   </td>
                   <td className="px-4 py-3 text-gray-500 hidden sm:table-cell">{item.role}</td>

@@ -4,12 +4,19 @@ import OptimizedImage from '../components/OptimizedImage.astro';
 import FinancialPartnerBadge from '../components/FinancialPartnerBadge.astro';
 import { supabase } from '../lib/supabase';
 
+const SEA_COUNTRIES = new Set(['TH','SG','MY','VN','ID','PH','MM','KH','LA','BN']);
+const countryCode = Astro.request.headers.get('x-nf-country') ?? '';
+const preferredRegion = countryCode === 'IN' ? 'india' : SEA_COUNTRIES.has(countryCode) ? 'sea' : null;
+
 const [teamResult, logoResult] = await Promise.allSettled([
-  supabase.from('team_members').select('name, role, bio, image_url, linkedin_url').eq('is_visible', true).order('display_order', { ascending: true }),
+  supabase.from('team_members').select('name, role, bio, image_url, linkedin_url, region').eq('is_visible', true).order('display_order', { ascending: true }),
   supabase.from('site_settings').select('key,value').eq('key', 'partner_logo_url'),
 ]);
 
-const people = (teamResult.status === 'fulfilled' ? teamResult.value.data : null) ?? [];
+const rawPeople = (teamResult.status === 'fulfilled' ? teamResult.value.data : null) ?? [];
+const people = preferredRegion
+  ? [...rawPeople.filter(p => p.region === preferredRegion), ...rawPeople.filter(p => p.region !== preferredRegion)]
+  : rawPeople;
 const partnerLogoUrl = ((logoResult.status === 'fulfilled' ? logoResult.value.data : null) ?? [] as { key: string; value: string }[])[0]?.value ?? '';
 ---
 
