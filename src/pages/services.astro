@@ -3,6 +3,13 @@ import Layout from '../layouts/Layout.astro';
 import AnimatedStats from '../components/AnimatedStats.astro';
 import { services, certifications } from '../data/services';
 import Icon from '../components/Icon.astro';
+
+const serviceCtas: Record<string, { text: string; modal: string }> = {
+  spd:      { text: 'Discuss Project Financing', modal: 'investment' },
+  epc:      { text: 'Explore EPC Partnership',   modal: 'epc' },
+  om:       { text: 'Request O&M Assessment',     modal: 'strategic' },
+  retrofit: { text: 'Explore Repowering Options', modal: 'strategic' },
+};
 ---
 
 <Layout
@@ -64,10 +71,22 @@ import Icon from '../components/Icon.astro';
 
                 <div class="border-t border-slate-700/50 pt-6">
                   <h3 class="text-white font-semibold text-sm mb-3">Success Story</h3>
-                  <div class="bg-slate-800/60 p-4 rounded-xl">
+                  <div class="bg-slate-800/60 p-4 rounded-xl mb-6">
                     <p class="text-white font-medium text-sm mb-1">{service.success.client}</p>
                     <p class="text-slate-400 text-sm">{service.success.result}</p>
                   </div>
+                  {serviceCtas[service.id] && (
+                    <a
+                      href={`/partner-with-us?modal=${serviceCtas[service.id].modal}`}
+                      class="inline-flex items-center gap-x-2 px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 transition-colors text-slate-950 font-semibold text-sm rounded-full"
+                      style="min-height: auto;"
+                    >
+                      {serviceCtas[service.id].text}
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                      </svg>
+                    </a>
+                  )}
                 </div>
               </div>
             </div>

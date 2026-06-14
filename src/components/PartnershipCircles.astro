@@ -1,0 +1,68 @@
+---
+const partnerships = [
+  {
+    id: 'strategic-partnership',
+    title: 'Strategic Partnership',
+    subtitle: 'Joint development & market entry across Asia',
+    colorBg: '#10b981',
+    colorBorder: '#059669',
+    svgPath: 'M13 10V3L4 14h7v7l9-11h-7z',
+  },
+  {
+    id: 'investment-capital-partner',
+    title: 'Investment & Capital',
+    subtitle: 'Project equity & institutional co-financing',
+    colorBg: '#3b82f6',
+    colorBorder: '#1d4ed8',
+    svgPath: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+  },
+  {
+    id: 'epc-project-execution',
+    title: 'EPC & Execution',
+    subtitle: 'Engineering, procurement & construction',
+    colorBg: '#f59e0b',
+    colorBorder: '#d97706',
+    svgPath: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4',
+  },
+  {
+    id: 'technology-supply',
+    title: 'Technology & Supply',
+    subtitle: 'Hardware, inverters & equipment supply',
+    colorBg: '#14b8a6',
+    colorBorder: '#0d9488',
+    svgPath: 'M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18',
+  },
+];
+---
+
+<section class="py-20 bg-slate-900/50">
+  <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
+    <div class="text-center mb-14" data-aos="fade-up">
+      <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-3">Partner With Us</p>
+      <h2 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight">How would you like to work with us?</h2>
+      <p class="text-slate-400 mt-3 text-sm max-w-lg mx-auto">Click any option to express interest and start a conversation with our team.</p>
+    </div>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-4xl mx-auto">
+      {partnerships.map((p, i) => (
+        <a
+          href={`/partner-with-us#${p.id}`}
+          class="flex flex-col items-center text-center group"
+          data-aos="fade-up"
+          data-aos-delay={i * 80}
+        >
+          <div
+            class="w-28 h-28 rounded-full flex items-center justify-center mb-5 transition-transform duration-200 group-hover:scale-110"
+            style={`background: ${p.colorBg}; border: 2px solid ${p.colorBorder};`}
+          >
+            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={p.svgPath} />
+            </svg>
+          </div>
+          <h3 class="text-white font-semibold text-sm mb-1.5 group-hover:text-emerald-400 transition-colors">{p.title}</h3>
+          <p class="text-slate-400 text-xs leading-relaxed">{p.subtitle}</p>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

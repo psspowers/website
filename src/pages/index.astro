@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import SolarCalculator from '../components/SolarCalculator.astro';
 import FeaturedProjects from '../components/FeaturedProjects.astro';
+import PartnershipCircles from '../components/PartnershipCircles.astro';
 import { supabase } from '../lib/supabase';
 import { fetchFeaturedProjects, fetchAllProjectsForMetrics } from '../services/projectsDbService';
 import { fetchOffices } from '../services/officesDbService';
@@ -65,60 +66,127 @@ const filterTypes = ['All', ...Array.from(new Set(featuredProjects.map(p => p.ty
 >
   <main>
     <!-- ── Hero ─────────────────────────────────────────────── -->
-    <section class="relative min-h-screen flex items-center bg-cover bg-center bg-no-repeat overflow-hidden" style="background-image: url('/Final_Hero_shot_website.jpg');">
+    <section class="relative min-h-screen flex flex-col bg-cover bg-center bg-no-repeat overflow-hidden" style="background-image: url('/Final_Hero_shot_website.jpg');">
       <div class="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/65 to-slate-950/25 sm:from-slate-950/85"></div>
 
-      <div class="relative max-w-screen-2xl mx-auto px-6 lg:px-8 py-32 md:py-40">
-        <div class="inline-flex items-center gap-x-2 px-3.5 py-1.5 rounded-full glass text-sm text-emerald-300 font-medium mb-8" data-aos="fade-down">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          {heroBadgeText}
-        </div>
-
-        <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-[1.05] tracking-[-0.03em] max-w-4xl mb-8" data-aos="fade-up" data-aos-delay="50">
-          Powering Asia's<br />
-          <span class="text-emerald-400">Clean Energy</span><br />
-          Transition
-        </h1>
-
-        <p class="text-xl text-slate-300 max-w-2xl mb-10 leading-relaxed" data-aos="fade-up" data-aos-delay="100">
-          {heroParagraph}
-        </p>
-
-        <div class="flex flex-wrap gap-4 mb-16" data-aos="fade-up" data-aos-delay="150">
-          <a href="/projects" class="inline-flex items-center gap-x-2 px-7 py-3.5 bg-emerald-500 hover:bg-emerald-600 transition-colors text-slate-950 font-semibold rounded-full text-sm" style="min-height: auto;">
-            Explore Projects
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-            </svg>
-          </a>
-          <a href="/partner-with-us" class="inline-flex items-center gap-x-2 px-7 py-3.5 glass hover:bg-slate-700/50 transition-colors text-slate-200 font-semibold rounded-full text-sm" style="min-height: auto;">
-            Partner With Us
-          </a>
-        </div>
-
-        <div class="flex items-center gap-x-4" data-aos="fade-up" data-aos-delay="200">
-          <div class="flex -space-x-2.5">
-            <img src="/Team/Nakkarin.jpg" alt="Nakkarin" class="w-10 h-10 rounded-full border-2 border-slate-800 object-cover" onerror="this.style.display='none'" />
-            <img src="/Team/Sam.jpg" alt="Sam Yamdagni" class="w-10 h-10 rounded-full border-2 border-slate-800 object-cover" onerror="this.style.display='none'" />
-            <img src="/Team/Suraphol.jpg" alt="Suraphol" class="w-10 h-10 rounded-full border-2 border-slate-800 object-cover" onerror="this.style.display='none'" />
-            <div class="w-10 h-10 rounded-full border-2 border-slate-800 bg-slate-700 flex items-center justify-center text-xs font-semibold text-slate-300">+5</div>
+      <div class="relative flex-1 flex items-center w-full max-w-screen-2xl mx-auto px-6 lg:px-8 pt-32 pb-8">
+        <div>
+          <div class="inline-flex items-center gap-x-2 px-3.5 py-1.5 rounded-full glass text-sm text-emerald-300 font-medium mb-8" data-aos="fade-down">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            {heroBadgeText}
           </div>
-          <p class="text-slate-400 text-sm">{heroTeamCount} energy professionals across Asia</p>
+
+          <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-[1.05] tracking-[-0.03em] max-w-4xl mb-8" data-aos="fade-up" data-aos-delay="50">
+            Cheaper. Cleaner.<br />
+            <span class="text-emerald-400">Predictable Energy</span><br />
+            Across Asia
+          </h1>
+
+          <p class="text-xl text-slate-300 max-w-2xl mb-10 leading-relaxed" data-aos="fade-up" data-aos-delay="100">
+            {heroParagraph}
+          </p>
+
+          <div class="flex flex-wrap gap-4 mb-12" data-aos="fade-up" data-aos-delay="150">
+            <a href="/projects" class="inline-flex items-center gap-x-2 px-7 py-3.5 bg-emerald-500 hover:bg-emerald-600 transition-colors text-slate-950 font-semibold rounded-full text-sm" style="min-height: auto;">
+              Explore Projects
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              </svg>
+            </a>
+            <a href="/partner-with-us" class="inline-flex items-center gap-x-2 px-7 py-3.5 glass hover:bg-slate-700/50 transition-colors text-slate-200 font-semibold rounded-full text-sm" style="min-height: auto;">
+              Partner With Us
+            </a>
+          </div>
+
+          <div class="flex items-center gap-x-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="flex -space-x-2.5">
+              <img src="/Team/Nakkarin.jpg" alt="Nakkarin" class="w-10 h-10 rounded-full border-2 border-slate-800 object-cover" onerror="this.style.display='none'" />
+              <img src="/Team/Sam.jpg" alt="Sam Yamdagni" class="w-10 h-10 rounded-full border-2 border-slate-800 object-cover" onerror="this.style.display='none'" />
+              <img src="/Team/Suraphol.jpg" alt="Suraphol" class="w-10 h-10 rounded-full border-2 border-slate-800 object-cover" onerror="this.style.display='none'" />
+              <div class="w-10 h-10 rounded-full border-2 border-slate-800 bg-slate-700 flex items-center justify-center text-xs font-semibold text-slate-300">+5</div>
+            </div>
+            <p class="text-slate-400 text-sm">{heroTeamCount} energy professionals across Asia</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats anchored at the bottom of the hero — visible above the fold -->
+      <div class="relative w-full max-w-screen-2xl mx-auto px-6 lg:px-8 pb-12" data-aos="fade-up" data-aos-delay="250">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {heroStats.map(stat => (
+            <div class="glass rounded-2xl p-5 text-center">
+              <p class="font-display text-3xl md:text-4xl font-bold text-white mb-1">
+                {stat.value}<span class="text-emerald-400">{stat.format}</span>
+              </p>
+              <p class="text-slate-400 text-sm">{stat.label}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
 
-    <!-- ── Stats strip ───────────────────────────────────────── -->
-    <section class="relative z-10 max-w-screen-2xl mx-auto px-6 lg:px-8 -mt-8">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4" data-aos="fade-up">
-        {heroStats.map(stat => (
-          <div class="glass rounded-2xl p-6 text-center">
-            <p class="font-display text-3xl md:text-4xl font-bold text-white mb-1">
-              {stat.value}<span class="text-emerald-400">{stat.format}</span>
+    <!-- ── I Squared Capital ─────────────────────────────────── -->
+    <section class="py-20 border-b border-slate-800/60">
+      <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+          <div data-aos="fade-right">
+            <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-4">Institutional Partnership</p>
+            <h2 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight mb-5 leading-tight">
+              Backed by one of the world's largest infrastructure investors
+            </h2>
+            <p class="text-slate-400 leading-relaxed mb-4">
+              PSS Orange is backed by I Squared Capital — a leading global infrastructure investor with $40B+ in assets under management — and partners with Berde, their renewable energy subsidiary.
             </p>
-            <p class="text-slate-400 text-sm">{stat.label}</p>
+            <p class="text-slate-400 leading-relaxed mb-8">
+              This institutional backing means every project we deliver meets the highest standards of financial governance, technical execution, and long-term operational accountability. It also means we can mobilise significant capital for the right opportunities.
+            </p>
+            <div class="flex flex-wrap gap-4">
+              <a
+                href="/partner-with-us#investment-capital-partner"
+                class="inline-flex items-center gap-x-2 px-6 py-3 bg-emerald-500 hover:bg-emerald-600 transition-colors text-slate-950 font-semibold rounded-full text-sm"
+                style="min-height: auto;"
+              >
+                Explore co-investment opportunities
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+              </a>
+              <a
+                href="/news"
+                class="inline-flex items-center gap-x-2 px-6 py-3 border border-slate-600 hover:border-slate-400 text-slate-300 hover:text-white transition-colors rounded-full text-sm font-semibold"
+                style="min-height: auto;"
+              >
+                Read announcement
+              </a>
+            </div>
           </div>
-        ))}
+
+          <div class="flex flex-col gap-6" data-aos="fade-left">
+            <div class="glass rounded-2xl overflow-hidden">
+              <img
+                src="/News_Images/2025-02_2025-02-15_isq-partnership-announcement.jpg"
+                alt="I Squared Capital Partnership Announcement"
+                class="w-full object-cover aspect-video"
+              />
+              <div class="p-6 flex items-center gap-4">
+                <div class="bg-[#0B1F3F] rounded-xl px-5 py-3 flex-shrink-0">
+                  <p class="text-white text-[10px] uppercase tracking-wider font-semibold mb-1">Financial Partner</p>
+                  <div class="bg-white rounded-lg p-2 mt-1">
+                    <img
+                      src="/i-squared-capital-logo.png"
+                      alt="I Squared Capital"
+                      class="h-6 w-auto object-contain"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <p class="text-white font-semibold text-sm">Strategic Partnership Announced</p>
+                  <p class="text-slate-400 text-xs mt-0.5">February 2025 — Scaling renewable energy across Asia</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -230,6 +298,8 @@ const filterTypes = ['All', ...Array.from(new Set(featuredProjects.map(p => p.ty
     </section>
 
     <FeaturedProjects projects={featuredProjects} filterTypes={filterTypes} />
+
+    <PartnershipCircles />
 
     <!-- ── Impact ────────────────────────────────────────────── -->
     <section class="bg-slate-900 py-24">
