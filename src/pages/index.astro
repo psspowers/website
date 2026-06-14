@@ -146,26 +146,43 @@ const filterTypes = ['All', ...Array.from(new Set(featuredProjects.map(p => p.ty
             </p>
 
             <!-- Stat strip -->
-            <div class="grid grid-cols-2 gap-3 mb-6">
+            <div class="grid grid-cols-2 gap-3 mb-3">
               {[
                 { value: '21+ GW', label: 'Power Portfolio (Renewables & Thermal)' },
                 { value: '~400 MWhr', label: 'Battery Storage Executed' },
                 { value: '3.1M+', label: 'Electricity Distribution Customers' },
-                { value: 'APAC', label: 'Data Centre & Hyperscaler PPAs' },
+                { value: '1,000 km', label: 'Transmission Lines' },
               ].map(stat => (
                 <div class="bg-slate-800/60 border border-slate-700/50 rounded-xl px-4 py-3">
                   <p class="font-display text-xl font-bold text-emerald-400 leading-none mb-1">{stat.value}</p>
                   <p class="text-slate-400 text-xs leading-snug">{stat.label}</p>
                 </div>
               ))}
-              <div class="col-span-2 bg-slate-800/60 border border-slate-700/50 rounded-xl px-4 py-3 flex items-center gap-4">
-                <p class="font-display text-xl font-bold text-emerald-400 leading-none">1,000 km</p>
-                <p class="text-slate-400 text-xs">Transmission Lines</p>
+            </div>
+
+            <!-- Data Centre portfolio card -->
+            <div class="bg-slate-800/60 border border-slate-700/50 rounded-xl px-4 py-3 mb-6">
+              <p class="text-[10px] font-semibold uppercase tracking-widest text-emerald-400 mb-2.5">Data Centre &amp; Hyperscaler Portfolio</p>
+              <div class="grid grid-cols-2 gap-x-4 gap-y-2">
+                {[
+                  { flag: '🇦🇺', region: 'Australia / NZ', spec: '80 MW + 80 MWhr BESS' },
+                  { flag: '🇺🇸', region: 'United States', spec: '53 MW — 10 facilities' },
+                  { flag: '🇧🇷', region: 'Brazil', spec: '300+ MW — 9 campuses' },
+                  { flag: '🇯🇵', region: 'Japan', spec: '50 MW + 50 MWhr BESS' },
+                ].map(m => (
+                  <div class="flex items-start gap-2">
+                    <span class="text-base leading-none mt-0.5">{m.flag}</span>
+                    <div>
+                      <p class="text-white text-xs font-semibold leading-none mb-0.5">{m.region}</p>
+                      <p class="text-slate-400 text-[11px]">{m.spec}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
             <p class="text-slate-400 text-sm leading-relaxed mb-8">
-              With deep roots in Asia Pacific — including hyperscaler PPAs across multiple APAC markets and a growing data centre energy portfolio — I Squared brings both the capital and regional access to unlock the continent's fastest-growing energy demand centres.
+              With a growing data centre and hyperscaler energy portfolio across four continents — including BESS-paired assets in Australia and Japan — I Squared brings institutional capital and proven execution to the world's fastest-growing power demand sector.
             </p>
 
             <div class="flex flex-wrap gap-4">
