@@ -1,262 +1,441 @@
 ---
+// PSS Orange PPA Calculator — Thailand
+// Replaces the old hardcoded SolarCalculator component
+// Model mirrors the PSS Orange Excel savings calculation sheet
 ---
 
-<section class="py-28 max-w-screen-2xl mx-auto px-6 lg:px-8">
-  <div class="grid lg:grid-cols-2 gap-16 items-start">
-    <!-- LEFT: Info -->
-    <div data-aos="fade-right" class="lg:sticky lg:top-28">
-      <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-4">Thailand Solar Savings Estimator</p>
-      <h2 class="font-display text-4xl md:text-5xl font-bold text-white leading-tight tracking-tight mb-4">
-        How much could you save?
-      </h2>
-      <p class="text-slate-400 text-lg leading-relaxed mb-8">
-        Select your facility type and adjust your annual electricity consumption to see an
-        indicative solar savings estimate — split by peak and off-peak hours.
-      </p>
-      <p class="text-slate-400 text-sm leading-relaxed mb-6">
-        Solar generates most of its power during peak hours (10 AM – 10 PM), when Thailand's
-        electricity tariff is highest. This calculator reflects that reality.
-      </p>
+<section class="py-16 max-w-screen-xl mx-auto px-6 lg:px-8">
+  <div class="max-w-2xl mx-auto">
 
-      <details class="group">
-        <summary class="cursor-pointer text-slate-500 hover:text-slate-300 text-sm font-semibold transition-colors list-none flex items-center gap-2">
-          <svg class="w-4 h-4 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-          </svg>
-          Show assumptions &amp; disclaimers
-        </summary>
-        <div class="mt-4 bg-slate-900/50 border border-slate-700/60 rounded-xl p-4">
-          <ul class="space-y-2 text-slate-400 text-xs">
-            <li class="flex gap-2"><span class="text-emerald-400 flex-shrink-0">•</span> Peak tariff (฿4.2/kWh ≈ $0.12/kWh): Weekdays 10 AM – 10 PM</li>
-            <li class="flex gap-2"><span class="text-emerald-400 flex-shrink-0">•</span> Off-peak tariff (฿2.6/kWh ≈ $0.074/kWh): Weekday nights 10 PM – 10 AM + all weekends/holidays</li>
-            <li class="flex gap-2"><span class="text-emerald-400 flex-shrink-0">•</span> Assumes 85% of solar generation occurs during peak hours, 15% off-peak</li>
-            <li class="flex gap-2"><span class="text-emerald-400 flex-shrink-0">•</span> Install cost: $0.68/kWp (&lt;3 MW project) or $0.60/kWp (3 MW+ project)</li>
-            <li class="flex gap-2"><span class="text-emerald-400 flex-shrink-0">•</span> 1,450 peak sun hours/year (Thailand average)</li>
-            <li class="flex gap-2"><span class="text-emerald-400 flex-shrink-0">•</span> 72.5% of annual consumption offset by solar (15% system losses applied)</li>
-            <li class="flex gap-2"><span class="text-emerald-400 flex-shrink-0">•</span> 0.5% annual system degradation (standard for quality modules)</li>
-            <li class="flex gap-2"><span class="text-emerald-400 flex-shrink-0">•</span> CO₂ offset: 0.65 kg/kWh (Thailand grid average)</li>
-            <li class="flex gap-2"><span class="text-emerald-400 flex-shrink-0">•</span> Does NOT include: taxes, incentives, financing costs, O&amp;M expenses</li>
-            <li class="flex gap-2"><span class="text-emerald-400 flex-shrink-0">•</span> Your actual savings depend on: system design, roof orientation, component quality, tariff changes</li>
-            <li class="flex gap-2"><span class="text-emerald-400 flex-shrink-0">•</span> This is an ESTIMATE for initial assessment. Site-specific analysis required.</li>
-          </ul>
-        </div>
-      </details>
+<h2 class="sr-only">PSS Orange solar PPA savings calculator for Thailand — estimate how much you can save under a 15-year power purchase agreement</h2>
+<style>
+*{box-sizing:border-box}
+.sp{display:none}.sp.on{display:block}
+.rp{display:none}.rp.on{display:block}
+.sdot{width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;border:1.5px solid var(--color-border-secondary);color:var(--color-text-tertiary);flex-shrink:0}
+.sdot.done{background:#10b981;border-color:#10b981;color:#fff}
+.sdot.active{border-color:#10b981;color:#10b981}
+.sline{flex:1;height:1px;background:var(--color-border-tertiary)}
+.sline.done{background:#10b981}
+.mc{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px 16px}
+.mval{font-size:20px;font-weight:500;margin:4px 0 2px;color:var(--color-text-primary)}
+.mlbl{font-size:12px;color:var(--color-text-secondary);margin:0}
+.pbn{padding:8px 13px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:13px;color:var(--color-text-secondary);cursor:pointer;background:transparent;line-height:1.3}
+.pbn:hover{background:var(--color-background-secondary)}
+.pbn.sel{border-color:#10b981;color:#10b981;background:rgba(16,185,129,0.08)}
+.ain{position:relative}
+.ain input{padding-right:36px}
+.ain .u{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--color-text-tertiary);pointer-events:none}
+.nb{display:flex;gap:10px;margin-top:24px}
+.nb button{flex:1;padding:12px;border-radius:var(--border-radius-md);font-size:14px;font-weight:500;cursor:pointer}
+.bbk{background:transparent;border:0.5px solid var(--color-border-secondary);color:var(--color-text-secondary)}
+.bgo{background:#10b981;border:none;color:#fff}
+.bgo:disabled{background:var(--color-background-secondary);color:var(--color-text-tertiary);cursor:not-allowed}
+.gcard{border-left:2px solid #10b981;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;background:rgba(16,185,129,0.06);padding:10px 14px}
+.cw{position:relative;width:100%}
+.leg{display:flex;flex-wrap:wrap;gap:10px;font-size:11px;color:var(--color-text-secondary);margin-bottom:8px}
+.lsq{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:3px;vertical-align:middle}
+</style>
+
+<div style="padding:1rem 0 0">
+
+<div style="display:flex;align-items:center;gap:4px;margin-bottom:28px" id="stepBar">
+  <div class="sdot active" id="dot1">1</div><div class="sline" id="line1"></div>
+  <div class="sdot" id="dot2">2</div><div class="sline" id="line2"></div>
+  <div class="sdot" id="dot3">3</div><div class="sline" id="line3"></div>
+  <div class="sdot" id="dot4">4</div>
+</div>
+
+<!-- STEP 1: Monthly Bill -->
+<div class="sp on" id="s1">
+  <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 3px">Step 1 of 4</p>
+  <h2 style="margin:0 0 6px;font-size:20px;font-weight:500">What is your monthly electricity bill?</h2>
+  <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 18px">Total from your PEA / MEA invoice including all charges.</p>
+  <div style="position:relative;margin-bottom:8px">
+    <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:17px;font-weight:500;color:#10b981">&#3647;</span>
+    <input type="number" id="billIn" placeholder="e.g. 500000" min="0" oninput="onBill()"
+      style="width:100%;padding:14px 14px 14px 34px;font-size:18px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary)">
+  </div>
+  <p style="font-size:12px;color:var(--color-text-tertiary);margin:0 0 14px">Thai Baht (THB) per month</p>
+  <div id="billPrev" style="display:none" class="gcard">
+    <p style="margin:0;font-size:12px;color:var(--color-text-secondary)">Annual electricity spend</p>
+    <p style="margin:4px 0 0;font-size:16px;font-weight:500" id="billPrevV"></p>
+  </div>
+  <div class="nb"><button class="bgo" id="s1n" onclick="goStep(2)" disabled>Next &#8594;</button></div>
+</div>
+
+<!-- STEP 2: Working Hours -->
+<div class="sp" id="s2">
+  <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 3px">Step 2 of 4</p>
+  <h2 style="margin:0 0 6px;font-size:20px;font-weight:500">When does your facility operate?</h2>
+  <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 16px">Determines your split between peak (&#3647;5.16/kWh) and off-peak (&#3647;3.58/kWh) tariffs.</p>
+  <p style="font-size:12px;font-weight:500;margin:0 0 8px">Quick presets</p>
+  <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px">
+    <button class="pbn sel" id="pb0" onclick="setH(8,18,false,0)">Office 8am&ndash;6pm</button>
+    <button class="pbn" id="pb1" onclick="setH(8,21,false,1)">Retail 8am&ndash;9pm</button>
+    <button class="pbn" id="pb2" onclick="setH(6,22,false,2)">Factory 2-shift 6am&ndash;10pm</button>
+    <button class="pbn" id="pb3" onclick="setH(0,24,false,3)">24/7 weekdays</button>
+    <button class="pbn" id="pb4" onclick="setH(6,18,true,4)">6-day week 6am&ndash;6pm</button>
+    <button class="pbn" id="pb5" onclick="setH(0,24,true,5)">24/7 incl. weekends</button>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+    <div>
+      <label style="font-size:12px;color:var(--color-text-secondary);display:block;margin-bottom:6px">Start time</label>
+      <select id="shSel" onchange="onHC()" style="width:100%;padding:9px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-size:13px"></select>
     </div>
-
-    <!-- RIGHT: Calculator -->
-    <div class="glass rounded-3xl p-8" data-aos="fade-left">
-
-      <!-- Segment Selector -->
-      <label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2" for="segment-select">
-        Facility type
-      </label>
-      <select
-        id="segment-select"
-        class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm mb-6 focus:outline-none focus:border-emerald-500 transition-colors"
-      >
-        <option value="industrial_captive">Industrial Manufacturing (Captive Power)</option>
-        <option value="commercial_bangkok">Commercial – Bangkok Metropolitan</option>
-        <option value="commercial_regional">Commercial – Provincial (Non-Bangkok)</option>
-        <option value="agricultural">Agricultural &amp; Water Infrastructure</option>
-        <option value="residential">Residential (Homes, Condos)</option>
-      </select>
-
-      <!-- Consumption Slider -->
-      <label class="block text-white font-semibold mb-2" for="consumption-slider">
-        Annual consumption: <span id="consumption-display" class="text-emerald-400">500,000</span> kWh
-      </label>
-      <input
-        id="consumption-slider"
-        type="range"
-        min="5000"
-        max="5000000"
-        step="5000"
-        value="500000"
-        class="w-full accent-emerald-500 mb-8"
-        style="min-height: auto;"
-      />
-
-      <!-- System Size + Payback -->
-      <div class="grid grid-cols-2 gap-4 mb-6">
-        <div class="bg-slate-800/60 rounded-xl p-4 text-center">
-          <p class="text-slate-400 text-xs mb-1">System Size</p>
-          <p id="result-size" class="text-white font-bold text-lg">250 kWp</p>
-        </div>
-        <div class="bg-slate-800/60 rounded-xl p-4 text-center">
-          <p class="text-slate-400 text-xs mb-1">Payback Period</p>
-          <p id="result-payback" class="text-white font-bold text-lg">4.1 yrs</p>
-        </div>
-      </div>
-
-      <!-- Peak / Off-Peak Breakdown -->
-      <div class="bg-gradient-to-br from-amber-950/40 to-orange-950/40 border border-amber-700/40 rounded-xl p-5 mb-4">
-        <p class="text-amber-300 text-xs font-semibold uppercase tracking-wider mb-4">Annual Savings Breakdown</p>
-
-        <!-- Peak -->
-        <div class="flex justify-between items-start mb-1">
-          <div>
-            <p class="text-amber-200 text-sm font-semibold">Peak Hours</p>
-            <p class="text-slate-500 text-xs">Weekdays 10 AM – 10 PM · ฿4.2/kWh ($0.12)</p>
-          </div>
-          <div class="text-right">
-            <p id="peak-savings" class="text-amber-300 font-bold text-base">$36,975</p>
-            <p id="peak-gen" class="text-slate-500 text-xs">308,125 kWh/yr</p>
-          </div>
-        </div>
-
-        <div class="border-t border-amber-700/20 my-3"></div>
-
-        <!-- Off-Peak -->
-        <div class="flex justify-between items-start mb-4">
-          <div>
-            <p class="text-blue-300 text-sm font-semibold">Off-Peak Hours</p>
-            <p class="text-slate-500 text-xs">Nights + weekends · ฿2.6/kWh ($0.074)</p>
-          </div>
-          <div class="text-right">
-            <p id="offpeak-savings" class="text-blue-300 font-bold text-base">$4,024</p>
-            <p id="offpeak-gen" class="text-slate-500 text-xs">54,375 kWh/yr</p>
-          </div>
-        </div>
-
-        <!-- Total -->
-        <div class="bg-emerald-950/50 border border-emerald-700/40 rounded-lg px-4 py-3 flex justify-between items-center">
-          <div>
-            <p class="text-emerald-300 text-sm font-semibold">Total Annual Savings</p>
-            <p class="text-slate-500 text-xs">Blended: $<span id="blended-tariff">0.113</span>/kWh</p>
-          </div>
-          <p id="result-savings" class="text-emerald-400 font-bold text-xl">$40,999</p>
-        </div>
-      </div>
-
-      <!-- 20-Year Projection -->
-      <div class="bg-emerald-950/30 border border-emerald-800/40 rounded-xl p-4 mb-4">
-        <p class="text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-2">20-Year Projection</p>
-        <div class="flex justify-between items-baseline">
-          <p id="twenty-year-profit" class="text-white text-xl font-bold">$612,000 net profit</p>
-          <p id="twenty-year-roi" class="text-emerald-400 text-sm font-semibold">360% ROI</p>
-        </div>
-        <p id="twenty-year-detail" class="text-slate-500 text-xs mt-1">
-          ~$782k total savings minus $170k installation
-        </p>
-      </div>
-
-      <!-- CO2 Impact -->
-      <div class="bg-blue-950/30 border border-blue-800/40 rounded-xl p-4 mb-6">
-        <p class="text-blue-400 text-xs font-semibold uppercase tracking-wider mb-2">Environmental Impact</p>
-        <p id="co2-annual" class="text-white font-bold">235.6 tonnes CO₂/year</p>
-        <p id="co2-twenty" class="text-slate-500 text-xs mt-1">4,712 tonnes avoided over 20 years</p>
-      </div>
-
-      <!-- Install Cost Reference -->
-      <div class="bg-slate-800/40 rounded-lg px-4 py-2.5 mb-6 flex justify-between items-center">
-        <p class="text-slate-500 text-xs">Installation cost estimate</p>
-        <p id="install-cost-display" class="text-slate-300 text-xs font-mono">$170,000 ($0.68/kWp)</p>
-      </div>
-
-      <!-- CTA -->
-      <a
-        href="/contact?assessment=solar-roi"
-        class="block w-full text-center px-6 py-3.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-semibold rounded-xl transition-colors text-sm"
-        style="min-height: auto;"
-      >
-        Get a Detailed Site Assessment
-      </a>
+    <div>
+      <label style="font-size:12px;color:var(--color-text-secondary);display:block;margin-bottom:6px">End time</label>
+      <select id="ehSel" onchange="onHC()" style="width:100%;padding:9px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-size:13px"></select>
     </div>
   </div>
-</section>
+  <p style="font-size:12px;font-weight:500;margin:0 0 8px">Weekend operations?</p>
+  <div style="display:flex;gap:8px;margin-bottom:18px">
+    <button class="pbn sel" id="weN" onclick="setWE(false)">Weekdays only</button>
+    <button class="pbn" id="weY" onclick="setWE(true)">We operate weekends too</button>
+  </div>
+  <div class="gcard">
+    <p style="margin:0;font-size:11px;color:var(--color-text-secondary)">Your estimated effective electricity tariff</p>
+    <p style="margin:3px 0 1px;font-size:16px;font-weight:500" id="effTD">&#3647;4.85/kWh</p>
+    <p style="margin:0;font-size:11px;color:var(--color-text-tertiary)" id="pfD">80% peak &bull; 20% off-peak</p>
+  </div>
+  <div class="nb">
+    <button class="bbk" onclick="goStep(1)">&#8592; Back</button>
+    <button class="bgo" onclick="goStep(3)">Next &#8594;</button>
+  </div>
+</div>
 
+<!-- STEP 3: Available Area -->
+<div class="sp" id="s3">
+  <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 3px">Step 3 of 4</p>
+  <h2 style="margin:0 0 6px;font-size:20px;font-weight:500">What space is available for solar?</h2>
+  <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 4px">Leave blank if not applicable.</p>
+  <p style="font-size:13px;color:#10b981;font-weight:500;margin:0 0 18px">6,000 m&sup2; &asymp; 1 MWp of solar capacity</p>
+  <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:18px">
+    <div>
+      <label style="font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;margin-bottom:7px">Rooftop (flat or pitched)</label>
+      <div class="ain"><input type="number" id="rfM" min="0" placeholder="0" oninput="onAC()" style="width:100%;padding:10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-size:14px"><span class="u">m&sup2;</span></div>
+    </div>
+    <div>
+      <label style="font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;margin-bottom:7px">Open land (ground-mounted)</label>
+      <div class="ain"><input type="number" id="ldM" min="0" placeholder="0" oninput="onAC()" style="width:100%;padding:10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-size:14px"><span class="u">m&sup2;</span></div>
+    </div>
+    <div>
+      <label style="font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;margin-bottom:7px">Reservoir / pond (floating solar)</label>
+      <div class="ain"><input type="number" id="flM" min="0" placeholder="0" oninput="onAC()" style="width:100%;padding:10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-size:14px"><span class="u">m&sup2;</span></div>
+    </div>
+  </div>
+  <div id="areaPrev" style="display:none" class="gcard">
+    <p style="margin:0;font-size:11px;color:var(--color-text-secondary)">Total available area</p>
+    <p style="margin:3px 0 1px;font-size:15px;font-weight:500" id="areaTot"></p>
+    <p style="margin:0;font-size:11px;color:var(--color-text-tertiary)" id="areaMax"></p>
+  </div>
+  <div class="nb">
+    <button class="bbk" onclick="goStep(2)">&#8592; Back</button>
+    <button class="bgo" id="s3n" onclick="goStep(4)" disabled>Next &#8594;</button>
+  </div>
+</div>
+
+<!-- STEP 4: Discount -->
+<div class="sp" id="s4">
+  <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 3px">Step 4 of 4</p>
+  <h2 style="margin:0 0 6px;font-size:20px;font-weight:500">What PPA discount are you looking for?</h2>
+  <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 18px">PSS Orange charges you less than the grid rate for your solar electricity. What % off are you targeting?</p>
+  <div style="margin-bottom:18px">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+      <span style="font-size:13px;color:var(--color-text-secondary)">Discount on grid tariff</span>
+      <span style="font-size:26px;font-weight:500;color:#10b981" id="dV">20%</span>
+    </div>
+    <input type="range" id="dSlider" min="10" max="30" step="1" value="20" oninput="onDC()" style="width:100%;accent-color:#10b981;margin-bottom:5px">
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--color-text-tertiary)">
+      <span>10%</span><span>20% typical</span><span>30%</span>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:18px">
+    <button class="pbn" id="d15" onclick="setD(15)">15% conservative</button>
+    <button class="pbn sel" id="d20" onclick="setD(20)">20% typical</button>
+    <button class="pbn" id="d25" onclick="setD(25)">25% PSS typical</button>
+  </div>
+  <div style="background:rgba(16,185,129,0.06);border:0.5px solid rgba(16,185,129,0.3);border-radius:var(--border-radius-md);padding:12px 14px;margin-bottom:18px;font-size:12px;color:var(--color-text-secondary)">
+    <span style="font-weight:500;color:#10b981">Note:</span> Your effective saving is actually higher than the stated % because PSS Orange excludes the Ft (fuel tariff) surcharge that the utility charges you.
+  </div>
+  <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px 16px">
+    <p style="font-size:12px;font-weight:500;margin:0 0 12px">Live preview</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div><p class="mlbl">Monthly savings &mdash; Year 1</p><p class="mval" style="color:#10b981" id="pvM">&#3647;0</p></div>
+      <div><p class="mlbl">15-yr PPA total savings</p><p class="mval" id="pv15">&#3647;0</p></div>
+      <div><p class="mlbl">Post-PPA (free solar!)</p><p class="mval" style="color:#10b981" id="pvPo">&#3647;0</p></div>
+      <div><p class="mlbl">30-yr lifetime value</p><p class="mval" id="pvLf">&#3647;0</p></div>
+    </div>
+  </div>
+  <div class="nb">
+    <button class="bbk" onclick="goStep(3)">&#8592; Back</button>
+    <button class="bgo" onclick="calcShow()">See my PPA savings &#8594;</button>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div class="rp" id="results">
+  <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:18px">
+    <div>
+      <p style="font-size:11px;color:#10b981;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;margin:0 0 3px">Your PPA analysis</p>
+      <h2 style="margin:0;font-size:20px;font-weight:500">Solar savings estimate</h2>
+    </div>
+    <button onclick="backToForm()" style="font-size:12px;color:var(--color-text-secondary);background:transparent;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:7px 13px;cursor:pointer">&#8592; Edit inputs</button>
+  </div>
+  <div style="background:rgba(16,185,129,0.06);border:0.5px solid rgba(16,185,129,0.3);border-radius:var(--border-radius-lg);padding:13px 16px;margin-bottom:18px;display:flex;gap:12px;align-items:start">
+    <div>
+      <p style="margin:0 0 3px;font-weight:500;font-size:13px">How a PSS Orange PPA works</p>
+      <p style="margin:0;font-size:12px;color:var(--color-text-secondary)">PSS Orange builds, owns, and maintains the solar plant at <strong>zero upfront cost</strong> to you. You pay a discounted rate for solar electricity for <strong>15 years</strong>. After the PPA ends, you receive solar energy <strong>free</strong> for the remaining plant life.</p>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:18px">
+    <div class="mc"><p class="mlbl">System size</p><p class="mval" id="rSz">&mdash;</p><p style="font-size:11px;color:var(--color-text-tertiary);margin:0" id="rKwp">&mdash;</p></div>
+    <div class="mc"><p class="mlbl">Solar coverage</p><p class="mval" style="color:#10b981" id="rCov">&mdash;</p><p style="font-size:11px;color:var(--color-text-tertiary);margin:0">of consumption</p></div>
+    <div class="mc"><p class="mlbl">Month 1 saving</p><p class="mval" style="color:#10b981" id="rM1">&mdash;</p><p style="font-size:11px;color:var(--color-text-tertiary);margin:0">vs full grid rate</p></div>
+    <div class="mc"><p class="mlbl">30-yr lifetime value</p><p class="mval" id="rLf">&mdash;</p><p style="font-size:11px;color:var(--color-text-tertiary);margin:0">total savings</p></div>
+  </div>
+  <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:16px;margin-bottom:14px">
+    <h3 style="margin:0 0 3px;font-size:13px;font-weight:500">Annual electricity cost &mdash; with vs without solar</h3>
+    <p style="margin:0 0 10px;font-size:11px;color:var(--color-text-secondary)">Stacked bars add up to your total annual bill. Green = what you save. After Year 15 the PPA ends and solar is free.</p>
+    <div class="leg">
+      <span><span class="lsq" style="background:#3b82f6"></span>Grid payment</span>
+      <span><span class="lsq" style="background:#f59e0b"></span>PPA payment (yrs 1&ndash;15)</span>
+      <span><span class="lsq" style="background:#10b981"></span>Solar savings</span>
+      <span><span class="lsq" style="background:none;outline:1px dashed #ef4444;outline-offset:0"></span>Without solar</span>
+    </div>
+    <div class="cw" style="height:240px"><canvas id="barC" role="img" aria-label="Stacked bar chart showing annual electricity costs split across grid payment, PPA payment, and solar savings for key years 1 through 30">Annual cost breakdown chart.</canvas></div>
+    <p style="font-size:11px;color:var(--color-text-tertiary);text-align:center;margin:8px 0 0">&#9733; After Year 15 the PPA ends &mdash; savings jump as solar energy becomes free</p>
+  </div>
+  <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:16px;margin-bottom:14px">
+    <h3 style="margin:0 0 3px;font-size:13px;font-weight:500">Cumulative savings over 30 years</h3>
+    <p style="margin:0 0 10px;font-size:11px;color:var(--color-text-secondary)">Savings accelerate after Year 15 as rising grid tariffs are avoided entirely on your solar share.</p>
+    <div class="cw" style="height:200px"><canvas id="cumC" role="img" aria-label="Area chart showing cumulative savings growing from zero to the 30-year total with a steeper slope after year 15">Cumulative savings chart.</canvas></div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:18px">
+    <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px 16px;border-top:2px solid #f59e0b">
+      <p style="margin:0 0 4px;font-size:11px;color:var(--color-text-secondary)">PPA period &mdash; years 1&ndash;15</p>
+      <p style="margin:0;font-size:18px;font-weight:500" id="rPPA">&mdash;</p>
+      <p style="margin:3px 0 0;font-size:11px;color:var(--color-text-tertiary)">You pay discounted solar rate</p>
+    </div>
+    <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px 16px;border-top:2px solid #10b981">
+      <p style="margin:0 0 4px;font-size:11px;color:var(--color-text-secondary)">Post-PPA &mdash; years 16&ndash;30</p>
+      <p style="margin:0;font-size:18px;font-weight:500;color:#10b981" id="rPost">&mdash;</p>
+      <p style="margin:3px 0 0;font-size:11px;color:var(--color-text-tertiary)">Solar energy is free</p>
+    </div>
+    <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px 16px;border-top:2px solid #6366f1">
+      <p style="margin:0 0 4px;font-size:11px;color:var(--color-text-secondary)">30-year lifetime total</p>
+      <p style="margin:0;font-size:18px;font-weight:500" id="rTot">&mdash;</p>
+      <p style="margin:3px 0 0;font-size:11px;color:var(--color-text-tertiary)">vs paying full grid rate</p>
+    </div>
+  </div>
+  <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:16px;margin-bottom:14px">
+    <h3 style="margin:0 0 14px;font-size:13px;font-weight:500">Environmental impact &mdash; 30 years</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;text-align:center">
+      <div><p style="margin:0 0 2px;font-size:22px">&#127807;</p><p style="margin:3px 0 2px;font-size:16px;font-weight:500" id="rCO2">&mdash;</p><p style="margin:0;font-size:11px;color:var(--color-text-secondary)">tonnes CO&#8322; avoided</p></div>
+      <div><p style="margin:0 0 2px;font-size:22px">&#127795;</p><p style="margin:3px 0 2px;font-size:16px;font-weight:500" id="rTr">&mdash;</p><p style="margin:0;font-size:11px;color:var(--color-text-secondary)">equivalent trees</p></div>
+      <div><p style="margin:0 0 2px;font-size:22px">&#9889;</p><p style="margin:3px 0 2px;font-size:16px;font-weight:500" id="rMwh">&mdash;</p><p style="margin:0;font-size:11px;color:var(--color-text-secondary)">MWh clean energy</p></div>
+      <div><p style="margin:0 0 2px;font-size:22px">&#9728;&#65039;</p><p style="margin:3px 0 2px;font-size:16px;font-weight:500" id="rMwp">&mdash;</p><p style="margin:0;font-size:11px;color:var(--color-text-secondary)">MWp installed</p></div>
+    </div>
+  </div>
+  <details style="margin-bottom:16px">
+    <summary style="font-size:12px;color:var(--color-text-secondary);cursor:pointer;list-style:none">&#8505; Calculation assumptions &amp; disclaimers</summary>
+    <div style="margin-top:10px;padding:12px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);font-size:11px;color:var(--color-text-tertiary);line-height:1.9" id="rDisc"></div>
+  </details>
+  <div style="background:rgba(16,185,129,0.06);border:0.5px solid rgba(16,185,129,0.3);border-radius:var(--border-radius-lg);padding:22px;text-align:center">
+    <h3 style="margin:0 0 8px;font-size:17px;font-weight:500">Ready for a bankable PPA proposal?</h3>
+    <p style="margin:0 0 16px;font-size:13px;color:var(--color-text-secondary)">PSS Orange will conduct a free site assessment and deliver a fully bankable PPA proposal &mdash; at zero cost to you.</p>
+    <a href="/contact?ref=ppa-calculator" style="display:inline-block;background:#10b981;color:#fff;padding:12px 26px;border-radius:var(--border-radius-md);font-weight:500;font-size:14px;text-decoration:none">Get your free site assessment &#8594;</a>
+    <p style="margin:12px 0 0;font-size:11px;color:var(--color-text-tertiary)">Indicative estimate only. Actual PPA terms subject to site assessment and final project design.</p>
+  </div>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-  const SEGMENTS: Record<string, { installSmall: number; installLarge: number }> = {
-    industrial_captive:  { installSmall: 0.68, installLarge: 0.60 },
-    commercial_bangkok:  { installSmall: 0.68, installLarge: 0.60 },
-    commercial_regional: { installSmall: 0.68, installLarge: 0.60 },
-    agricultural:        { installSmall: 0.68, installLarge: 0.60 },
-    residential:         { installSmall: 0.68, installLarge: 0.68 },
-  };
+const S={step:1,bill:0,sH:8,eH:18,we:false,rf:0,ld:0,fl:0,disc:20};
+const TF={pk:5.1627,op:3.5827,pkb:4.18,opb:2.6,infl:0.015};
+const SL={e:1450,pk:0.67,op:0.33,d1:0.025,d:0.005};
+let bC=null,cC=null;
 
-  const COVERAGE         = 0.725;
-  const PEAK_SUN_HOURS   = 1450;
-  const PEAK_TARIFF      = 0.12;
-  const OFFPEAK_TARIFF   = 0.074;
-  const PEAK_FRACTION    = 0.85;
-  const OFFPEAK_FRACTION = 0.15;
-  const DEGRADATION      = 0.005;
-  const CO2_PER_KWH      = 0.65;
-  const THB_USD          = 35;
+function fB(n){const a=Math.abs(n);if(a>=1e9)return'\u0e3f'+(n/1e9).toFixed(1)+'B';if(a>=1e6)return'\u0e3f'+(n/1e6).toFixed(1)+'M';if(a>=1e3)return'\u0e3f'+(n/1e3).toFixed(0)+'K';return'\u0e3f'+Math.round(n).toLocaleString()}
+function fN(n){return Math.round(n).toLocaleString()}
 
-  const segmentSelect       = document.getElementById('segment-select') as HTMLSelectElement;
-  const consumptionSlider   = document.getElementById('consumption-slider') as HTMLInputElement;
-  const consumptionDisplay  = document.getElementById('consumption-display')!;
-  const resultSize          = document.getElementById('result-size')!;
-  const resultPayback       = document.getElementById('result-payback')!;
-  const resultSavings       = document.getElementById('result-savings')!;
-  const peakSavingsEl       = document.getElementById('peak-savings')!;
-  const peakGenEl           = document.getElementById('peak-gen')!;
-  const offpeakSavingsEl    = document.getElementById('offpeak-savings')!;
-  const offpeakGenEl        = document.getElementById('offpeak-gen')!;
-  const blendedTariffEl     = document.getElementById('blended-tariff')!;
-  const twentyYearProfit    = document.getElementById('twenty-year-profit')!;
-  const twentyYearRoi       = document.getElementById('twenty-year-roi')!;
-  const twentyYearDetail    = document.getElementById('twenty-year-detail')!;
-  const co2Annual           = document.getElementById('co2-annual')!;
-  const co2Twenty           = document.getElementById('co2-twenty')!;
-  const installCostDisplay  = document.getElementById('install-cost-display')!;
+function goStep(n){
+  document.querySelectorAll('.sp').forEach(e=>e.classList.remove('on'));
+  const el=document.getElementById('s'+n);
+  if(el){el.classList.add('on');document.getElementById('results').classList.remove('on')}
+  S.step=n;dots();
+  if(n===4)liveP();
+}
 
-  function fmt(n: number) { return Math.round(n).toLocaleString(); }
+function backToForm(){
+  document.getElementById('results').classList.remove('on');
+  document.querySelectorAll('.sp').forEach(e=>e.classList.remove('on'));
+  document.getElementById('s4').classList.add('on');
+  S.step=4;dots();
+}
 
-  function updateCalculator() {
-    const consumption = parseInt(consumptionSlider.value);
-    const segmentKey  = segmentSelect.value;
-    const segment     = SEGMENTS[segmentKey];
-
-    // Generation & system sizing
-    const generation    = Math.round(consumption * COVERAGE);
-    const systemKwp     = generation / PEAK_SUN_HOURS;
-    const isLarge       = systemKwp >= 3000;
-    const costPerKwp    = isLarge ? segment.installLarge : segment.installSmall;
-    const systemCostUSD = systemKwp * costPerKwp * 1000;
-
-    // Peak / off-peak split
-    const peakGen     = Math.round(generation * PEAK_FRACTION);
-    const offpeakGen  = Math.round(generation * OFFPEAK_FRACTION);
-    const peakSave    = peakGen * PEAK_TARIFF;
-    const offpeakSave = offpeakGen * OFFPEAK_TARIFF;
-    const totalSave   = peakSave + offpeakSave;
-    const blended     = totalSave / generation;
-    const payback     = systemCostUSD / totalSave;
-
-    // 20-year projection with degradation
-    let twentyYearGen = 0;
-    for (let y = 1; y <= 20; y++) {
-      twentyYearGen += generation * Math.pow(1 - DEGRADATION, y - 1);
-    }
-    const twentyYearSavings    = twentyYearGen * blended;
-    const twentyYearNetProfit  = twentyYearSavings - systemCostUSD;
-    const twentyYearROIPct     = (twentyYearNetProfit / systemCostUSD) * 100;
-
-    // CO2
-    const co2PerYear    = (generation * CO2_PER_KWH) / 1000;
-    const co2Over20     = Math.round(co2PerYear * 20);
-
-    // Update DOM
-    consumptionDisplay.textContent    = consumption.toLocaleString();
-    resultSize.textContent            = fmt(systemKwp) + ' kWp';
-    resultPayback.textContent         = payback.toFixed(1) + ' yrs';
-    resultSavings.textContent         = '$' + fmt(totalSave);
-    peakSavingsEl.textContent         = '$' + fmt(peakSave);
-    peakGenEl.textContent             = peakGen.toLocaleString() + ' kWh/yr';
-    offpeakSavingsEl.textContent      = '$' + fmt(offpeakSave);
-    offpeakGenEl.textContent          = offpeakGen.toLocaleString() + ' kWh/yr';
-    blendedTariffEl.textContent       = blended.toFixed(3);
-    twentyYearProfit.textContent      = '$' + fmt(twentyYearNetProfit) + ' net profit';
-    twentyYearRoi.textContent         = Math.round(twentyYearROIPct) + '% ROI';
-    twentyYearDetail.textContent      = `~$${fmt(twentyYearSavings)} total savings minus $${fmt(systemCostUSD)} installation`;
-    co2Annual.textContent             = co2PerYear.toFixed(1) + ' tonnes CO₂/year';
-    co2Twenty.textContent             = co2Over20.toLocaleString() + ' tonnes avoided over 20 years';
-    installCostDisplay.textContent    = `$${fmt(systemCostUSD)} ($${costPerKwp.toFixed(2)}/kWp)`;
+function dots(){
+  for(let i=1;i<=4;i++){
+    const d=document.getElementById('dot'+i);
+    d.classList.remove('done','active');
+    if(i<S.step){d.classList.add('done');d.textContent='\u2713'}
+    else if(i===S.step){d.classList.add('active');d.textContent=i}
+    else d.textContent=i;
+    if(i<4)document.getElementById('line'+i).classList.toggle('done',i<S.step);
   }
+}
 
-  segmentSelect.addEventListener('change', updateCalculator);
-  consumptionSlider.addEventListener('input', updateCalculator);
-  updateCalculator();
+function pf(){const h=S.eH-S.sH;if(h<=0)return 0.5;const ov=Math.max(0,Math.min(S.eH,22)-Math.max(S.sH,10));return(5*ov)/((5+(S.we?2:0))*h)}
+function effT(){return pf()*TF.pk+(1-pf())*TF.op}
+
+function runM(){
+  const ab=S.bill*12,ef=effT(),ak=ab/ef;
+  const tm=S.rf+S.ld+S.fl;
+  const maxK=(tm/6000)*1000,tgtK=(ak*0.725)/SL.e;
+  const kwp=Math.min(maxK,tgtK);
+  if(kwp<=0)return null;
+  const disc=S.disc/100,rows=[];
+  let gen=kwp*SL.e,cum=0;
+  for(let yr=1;yr<=30;yr++){
+    if(yr===2)gen*=(1-SL.d1);else if(yr>2)gen*=(1-SL.d);
+    const inf=Math.pow(1+TF.infl,yr-1);
+    const pg=gen*SL.pk,og=gen*SL.op;
+    const pss=yr<=15?(pg*TF.pkb*(1-disc)+og*TF.opb*(1-disc))*inf:0;
+    const bl=ab*inf,sf=Math.min(1,gen/ak),gr=bl*(1-sf);
+    const sav=bl-gr-pss;
+    cum+=sav;
+    rows.push({yr,gen,bl,gr,pss,sav,cum,inPPA:yr<=15});
+  }
+  return{rows,kwp,ak};
+}
+
+function liveP(){
+  const r=runM();if(!r)return;
+  const{rows}=r;
+  const pp=rows.filter(x=>x.inPPA).reduce((s,x)=>s+x.sav,0);
+  const po=rows.filter(x=>!x.inPPA).reduce((s,x)=>s+x.sav,0);
+  document.getElementById('pvM').textContent=fB(rows[0].sav/12);
+  document.getElementById('pv15').textContent=fB(pp);
+  document.getElementById('pvPo').textContent=fB(po);
+  document.getElementById('pvLf').textContent=fB(pp+po);
+}
+
+function calcShow(){
+  const r=runM();if(!r)return;
+  const{rows,kwp,ak}=r;
+  document.querySelectorAll('.sp').forEach(e=>e.classList.remove('on'));
+  document.getElementById('results').classList.add('on');
+  S.step=5;dots();
+  const pp=rows.filter(x=>x.inPPA).reduce((s,x)=>s+x.sav,0);
+  const po=rows.filter(x=>!x.inPPA).reduce((s,x)=>s+x.sav,0);
+  const lf=pp+po;
+  const tg=rows.reduce((s,x)=>s+x.gen,0);
+  const co2=(tg*0.4457)/1000,tr=co2*1.333;
+  const cov=Math.min(100,Math.round((kwp*SL.e/ak)*100));
+  document.getElementById('rSz').textContent=(kwp/1000).toFixed(2)+' MWp';
+  document.getElementById('rKwp').textContent=fN(Math.round(kwp))+' kWp';
+  document.getElementById('rCov').textContent=cov+'%';
+  document.getElementById('rM1').textContent=fB(rows[0].sav/12);
+  document.getElementById('rLf').textContent=fB(lf);
+  document.getElementById('rPPA').textContent=fB(pp);
+  document.getElementById('rPost').textContent=fB(po);
+  document.getElementById('rTot').textContent=fB(lf);
+  document.getElementById('rCO2').textContent=fN(Math.round(co2))+' t';
+  document.getElementById('rTr').textContent=fN(Math.round(tr));
+  document.getElementById('rMwh').textContent=fN(Math.round(tg/1000))+' MWh';
+  document.getElementById('rMwp').textContent=(kwp/1000).toFixed(2)+' MWp';
+  const ic=kwp>=3000?0.60:0.68;
+  document.getElementById('rDisc').innerHTML=
+    '\u2022 Thailand TOU tariff: Peak \u0e3f4.18+Ft = \u0e3f5.1627/kWh (weekdays 10am\u201310pm) | Off-peak \u0e3f2.6+Ft = \u0e3f3.5827/kWh (nights &amp; weekends)<br>'+
+    '\u2022 PSS Orange PPA rate = base tariff \u00d7 '+(100-S.disc)+'% with no Ft surcharge \u2014 escalates 1.5%/yr in line with grid<br>'+
+    '\u2022 Solar generation: 1,450 kWh/kWp/yr | 67% on weekday peak days | 33% on off-peak days/weekends (from PSS Orange project data)<br>'+
+    '\u2022 Degradation: 2.5% year 2, then 0.5%/yr | System: '+fN(Math.round(kwp))+' kWp at $'+ic.toFixed(2)+'/kWp installed cost<br>'+
+    '\u2022 CO\u2082 factor: 0.4457 kg/kWh (Thai national grid) | Trees equivalent: 1.333 per tonne CO\u2082<br>'+
+    '\u2022 Excludes O&amp;M (~\u0e3f300k/MWp/yr escalating 4%/yr) and major maintenance (~\u0e3f3M/MWp at years 10, 20, 30)<br>'+
+    '\u2022 Indicative estimate only. Actual PPA terms subject to site assessment and final engineering design.';
+  const ky=[1,5,10,15,16,20,25,30];
+  const br=rows.filter(x=>ky.includes(x.yr));
+  const lbs=br.map(x=>x.yr===16?'Y16 \u2605':x.yr===15?'Y15':('Y'+x.yr));
+  if(bC)bC.destroy();
+  bC=new Chart(document.getElementById('barC'),{
+    type:'bar',
+    data:{labels:lbs,datasets:[
+      {label:'Grid payment',data:br.map(x=>+(x.gr/1e6).toFixed(3)),backgroundColor:'#3b82f6',stack:'a'},
+      {label:'PPA payment',data:br.map(x=>+(x.pss/1e6).toFixed(3)),backgroundColor:'#f59e0b',stack:'a'},
+      {label:'Solar savings',data:br.map(x=>+(x.sav/1e6).toFixed(3)),backgroundColor:'#10b981',stack:'a'},
+      {type:'line',label:'Without solar',data:br.map(x=>+(x.bl/1e6).toFixed(3)),borderColor:'#ef4444',borderDash:[5,3],borderWidth:1.5,pointRadius:3,pointBackgroundColor:'#ef4444',fill:false,tension:0.3,order:0}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.dataset.label}: \u0e3f${(+c.raw).toFixed(2)}M`}}},
+      scales:{x:{stacked:true,ticks:{color:'#94a3b8',font:{size:10}},grid:{color:'rgba(148,163,184,0.08)'}},
+        y:{stacked:true,ticks:{color:'#94a3b8',font:{size:10},callback:v=>'\u0e3f'+v+'M'},grid:{color:'rgba(148,163,184,0.08)'},title:{display:true,text:'\u0e3f Million',color:'#94a3b8',font:{size:10}}}}}
+  });
+  if(cC)cC.destroy();
+  cC=new Chart(document.getElementById('cumC'),{
+    type:'line',
+    data:{labels:rows.map(x=>'Y'+x.yr),datasets:[
+      {label:'Cumulative savings',data:rows.map(x=>+(x.cum/1e6).toFixed(2)),borderColor:'#10b981',backgroundColor:'rgba(16,185,129,0.1)',fill:true,tension:0.4,borderWidth:2,pointRadius:0,pointHoverRadius:4},
+      {label:'PPA ends',data:rows.map(x=>x.yr===15?+(x.cum/1e6).toFixed(2):null),type:'scatter',pointRadius:7,pointBackgroundColor:'#f59e0b',pointStyle:'star',borderWidth:0}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{filter:i=>i.datasetIndex===0,callbacks:{label:c=>`Cumulative: \u0e3f${c.raw.toFixed(1)}M`}}},
+      scales:{x:{ticks:{maxTicksLimit:10,color:'#94a3b8',font:{size:10}},grid:{color:'rgba(148,163,184,0.08)'}},
+        y:{ticks:{color:'#94a3b8',font:{size:10},callback:v=>'\u0e3f'+v+'M'},grid:{color:'rgba(148,163,184,0.08)'},title:{display:true,text:'\u0e3f Million',color:'#94a3b8',font:{size:10}}}}}
+  });
+}
+
+function onBill(){
+  const v=parseFloat(document.getElementById('billIn').value)||0;S.bill=v;
+  document.getElementById('s1n').disabled=v<=0;
+  const p=document.getElementById('billPrev');
+  if(v>0){p.style.display='block';document.getElementById('billPrevV').textContent=fB(v*12)+' / year'}
+  else p.style.display='none';
+}
+function setH(sh,eh,we,idx){
+  S.sH=sh;S.eH=eh;S.we=we;
+  document.getElementById('shSel').value=sh;
+  document.getElementById('ehSel').value=Math.min(eh,24);
+  for(let i=0;i<6;i++){const b=document.getElementById('pb'+i);if(b)b.classList.remove('sel')}
+  const pb=document.getElementById('pb'+idx);if(pb)pb.classList.add('sel');
+  document.getElementById('weY').classList.toggle('sel',we);
+  document.getElementById('weN').classList.toggle('sel',!we);
+  updT();
+}
+function onHC(){S.sH=parseInt(document.getElementById('shSel').value);S.eH=parseInt(document.getElementById('ehSel').value);updT()}
+function setWE(w){S.we=w;document.getElementById('weY').classList.toggle('sel',w);document.getElementById('weN').classList.toggle('sel',!w);updT()}
+function updT(){
+  const p=pf(),e=effT();
+  document.getElementById('effTD').textContent='\u0e3f'+e.toFixed(2)+'/kWh';
+  document.getElementById('pfD').textContent=Math.round(p*100)+'% peak \u2022 '+Math.round((1-p)*100)+'% off-peak';
+}
+function onAC(){
+  S.rf=parseFloat(document.getElementById('rfM').value)||0;
+  S.ld=parseFloat(document.getElementById('ldM').value)||0;
+  S.fl=parseFloat(document.getElementById('flM').value)||0;
+  const t=S.rf+S.ld+S.fl,p=document.getElementById('areaPrev'),b=document.getElementById('s3n');
+  if(t>0){p.style.display='block';document.getElementById('areaTot').textContent=fN(t)+' m\u00b2';document.getElementById('areaMax').textContent='Maximum possible: ~'+(t/6000).toFixed(2)+' MWp';b.disabled=false}
+  else{p.style.display='none';b.disabled=true}
+}
+function onDC(){
+  S.disc=parseInt(document.getElementById('dSlider').value);
+  document.getElementById('dV').textContent=S.disc+'%';
+  ['d15','d20','d25'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.toggle('sel',parseInt(id.replace('d',''))===S.disc)});
+  liveP();
+}
+function setD(v){
+  S.disc=v;document.getElementById('dSlider').value=v;document.getElementById('dV').textContent=v+'%';
+  ['d15','d20','d25'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.toggle('sel',parseInt(id.replace('d',''))===v)});
+  liveP();
+}
+(function initSels(){
+  const sh=document.getElementById('shSel'),eh=document.getElementById('ehSel');
+  const hf=h=>h===0?'Midnight':h<12?`${h}:00 AM`:h===12?'12:00 PM':`${h-12}:00 PM`;
+  for(let h=0;h<=22;h++)sh.add(new Option(hf(h),h,h===8,h===8));
+  for(let h=6;h<=24;h++)eh.add(new Option(h===24?'Midnight':hf(h),h,h===18,h===18));
+  updT();dots();
+})();
 </script>
+
+  </div>
+</section>
