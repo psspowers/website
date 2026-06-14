@@ -32,7 +32,8 @@ export const projects: Project[] = [
     role: 'Developer, EPC and O&M',
     location: 'Punjab, India',
     coordinates: { lat: 31.1471, lng: 75.3412 },
-    image: '/project-images/vardhaman-steel.webp'
+    image: '/project-images/vardhaman-steel.webp',
+    description: "India's first large captive solar power plant for a green steel manufacturer. Vardhaman Steel is expanding production while reducing energy costs by 30% and carbon footprint by 50,000 tonnes annually — demonstrating our ability to finance and build utility-scale projects for industrial decarbonization."
   },
   {
     name: 'Acts Studio',
@@ -76,7 +77,8 @@ export const projects: Project[] = [
     role: 'Developer, EPC and O&M',
     location: 'Bangkok, Thailand',
     coordinates: { lat: 13.736717, lng: 100.523186 },
-    image: '/project-images/seacon.webp'
+    image: '/project-images/seacon.webp',
+    description: "Bangkok's largest commercial rooftop solar installation. Reduces Seacon's grid draw by 35% and energy costs by 40 million THB annually — demonstrating our ability to design and execute complex rooftop projects on premium retail real estate while delivering measurable ROI for enterprise clients."
   },
   {
     name: 'Maxion Wheels',
@@ -87,7 +89,8 @@ export const projects: Project[] = [
     role: 'Developer, EPC and O&M',
     location: 'Saraburi, Thailand',
     coordinates: { lat: 14.5289, lng: 100.8777 },
-    image: '/project-images/maxion.webp'
+    image: '/project-images/maxion.webp',
+    description: "Our first dual-source hybrid installation combining solar and battery storage. Reduced energy costs by 40% for this global automotive components manufacturer while securing energy independence — the model now deployed across our portfolio."
   },
   {
     name: 'Copper Cord',
@@ -109,7 +112,8 @@ export const projects: Project[] = [
     role: 'EPC',
     location: 'Pathum Thani, Thailand',
     coordinates: { lat: 14.0208, lng: 100.5321 },
-    image: '/project-images/prime-road.webp'
+    image: '/project-images/prime-road.webp',
+    description: "Thailand's first major portfolio repowering project. Replaced aged panels, upgraded inverters and control systems, restoring capacity from 70% to 95% nameplate rating and extending economic life by 10+ years — pioneering a new service line for aging asset owners to unlock second-generation returns."
   },
   {
     name: 'Att U Park Solar',
@@ -241,7 +245,8 @@ export const projects: Project[] = [
     role: 'Developer EPC & O&M service',
     location: 'Chachoengsao, Thailand',
     coordinates: { lat: 13.6904, lng: 101.0770 },
-    image: '/project-images/soltech.webp'
+    image: '/project-images/soltech.webp',
+    description: "Our first solar installation in Thailand, commissioned in 2015. Soltech proved our EPC and O&M capabilities in Southeast Asia, trained our local team, and laid the foundation for 40+ projects across Thailand today. Over nine years of continuous operation at 99.2% availability."
   },
   {
     name: 'KCE Electronics PLC',
@@ -329,7 +334,8 @@ export const projects: Project[] = [
     role: 'Advanced Designing and EPC',
     location: 'Rayong, Thailand',
     coordinates: { lat: 12.6828, lng: 101.2812 },
-    image: '/project-images/irpc.webp'
+    image: '/project-images/irpc.webp',
+    description: "Thailand's first commercial-scale floating solar installation. 12 MW of panels mounted on floating platforms over a petrochemical refinery's lagoons — generating clean power while cooling the water. A showcase for floating solar technology now replicated across Asia."
   },
   {
     name: 'Nanapan',
