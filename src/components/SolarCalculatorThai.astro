@@ -1,0 +1,262 @@
+---
+---
+
+<section class="py-28 max-w-screen-2xl mx-auto px-6 lg:px-8">
+  <div class="grid lg:grid-cols-2 gap-16 items-start">
+    <!-- LEFT: Info -->
+    <div data-aos="fade-right" class="lg:sticky lg:top-28">
+      <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-4">Thailand Solar Savings Estimator</p>
+      <h2 class="font-display text-4xl md:text-5xl font-bold text-white leading-tight tracking-tight mb-4">
+        How much could you save?
+      </h2>
+      <p class="text-slate-400 text-lg leading-relaxed mb-8">
+        Select your facility type and adjust your annual electricity consumption to see an
+        indicative solar savings estimate — split by peak and off-peak hours.
+      </p>
+      <p class="text-slate-400 text-sm leading-relaxed mb-6">
+        Solar generates most of its power during peak hours (10 AM – 10 PM), when Thailand's
+        electricity tariff is highest. This calculator reflects that reality.
+      </p>
+
+      <details class="group">
+        <summary class="cursor-pointer text-slate-500 hover:text-slate-300 text-sm font-semibold transition-colors list-none flex items-center gap-2">
+          <svg class="w-4 h-4 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+          Show assumptions &amp; disclaimers
+        </summary>
+        <div class="mt-4 bg-slate-900/50 border border-slate-700/60 rounded-xl p-4">
+          <ul class="space-y-2 text-slate-400 text-xs">
+            <li class="flex gap-2"><span class="text-emerald-400 flex-shrink-0">•</span> Peak tariff (฿4.2/kWh ≈ $0.12/kWh): Weekdays 10 AM – 10 PM</li>
+            <li class="flex gap-2"><span class="text-emerald-400 flex-shrink-0">•</span> Off-peak tariff (฿2.6/kWh ≈ $0.074/kWh): Weekday nights 10 PM – 10 AM + all weekends/holidays</li>
+            <li class="flex gap-2"><span class="text-emerald-400 flex-shrink-0">•</span> Assumes 85% of solar generation occurs during peak hours, 15% off-peak</li>
+            <li class="flex gap-2"><span class="text-emerald-400 flex-shrink-0">•</span> Install cost: $0.68/kWp (&lt;3 MW project) or $0.60/kWp (3 MW+ project)</li>
+            <li class="flex gap-2"><span class="text-emerald-400 flex-shrink-0">•</span> 1,450 peak sun hours/year (Thailand average)</li>
+            <li class="flex gap-2"><span class="text-emerald-400 flex-shrink-0">•</span> 72.5% of annual consumption offset by solar (15% system losses applied)</li>
+            <li class="flex gap-2"><span class="text-emerald-400 flex-shrink-0">•</span> 0.5% annual system degradation (standard for quality modules)</li>
+            <li class="flex gap-2"><span class="text-emerald-400 flex-shrink-0">•</span> CO₂ offset: 0.65 kg/kWh (Thailand grid average)</li>
+            <li class="flex gap-2"><span class="text-emerald-400 flex-shrink-0">•</span> Does NOT include: taxes, incentives, financing costs, O&amp;M expenses</li>
+            <li class="flex gap-2"><span class="text-emerald-400 flex-shrink-0">•</span> Your actual savings depend on: system design, roof orientation, component quality, tariff changes</li>
+            <li class="flex gap-2"><span class="text-emerald-400 flex-shrink-0">•</span> This is an ESTIMATE for initial assessment. Site-specific analysis required.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <!-- RIGHT: Calculator -->
+    <div class="glass rounded-3xl p-8" data-aos="fade-left">
+
+      <!-- Segment Selector -->
+      <label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2" for="segment-select">
+        Facility type
+      </label>
+      <select
+        id="segment-select"
+        class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm mb-6 focus:outline-none focus:border-emerald-500 transition-colors"
+      >
+        <option value="industrial_captive">Industrial Manufacturing (Captive Power)</option>
+        <option value="commercial_bangkok">Commercial – Bangkok Metropolitan</option>
+        <option value="commercial_regional">Commercial – Provincial (Non-Bangkok)</option>
+        <option value="agricultural">Agricultural &amp; Water Infrastructure</option>
+        <option value="residential">Residential (Homes, Condos)</option>
+      </select>
+
+      <!-- Consumption Slider -->
+      <label class="block text-white font-semibold mb-2" for="consumption-slider">
+        Annual consumption: <span id="consumption-display" class="text-emerald-400">500,000</span> kWh
+      </label>
+      <input
+        id="consumption-slider"
+        type="range"
+        min="5000"
+        max="5000000"
+        step="5000"
+        value="500000"
+        class="w-full accent-emerald-500 mb-8"
+        style="min-height: auto;"
+      />
+
+      <!-- System Size + Payback -->
+      <div class="grid grid-cols-2 gap-4 mb-6">
+        <div class="bg-slate-800/60 rounded-xl p-4 text-center">
+          <p class="text-slate-400 text-xs mb-1">System Size</p>
+          <p id="result-size" class="text-white font-bold text-lg">250 kWp</p>
+        </div>
+        <div class="bg-slate-800/60 rounded-xl p-4 text-center">
+          <p class="text-slate-400 text-xs mb-1">Payback Period</p>
+          <p id="result-payback" class="text-white font-bold text-lg">4.1 yrs</p>
+        </div>
+      </div>
+
+      <!-- Peak / Off-Peak Breakdown -->
+      <div class="bg-gradient-to-br from-amber-950/40 to-orange-950/40 border border-amber-700/40 rounded-xl p-5 mb-4">
+        <p class="text-amber-300 text-xs font-semibold uppercase tracking-wider mb-4">Annual Savings Breakdown</p>
+
+        <!-- Peak -->
+        <div class="flex justify-between items-start mb-1">
+          <div>
+            <p class="text-amber-200 text-sm font-semibold">Peak Hours</p>
+            <p class="text-slate-500 text-xs">Weekdays 10 AM – 10 PM · ฿4.2/kWh ($0.12)</p>
+          </div>
+          <div class="text-right">
+            <p id="peak-savings" class="text-amber-300 font-bold text-base">$36,975</p>
+            <p id="peak-gen" class="text-slate-500 text-xs">308,125 kWh/yr</p>
+          </div>
+        </div>
+
+        <div class="border-t border-amber-700/20 my-3"></div>
+
+        <!-- Off-Peak -->
+        <div class="flex justify-between items-start mb-4">
+          <div>
+            <p class="text-blue-300 text-sm font-semibold">Off-Peak Hours</p>
+            <p class="text-slate-500 text-xs">Nights + weekends · ฿2.6/kWh ($0.074)</p>
+          </div>
+          <div class="text-right">
+            <p id="offpeak-savings" class="text-blue-300 font-bold text-base">$4,024</p>
+            <p id="offpeak-gen" class="text-slate-500 text-xs">54,375 kWh/yr</p>
+          </div>
+        </div>
+
+        <!-- Total -->
+        <div class="bg-emerald-950/50 border border-emerald-700/40 rounded-lg px-4 py-3 flex justify-between items-center">
+          <div>
+            <p class="text-emerald-300 text-sm font-semibold">Total Annual Savings</p>
+            <p class="text-slate-500 text-xs">Blended: $<span id="blended-tariff">0.113</span>/kWh</p>
+          </div>
+          <p id="result-savings" class="text-emerald-400 font-bold text-xl">$40,999</p>
+        </div>
+      </div>
+
+      <!-- 20-Year Projection -->
+      <div class="bg-emerald-950/30 border border-emerald-800/40 rounded-xl p-4 mb-4">
+        <p class="text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-2">20-Year Projection</p>
+        <div class="flex justify-between items-baseline">
+          <p id="twenty-year-profit" class="text-white text-xl font-bold">$612,000 net profit</p>
+          <p id="twenty-year-roi" class="text-emerald-400 text-sm font-semibold">360% ROI</p>
+        </div>
+        <p id="twenty-year-detail" class="text-slate-500 text-xs mt-1">
+          ~$782k total savings minus $170k installation
+        </p>
+      </div>
+
+      <!-- CO2 Impact -->
+      <div class="bg-blue-950/30 border border-blue-800/40 rounded-xl p-4 mb-6">
+        <p class="text-blue-400 text-xs font-semibold uppercase tracking-wider mb-2">Environmental Impact</p>
+        <p id="co2-annual" class="text-white font-bold">235.6 tonnes CO₂/year</p>
+        <p id="co2-twenty" class="text-slate-500 text-xs mt-1">4,712 tonnes avoided over 20 years</p>
+      </div>
+
+      <!-- Install Cost Reference -->
+      <div class="bg-slate-800/40 rounded-lg px-4 py-2.5 mb-6 flex justify-between items-center">
+        <p class="text-slate-500 text-xs">Installation cost estimate</p>
+        <p id="install-cost-display" class="text-slate-300 text-xs font-mono">$170,000 ($0.68/kWp)</p>
+      </div>
+
+      <!-- CTA -->
+      <a
+        href="/contact?assessment=solar-roi"
+        class="block w-full text-center px-6 py-3.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-semibold rounded-xl transition-colors text-sm"
+        style="min-height: auto;"
+      >
+        Get a Detailed Site Assessment
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  const SEGMENTS: Record<string, { installSmall: number; installLarge: number }> = {
+    industrial_captive:  { installSmall: 0.68, installLarge: 0.60 },
+    commercial_bangkok:  { installSmall: 0.68, installLarge: 0.60 },
+    commercial_regional: { installSmall: 0.68, installLarge: 0.60 },
+    agricultural:        { installSmall: 0.68, installLarge: 0.60 },
+    residential:         { installSmall: 0.68, installLarge: 0.68 },
+  };
+
+  const COVERAGE         = 0.725;
+  const PEAK_SUN_HOURS   = 1450;
+  const PEAK_TARIFF      = 0.12;
+  const OFFPEAK_TARIFF   = 0.074;
+  const PEAK_FRACTION    = 0.85;
+  const OFFPEAK_FRACTION = 0.15;
+  const DEGRADATION      = 0.005;
+  const CO2_PER_KWH      = 0.65;
+  const THB_USD          = 35;
+
+  const segmentSelect       = document.getElementById('segment-select') as HTMLSelectElement;
+  const consumptionSlider   = document.getElementById('consumption-slider') as HTMLInputElement;
+  const consumptionDisplay  = document.getElementById('consumption-display')!;
+  const resultSize          = document.getElementById('result-size')!;
+  const resultPayback       = document.getElementById('result-payback')!;
+  const resultSavings       = document.getElementById('result-savings')!;
+  const peakSavingsEl       = document.getElementById('peak-savings')!;
+  const peakGenEl           = document.getElementById('peak-gen')!;
+  const offpeakSavingsEl    = document.getElementById('offpeak-savings')!;
+  const offpeakGenEl        = document.getElementById('offpeak-gen')!;
+  const blendedTariffEl     = document.getElementById('blended-tariff')!;
+  const twentyYearProfit    = document.getElementById('twenty-year-profit')!;
+  const twentyYearRoi       = document.getElementById('twenty-year-roi')!;
+  const twentyYearDetail    = document.getElementById('twenty-year-detail')!;
+  const co2Annual           = document.getElementById('co2-annual')!;
+  const co2Twenty           = document.getElementById('co2-twenty')!;
+  const installCostDisplay  = document.getElementById('install-cost-display')!;
+
+  function fmt(n: number) { return Math.round(n).toLocaleString(); }
+
+  function updateCalculator() {
+    const consumption = parseInt(consumptionSlider.value);
+    const segmentKey  = segmentSelect.value;
+    const segment     = SEGMENTS[segmentKey];
+
+    // Generation & system sizing
+    const generation    = Math.round(consumption * COVERAGE);
+    const systemKwp     = generation / PEAK_SUN_HOURS;
+    const isLarge       = systemKwp >= 3000;
+    const costPerKwp    = isLarge ? segment.installLarge : segment.installSmall;
+    const systemCostUSD = systemKwp * costPerKwp * 1000;
+
+    // Peak / off-peak split
+    const peakGen     = Math.round(generation * PEAK_FRACTION);
+    const offpeakGen  = Math.round(generation * OFFPEAK_FRACTION);
+    const peakSave    = peakGen * PEAK_TARIFF;
+    const offpeakSave = offpeakGen * OFFPEAK_TARIFF;
+    const totalSave   = peakSave + offpeakSave;
+    const blended     = totalSave / generation;
+    const payback     = systemCostUSD / totalSave;
+
+    // 20-year projection with degradation
+    let twentyYearGen = 0;
+    for (let y = 1; y <= 20; y++) {
+      twentyYearGen += generation * Math.pow(1 - DEGRADATION, y - 1);
+    }
+    const twentyYearSavings    = twentyYearGen * blended;
+    const twentyYearNetProfit  = twentyYearSavings - systemCostUSD;
+    const twentyYearROIPct     = (twentyYearNetProfit / systemCostUSD) * 100;
+
+    // CO2
+    const co2PerYear    = (generation * CO2_PER_KWH) / 1000;
+    const co2Over20     = Math.round(co2PerYear * 20);
+
+    // Update DOM
+    consumptionDisplay.textContent    = consumption.toLocaleString();
+    resultSize.textContent            = fmt(systemKwp) + ' kWp';
+    resultPayback.textContent         = payback.toFixed(1) + ' yrs';
+    resultSavings.textContent         = '$' + fmt(totalSave);
+    peakSavingsEl.textContent         = '$' + fmt(peakSave);
+    peakGenEl.textContent             = peakGen.toLocaleString() + ' kWh/yr';
+    offpeakSavingsEl.textContent      = '$' + fmt(offpeakSave);
+    offpeakGenEl.textContent          = offpeakGen.toLocaleString() + ' kWh/yr';
+    blendedTariffEl.textContent       = blended.toFixed(3);
+    twentyYearProfit.textContent      = '$' + fmt(twentyYearNetProfit) + ' net profit';
+    twentyYearRoi.textContent         = Math.round(twentyYearROIPct) + '% ROI';
+    twentyYearDetail.textContent      = `~$${fmt(twentyYearSavings)} total savings minus $${fmt(systemCostUSD)} installation`;
+    co2Annual.textContent             = co2PerYear.toFixed(1) + ' tonnes CO₂/year';
+    co2Twenty.textContent             = co2Over20.toLocaleString() + ' tonnes avoided over 20 years';
+    installCostDisplay.textContent    = `$${fmt(systemCostUSD)} ($${costPerKwp.toFixed(2)}/kWp)`;
+  }
+
+  segmentSelect.addEventListener('change', updateCalculator);
+  consumptionSlider.addEventListener('input', updateCalculator);
+  updateCalculator();
+</script>
