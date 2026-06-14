@@ -4,6 +4,7 @@ import LinkText from '../components/LinkText.astro';
 import FinancialPartnerBadge from '../components/FinancialPartnerBadge.astro';
 import AnimatedStats from '../components/AnimatedStats.astro';
 import OptimizedImage from '../components/OptimizedImage.astro';
+import BrandName from '../components/BrandName.astro';
 import { supabase } from '../lib/supabase';
 
 const results = await Promise.allSettled([
@@ -44,7 +45,7 @@ const partnerLogoUrl = ((dbLogoSetting ?? []) as { key: string; value: string }[
             Our Journey in Renewable Energy
           </h1>
           <p class="text-xl text-slate-300 leading-relaxed">
-            Since 2012, Pss.Orange has been at the forefront of the renewable energy revolution,
+            Since 2012, <BrandName /> has been at the forefront of the renewable energy revolution,
             delivering innovative solutions and driving sustainable change across Asia.
           </p>
           <FinancialPartnerBadge logoUrl={partnerLogoUrl} compact={true} class="mt-8 lg:hidden" />
@@ -73,7 +74,7 @@ const partnerLogoUrl = ((dbLogoSetting ?? []) as { key: string; value: string }[
         <div class="max-w-4xl mx-auto">
           <div class="glass rounded-2xl p-8 md:p-10" data-aos="fade-up" data-aos-delay="100">
             <p class="text-slate-400 mb-8 leading-relaxed">
-              Pss.Orange, an independent energy producer, was founded in 2012 through the collaboration of two industry leaders with complementary expertise.
+              <BrandName />, an independent energy producer, was founded in 2012 through the collaboration of two industry leaders with complementary expertise.
             </p>
             <div class="space-y-6">
               <div class="border-l-2 border-emerald-500 pl-6">
@@ -88,7 +89,7 @@ const partnerLogoUrl = ((dbLogoSetting ?? []) as { key: string; value: string }[
               </div>
             </div>
             <p class="text-slate-400 mt-8 leading-relaxed">
-              With their combined expertise, Pss.Orange has established itself as a trusted partner for renewable energy investments in the region, driving sustainable growth and innovation with a strong pipeline.
+              With their combined expertise, <BrandName /> has established itself as a trusted partner for renewable energy investments in the region, driving sustainable growth and innovation with a strong pipeline.
             </p>
           </div>
         </div>
@@ -244,7 +245,7 @@ const partnerLogoUrl = ((dbLogoSetting ?? []) as { key: string; value: string }[
           Join Us in Shaping a Sustainable Future
         </h2>
         <p class="text-slate-400 text-lg mb-8 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
-          Partner with Pss.Orange to accelerate your transition to renewable energy and contribute to a cleaner, more sustainable world.
+          Partner with <BrandName /> to accelerate your transition to renewable energy and contribute to a cleaner, more sustainable world.
         </p>
         <a
           href="/contact"

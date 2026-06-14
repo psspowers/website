@@ -1,0 +1,7 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+<span class={className}><span style="color: #10b981;">Pss.</span><span style="color: #f97316;">Orange</span></span>

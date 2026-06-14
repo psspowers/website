@@ -8,7 +8,6 @@ const links = [
   { text: 'Projects', href: '/projects' },
   { text: 'News', href: '/news' },
   { text: 'Group', href: '/group' },
-  { text: 'Contact', href: '/contact' },
 ];
 ---
 
@@ -24,6 +23,7 @@ const links = [
       {links.map(link => (
         <a
           href={link.href}
+          style="min-height: auto;"
           class={`text-sm font-medium tracking-normal transition-colors duration-200 ${
             (currentPath === link.href) || (currentPath.startsWith(link.href) && link.href !== '/')
               ? 'text-emerald-400 font-semibold'

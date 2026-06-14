@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import BrandName from '../components/BrandName.astro';
 import { supabase } from '../lib/supabase';
 
 const { data: pipelineStat } = await supabase
@@ -26,7 +27,7 @@ const pipelineMW = pipelineStat ? `${pipelineStat.value}${pipelineStat.format ??
         <div class="max-w-3xl text-white" data-aos="fade-up">
           <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-4">Partnerships</p>
           <h1 class="font-display text-4xl md:text-5xl font-bold tracking-tight mb-6">
-            Partner With Pss.Orange
+            Partner With <BrandName />
           </h1>
           <p class="text-xl text-slate-300 leading-relaxed">
             Let's build Asia's clean energy future together through strategic collaboration and project execution.
@@ -155,7 +156,7 @@ const pipelineMW = pipelineStat ? `${pipelineStat.value}${pipelineStat.format ??
           >
             <div>
               <span class="text-white font-semibold text-base">Join Our Team</span>
-              <p class="text-slate-400 text-sm mt-0.5">Interested in a career at Pss.Orange? We'd love to hear from you.</p>
+              <p class="text-slate-400 text-sm mt-0.5">Interested in a career at <BrandName />? We'd love to hear from you.</p>
             </div>
             <svg class="w-5 h-5 text-slate-500 group-hover:text-emerald-400 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -184,7 +185,7 @@ const pipelineMW = pipelineStat ? `${pipelineStat.value}${pipelineStat.format ??
         <div class="text-center mb-14" data-aos="fade-up">
           <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-3">Our Track Record</p>
           <h2 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight">
-            Why Partner with Pss.Orange
+            Why Partner with <BrandName />
           </h2>
         </div>
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">

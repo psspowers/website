@@ -1,6 +1,7 @@
 ---
 import { supabase } from '../lib/supabase';
 import Icon from './Icon.astro';
+import BrandName from './BrandName.astro';
 import { detectOffice } from '../utils/geoOffice';
 
 const currentYear = new Date().getFullYear();
@@ -121,7 +122,7 @@ const isHQ = contactOffice === allOfficesMapped[0] || contactOffice.country === 
     </div>
 
     <div class="border-t border-slate-800 pt-6 flex flex-col md:flex-row items-center justify-between gap-y-3 text-xs text-slate-500">
-      <span>&copy; {currentYear} Pss.Orange. All rights reserved. Power Systems &amp; Solutions Co., Ltd.</span>
+      <span>&copy; {currentYear} <BrandName />. All rights reserved. Power Systems &amp; Solutions Co., Ltd.</span>
       <div class="flex gap-x-6">
         <a href="/privacy" class="hover:text-slate-300 transition-colors" style="min-height: auto;">Privacy</a>
         <a href="/legal" class="hover:text-slate-300 transition-colors" style="min-height: auto;">Legal</a>

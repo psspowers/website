@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import SolarCalculator from '../components/SolarCalculator.astro';
 import FeaturedProjects from '../components/FeaturedProjects.astro';
 import PartnershipCircles from '../components/PartnershipCircles.astro';
+import BrandName from '../components/BrandName.astro';
 import { supabase } from '../lib/supabase';
 import { fetchFeaturedProjects, fetchAllProjectsForMetrics } from '../services/projectsDbService';
 import { fetchOffices } from '../services/officesDbService';
@@ -199,7 +200,7 @@ const filterTypes = ['All', ...Array.from(new Set(featuredProjects.map(p => p.ty
             Making clean energy<br />bankable across Asia
           </h2>
           <p class="text-slate-400 text-lg leading-relaxed mb-6">
-            Founded in Bangkok in 2012, Pss.Orange bridges the gap between ambitious
+            Founded in Bangkok in 2012, <BrandName /> bridges the gap between ambitious
             renewable energy targets and the rigorous financial standards demanded by
             institutional investors. We combine deep local market knowledge with
             international project finance expertise.
