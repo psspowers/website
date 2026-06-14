@@ -1,7 +1,5 @@
 ---
 // PSS Orange PPA Calculator — Thailand
-// Replaces the old hardcoded SolarCalculator component
-// Model mirrors the PSS Orange Excel savings calculation sheet
 ---
 
 <section class="py-16 max-w-screen-xl mx-auto px-6 lg:px-8">
@@ -12,33 +10,46 @@
 *{box-sizing:border-box}
 .sp{display:none}.sp.on{display:block}
 .rp{display:none}.rp.on{display:block}
-.sdot{width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;border:1.5px solid var(--color-border-secondary);color:var(--color-text-tertiary);flex-shrink:0}
+.sdot{width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;border:1.5px solid #334155;color:#64748b;flex-shrink:0}
 .sdot.done{background:#10b981;border-color:#10b981;color:#fff}
 .sdot.active{border-color:#10b981;color:#10b981}
-.sline{flex:1;height:1px;background:var(--color-border-tertiary)}
+.sline{flex:1;height:1px;background:#1e293b}
 .sline.done{background:#10b981}
-.mc{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px 16px}
-.mval{font-size:20px;font-weight:500;margin:4px 0 2px;color:var(--color-text-primary)}
-.mlbl{font-size:12px;color:var(--color-text-secondary);margin:0}
-.pbn{padding:8px 13px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:13px;color:var(--color-text-secondary);cursor:pointer;background:transparent;line-height:1.3}
-.pbn:hover{background:var(--color-background-secondary)}
+.mc{background:#1e293b;border-radius:8px;padding:14px 16px}
+.mval{font-size:20px;font-weight:500;margin:4px 0 2px;color:#f1f5f9}
+.mlbl{font-size:12px;color:#94a3b8;margin:0}
+.pbn{padding:8px 13px;border:0.5px solid #334155;border-radius:8px;font-size:13px;color:#94a3b8;cursor:pointer;background:transparent;line-height:1.3}
+.pbn:hover{background:#1e293b}
 .pbn.sel{border-color:#10b981;color:#10b981;background:rgba(16,185,129,0.08)}
 .ain{position:relative}
 .ain input{padding-right:36px}
-.ain .u{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--color-text-tertiary);pointer-events:none}
+.ain .u{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:12px;color:#64748b;pointer-events:none}
 .nb{display:flex;gap:10px;margin-top:24px}
-.nb button{flex:1;padding:12px;border-radius:var(--border-radius-md);font-size:14px;font-weight:500;cursor:pointer}
-.bbk{background:transparent;border:0.5px solid var(--color-border-secondary);color:var(--color-text-secondary)}
+.nb button{flex:1;padding:12px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer}
+.bbk{background:transparent;border:0.5px solid #334155;color:#94a3b8}
 .bgo{background:#10b981;border:none;color:#fff}
-.bgo:disabled{background:var(--color-background-secondary);color:var(--color-text-tertiary);cursor:not-allowed}
-.gcard{border-left:2px solid #10b981;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;background:rgba(16,185,129,0.06);padding:10px 14px}
+.bgo:disabled{background:#1e293b;color:#64748b;cursor:not-allowed}
+.gcard{border-left:2px solid #10b981;border-radius:0 8px 8px 0;background:rgba(16,185,129,0.06);padding:10px 14px}
 .cw{position:relative;width:100%}
-.leg{display:flex;flex-wrap:wrap;gap:10px;font-size:11px;color:var(--color-text-secondary);margin-bottom:8px}
+.leg{display:flex;flex-wrap:wrap;gap:10px;font-size:11px;color:#94a3b8;margin-bottom:8px}
 .lsq{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:3px;vertical-align:middle}
 </style>
 
 <div style="padding:1rem 0 0">
 
+<!-- HEADER -->
+<div style="text-align:center;margin-bottom:40px">
+  <p style="color:#10b981;font-size:13px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 12px">Thailand Solar PPA Estimator</p>
+  <h2 style="font-size:clamp(28px,4vw,42px);font-weight:700;color:#f1f5f9;margin:0 0 16px;line-height:1.2">How much could you save?</h2>
+  <p style="color:#94a3b8;font-size:16px;max-width:520px;margin:0 auto 20px;line-height:1.7">PSS Orange builds and owns the solar plant at <strong style="color:#f1f5f9">zero upfront cost</strong> to you. Answer 4 quick questions and see your 30-year savings estimate.</p>
+  <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:24px;margin-top:8px">
+    <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#94a3b8"><span style="color:#10b981;font-size:18px">&#10003;</span> Zero upfront cost</div>
+    <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#94a3b8"><span style="color:#10b981;font-size:18px">&#10003;</span> 15-year PPA contract</div>
+    <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#94a3b8"><span style="color:#10b981;font-size:18px">&#10003;</span> Free solar after year 15</div>
+  </div>
+</div>
+
+<!-- STEP INDICATOR -->
 <div style="display:flex;align-items:center;gap:4px;margin-bottom:28px" id="stepBar">
   <div class="sdot active" id="dot1">1</div><div class="sline" id="line1"></div>
   <div class="sdot" id="dot2">2</div><div class="sline" id="line2"></div>
@@ -48,28 +59,28 @@
 
 <!-- STEP 1: Monthly Bill -->
 <div class="sp on" id="s1">
-  <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 3px">Step 1 of 4</p>
-  <h2 style="margin:0 0 6px;font-size:20px;font-weight:500">What is your monthly electricity bill?</h2>
-  <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 18px">Total from your PEA / MEA invoice including all charges.</p>
+  <p style="font-size:13px;color:#94a3b8;margin:0 0 3px">Step 1 of 4</p>
+  <h2 style="margin:0 0 6px;font-size:20px;font-weight:500;color:#f1f5f9">What is your monthly electricity bill?</h2>
+  <p style="font-size:13px;color:#94a3b8;margin:0 0 18px">Total from your PEA / MEA invoice including all charges.</p>
   <div style="position:relative;margin-bottom:8px">
     <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:17px;font-weight:500;color:#10b981">&#3647;</span>
     <input type="number" id="billIn" placeholder="e.g. 500000" min="0" oninput="onBill()"
-      style="width:100%;padding:14px 14px 14px 34px;font-size:18px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary)">
+      style="width:100%;padding:14px 14px 14px 34px;font-size:18px;border:0.5px solid #334155;border-radius:8px;background:#0f172a;color:#f1f5f9">
   </div>
-  <p style="font-size:12px;color:var(--color-text-tertiary);margin:0 0 14px">Thai Baht (THB) per month</p>
+  <p style="font-size:12px;color:#64748b;margin:0 0 14px">Thai Baht (THB) per month</p>
   <div id="billPrev" style="display:none" class="gcard">
-    <p style="margin:0;font-size:12px;color:var(--color-text-secondary)">Annual electricity spend</p>
-    <p style="margin:4px 0 0;font-size:16px;font-weight:500" id="billPrevV"></p>
+    <p style="margin:0;font-size:12px;color:#94a3b8">Annual electricity spend</p>
+    <p style="margin:4px 0 0;font-size:16px;font-weight:500;color:#f1f5f9" id="billPrevV"></p>
   </div>
   <div class="nb"><button class="bgo" id="s1n" onclick="goStep(2)" disabled>Next &#8594;</button></div>
 </div>
 
 <!-- STEP 2: Working Hours -->
 <div class="sp" id="s2">
-  <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 3px">Step 2 of 4</p>
-  <h2 style="margin:0 0 6px;font-size:20px;font-weight:500">When does your facility operate?</h2>
-  <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 16px">Determines your split between peak (&#3647;5.16/kWh) and off-peak (&#3647;3.58/kWh) tariffs.</p>
-  <p style="font-size:12px;font-weight:500;margin:0 0 8px">Quick presets</p>
+  <p style="font-size:13px;color:#94a3b8;margin:0 0 3px">Step 2 of 4</p>
+  <h2 style="margin:0 0 6px;font-size:20px;font-weight:500;color:#f1f5f9">When does your facility operate?</h2>
+  <p style="font-size:13px;color:#94a3b8;margin:0 0 16px">Determines your split between peak (&#3647;5.16/kWh) and off-peak (&#3647;3.58/kWh) tariffs.</p>
+  <p style="font-size:12px;font-weight:500;margin:0 0 8px;color:#f1f5f9">Quick presets</p>
   <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px">
     <button class="pbn sel" id="pb0" onclick="setH(8,18,false,0)">Office 8am&ndash;6pm</button>
     <button class="pbn" id="pb1" onclick="setH(8,21,false,1)">Retail 8am&ndash;9pm</button>
@@ -80,23 +91,23 @@
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
     <div>
-      <label style="font-size:12px;color:var(--color-text-secondary);display:block;margin-bottom:6px">Start time</label>
-      <select id="shSel" onchange="onHC()" style="width:100%;padding:9px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-size:13px"></select>
+      <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:6px">Start time</label>
+      <select id="shSel" onchange="onHC()" style="width:100%;padding:9px;border:0.5px solid #334155;border-radius:8px;background:#0f172a;color:#f1f5f9;font-size:13px"></select>
     </div>
     <div>
-      <label style="font-size:12px;color:var(--color-text-secondary);display:block;margin-bottom:6px">End time</label>
-      <select id="ehSel" onchange="onHC()" style="width:100%;padding:9px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-size:13px"></select>
+      <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:6px">End time</label>
+      <select id="ehSel" onchange="onHC()" style="width:100%;padding:9px;border:0.5px solid #334155;border-radius:8px;background:#0f172a;color:#f1f5f9;font-size:13px"></select>
     </div>
   </div>
-  <p style="font-size:12px;font-weight:500;margin:0 0 8px">Weekend operations?</p>
+  <p style="font-size:12px;font-weight:500;margin:0 0 8px;color:#f1f5f9">Weekend operations?</p>
   <div style="display:flex;gap:8px;margin-bottom:18px">
     <button class="pbn sel" id="weN" onclick="setWE(false)">Weekdays only</button>
     <button class="pbn" id="weY" onclick="setWE(true)">We operate weekends too</button>
   </div>
   <div class="gcard">
-    <p style="margin:0;font-size:11px;color:var(--color-text-secondary)">Your estimated effective electricity tariff</p>
-    <p style="margin:3px 0 1px;font-size:16px;font-weight:500" id="effTD">&#3647;4.85/kWh</p>
-    <p style="margin:0;font-size:11px;color:var(--color-text-tertiary)" id="pfD">80% peak &bull; 20% off-peak</p>
+    <p style="margin:0;font-size:11px;color:#94a3b8">Your estimated effective electricity tariff</p>
+    <p style="margin:3px 0 1px;font-size:16px;font-weight:500;color:#f1f5f9" id="effTD">&#3647;4.85/kWh</p>
+    <p style="margin:0;font-size:11px;color:#64748b" id="pfD">80% peak &bull; 20% off-peak</p>
   </div>
   <div class="nb">
     <button class="bbk" onclick="goStep(1)">&#8592; Back</button>
@@ -106,28 +117,28 @@
 
 <!-- STEP 3: Available Area -->
 <div class="sp" id="s3">
-  <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 3px">Step 3 of 4</p>
-  <h2 style="margin:0 0 6px;font-size:20px;font-weight:500">What space is available for solar?</h2>
-  <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 4px">Leave blank if not applicable.</p>
+  <p style="font-size:13px;color:#94a3b8;margin:0 0 3px">Step 3 of 4</p>
+  <h2 style="margin:0 0 6px;font-size:20px;font-weight:500;color:#f1f5f9">What space is available for solar?</h2>
+  <p style="font-size:13px;color:#94a3b8;margin:0 0 4px">Leave blank if not applicable.</p>
   <p style="font-size:13px;color:#10b981;font-weight:500;margin:0 0 18px">6,000 m&sup2; &asymp; 1 MWp of solar capacity</p>
   <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:18px">
     <div>
-      <label style="font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;margin-bottom:7px">Rooftop (flat or pitched)</label>
-      <div class="ain"><input type="number" id="rfM" min="0" placeholder="0" oninput="onAC()" style="width:100%;padding:10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-size:14px"><span class="u">m&sup2;</span></div>
+      <label style="font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;margin-bottom:7px;color:#f1f5f9">Rooftop (flat or pitched)</label>
+      <div class="ain"><input type="number" id="rfM" min="0" placeholder="0" oninput="onAC()" style="width:100%;padding:10px;border:0.5px solid #334155;border-radius:8px;background:#0f172a;color:#f1f5f9;font-size:14px"><span class="u">m&sup2;</span></div>
     </div>
     <div>
-      <label style="font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;margin-bottom:7px">Open land (ground-mounted)</label>
-      <div class="ain"><input type="number" id="ldM" min="0" placeholder="0" oninput="onAC()" style="width:100%;padding:10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-size:14px"><span class="u">m&sup2;</span></div>
+      <label style="font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;margin-bottom:7px;color:#f1f5f9">Open land (ground-mounted)</label>
+      <div class="ain"><input type="number" id="ldM" min="0" placeholder="0" oninput="onAC()" style="width:100%;padding:10px;border:0.5px solid #334155;border-radius:8px;background:#0f172a;color:#f1f5f9;font-size:14px"><span class="u">m&sup2;</span></div>
     </div>
     <div>
-      <label style="font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;margin-bottom:7px">Reservoir / pond (floating solar)</label>
-      <div class="ain"><input type="number" id="flM" min="0" placeholder="0" oninput="onAC()" style="width:100%;padding:10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-size:14px"><span class="u">m&sup2;</span></div>
+      <label style="font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;margin-bottom:7px;color:#f1f5f9">Reservoir / pond (floating solar)</label>
+      <div class="ain"><input type="number" id="flM" min="0" placeholder="0" oninput="onAC()" style="width:100%;padding:10px;border:0.5px solid #334155;border-radius:8px;background:#0f172a;color:#f1f5f9;font-size:14px"><span class="u">m&sup2;</span></div>
     </div>
   </div>
   <div id="areaPrev" style="display:none" class="gcard">
-    <p style="margin:0;font-size:11px;color:var(--color-text-secondary)">Total available area</p>
-    <p style="margin:3px 0 1px;font-size:15px;font-weight:500" id="areaTot"></p>
-    <p style="margin:0;font-size:11px;color:var(--color-text-tertiary)" id="areaMax"></p>
+    <p style="margin:0;font-size:11px;color:#94a3b8">Total available area</p>
+    <p style="margin:3px 0 1px;font-size:15px;font-weight:500;color:#f1f5f9" id="areaTot"></p>
+    <p style="margin:0;font-size:11px;color:#64748b" id="areaMax"></p>
   </div>
   <div class="nb">
     <button class="bbk" onclick="goStep(2)">&#8592; Back</button>
@@ -137,16 +148,16 @@
 
 <!-- STEP 4: Discount -->
 <div class="sp" id="s4">
-  <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 3px">Step 4 of 4</p>
-  <h2 style="margin:0 0 6px;font-size:20px;font-weight:500">What PPA discount are you looking for?</h2>
-  <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 18px">PSS Orange charges you less than the grid rate for your solar electricity. What % off are you targeting?</p>
+  <p style="font-size:13px;color:#94a3b8;margin:0 0 3px">Step 4 of 4</p>
+  <h2 style="margin:0 0 6px;font-size:20px;font-weight:500;color:#f1f5f9">What PPA discount are you looking for?</h2>
+  <p style="font-size:13px;color:#94a3b8;margin:0 0 18px">PSS Orange charges you less than the grid rate for your solar electricity. What % off are you targeting?</p>
   <div style="margin-bottom:18px">
     <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
-      <span style="font-size:13px;color:var(--color-text-secondary)">Discount on grid tariff</span>
+      <span style="font-size:13px;color:#94a3b8">Discount on grid tariff</span>
       <span style="font-size:26px;font-weight:500;color:#10b981" id="dV">20%</span>
     </div>
     <input type="range" id="dSlider" min="10" max="30" step="1" value="20" oninput="onDC()" style="width:100%;accent-color:#10b981;margin-bottom:5px">
-    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--color-text-tertiary)">
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:#64748b">
       <span>10%</span><span>20% typical</span><span>30%</span>
     </div>
   </div>
@@ -155,11 +166,11 @@
     <button class="pbn sel" id="d20" onclick="setD(20)">20% typical</button>
     <button class="pbn" id="d25" onclick="setD(25)">25% PSS typical</button>
   </div>
-  <div style="background:rgba(16,185,129,0.06);border:0.5px solid rgba(16,185,129,0.3);border-radius:var(--border-radius-md);padding:12px 14px;margin-bottom:18px;font-size:12px;color:var(--color-text-secondary)">
+  <div style="background:rgba(16,185,129,0.06);border:0.5px solid rgba(16,185,129,0.3);border-radius:8px;padding:12px 14px;margin-bottom:18px;font-size:12px;color:#94a3b8">
     <span style="font-weight:500;color:#10b981">Note:</span> Your effective saving is actually higher than the stated % because PSS Orange excludes the Ft (fuel tariff) surcharge that the utility charges you.
   </div>
-  <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px 16px">
-    <p style="font-size:12px;font-weight:500;margin:0 0 12px">Live preview</p>
+  <div style="background:#1e293b;border-radius:8px;padding:14px 16px">
+    <p style="font-size:12px;font-weight:500;margin:0 0 12px;color:#f1f5f9">Live preview</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
       <div><p class="mlbl">Monthly savings &mdash; Year 1</p><p class="mval" style="color:#10b981" id="pvM">&#3647;0</p></div>
       <div><p class="mlbl">15-yr PPA total savings</p><p class="mval" id="pv15">&#3647;0</p></div>
@@ -178,80 +189,80 @@
   <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:18px">
     <div>
       <p style="font-size:11px;color:#10b981;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;margin:0 0 3px">Your PPA analysis</p>
-      <h2 style="margin:0;font-size:20px;font-weight:500">Solar savings estimate</h2>
+      <h2 style="margin:0;font-size:20px;font-weight:500;color:#f1f5f9">Solar savings estimate</h2>
     </div>
-    <button onclick="backToForm()" style="font-size:12px;color:var(--color-text-secondary);background:transparent;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:7px 13px;cursor:pointer">&#8592; Edit inputs</button>
+    <button onclick="backToForm()" style="font-size:12px;color:#94a3b8;background:transparent;border:0.5px solid #334155;border-radius:8px;padding:7px 13px;cursor:pointer">&#8592; Edit inputs</button>
   </div>
-  <div style="background:rgba(16,185,129,0.06);border:0.5px solid rgba(16,185,129,0.3);border-radius:var(--border-radius-lg);padding:13px 16px;margin-bottom:18px;display:flex;gap:12px;align-items:start">
+  <div style="background:rgba(16,185,129,0.06);border:0.5px solid rgba(16,185,129,0.3);border-radius:12px;padding:13px 16px;margin-bottom:18px;display:flex;gap:12px;align-items:start">
     <div>
-      <p style="margin:0 0 3px;font-weight:500;font-size:13px">How a PSS Orange PPA works</p>
-      <p style="margin:0;font-size:12px;color:var(--color-text-secondary)">PSS Orange builds, owns, and maintains the solar plant at <strong>zero upfront cost</strong> to you. You pay a discounted rate for solar electricity for <strong>15 years</strong>. After the PPA ends, you receive solar energy <strong>free</strong> for the remaining plant life.</p>
+      <p style="margin:0 0 3px;font-weight:500;font-size:13px;color:#f1f5f9">How a PSS Orange PPA works</p>
+      <p style="margin:0;font-size:12px;color:#94a3b8">PSS Orange builds, owns, and maintains the solar plant at <strong style="color:#f1f5f9">zero upfront cost</strong> to you. You pay a discounted rate for solar electricity for <strong style="color:#f1f5f9">15 years</strong>. After the PPA ends, you receive solar energy <strong style="color:#f1f5f9">free</strong> for the remaining plant life.</p>
     </div>
   </div>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:18px">
-    <div class="mc"><p class="mlbl">System size</p><p class="mval" id="rSz">&mdash;</p><p style="font-size:11px;color:var(--color-text-tertiary);margin:0" id="rKwp">&mdash;</p></div>
-    <div class="mc"><p class="mlbl">Solar coverage</p><p class="mval" style="color:#10b981" id="rCov">&mdash;</p><p style="font-size:11px;color:var(--color-text-tertiary);margin:0">of consumption</p></div>
-    <div class="mc"><p class="mlbl">Month 1 saving</p><p class="mval" style="color:#10b981" id="rM1">&mdash;</p><p style="font-size:11px;color:var(--color-text-tertiary);margin:0">vs full grid rate</p></div>
-    <div class="mc"><p class="mlbl">30-yr lifetime value</p><p class="mval" id="rLf">&mdash;</p><p style="font-size:11px;color:var(--color-text-tertiary);margin:0">total savings</p></div>
+    <div class="mc"><p class="mlbl">System size</p><p class="mval" id="rSz">&mdash;</p><p style="font-size:11px;color:#64748b;margin:0" id="rKwp">&mdash;</p></div>
+    <div class="mc"><p class="mlbl">Solar coverage</p><p class="mval" style="color:#10b981" id="rCov">&mdash;</p><p style="font-size:11px;color:#64748b;margin:0">of consumption</p></div>
+    <div class="mc"><p class="mlbl">Month 1 saving</p><p class="mval" style="color:#10b981" id="rM1">&mdash;</p><p style="font-size:11px;color:#64748b;margin:0">vs full grid rate</p></div>
+    <div class="mc"><p class="mlbl">30-yr lifetime value</p><p class="mval" id="rLf">&mdash;</p><p style="font-size:11px;color:#64748b;margin:0">total savings</p></div>
   </div>
-  <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:16px;margin-bottom:14px">
-    <h3 style="margin:0 0 3px;font-size:13px;font-weight:500">Annual electricity cost &mdash; with vs without solar</h3>
-    <p style="margin:0 0 10px;font-size:11px;color:var(--color-text-secondary)">Stacked bars add up to your total annual bill. Green = what you save. After Year 15 the PPA ends and solar is free.</p>
+  <div style="background:#1e293b;border-radius:12px;padding:16px;margin-bottom:14px">
+    <h3 style="margin:0 0 3px;font-size:13px;font-weight:500;color:#f1f5f9">Annual electricity cost &mdash; with vs without solar</h3>
+    <p style="margin:0 0 10px;font-size:11px;color:#94a3b8">Stacked bars add up to your total annual bill. Green = what you save. After Year 15 the PPA ends and solar is free.</p>
     <div class="leg">
       <span><span class="lsq" style="background:#3b82f6"></span>Grid payment</span>
       <span><span class="lsq" style="background:#f59e0b"></span>PPA payment (yrs 1&ndash;15)</span>
       <span><span class="lsq" style="background:#10b981"></span>Solar savings</span>
       <span><span class="lsq" style="background:none;outline:1px dashed #ef4444;outline-offset:0"></span>Without solar</span>
     </div>
-    <div class="cw" style="height:240px"><canvas id="barC" role="img" aria-label="Stacked bar chart showing annual electricity costs split across grid payment, PPA payment, and solar savings for key years 1 through 30">Annual cost breakdown chart.</canvas></div>
-    <p style="font-size:11px;color:var(--color-text-tertiary);text-align:center;margin:8px 0 0">&#9733; After Year 15 the PPA ends &mdash; savings jump as solar energy becomes free</p>
+    <div class="cw" style="height:240px"><canvas id="barC" role="img" aria-label="Stacked bar chart showing annual electricity costs for key years">Annual cost breakdown chart.</canvas></div>
+    <p style="font-size:11px;color:#64748b;text-align:center;margin:8px 0 0">&#9733; After Year 15 the PPA ends &mdash; savings jump as solar energy becomes free</p>
   </div>
-  <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:16px;margin-bottom:14px">
-    <h3 style="margin:0 0 3px;font-size:13px;font-weight:500">Cumulative savings over 30 years</h3>
-    <p style="margin:0 0 10px;font-size:11px;color:var(--color-text-secondary)">Savings accelerate after Year 15 as rising grid tariffs are avoided entirely on your solar share.</p>
-    <div class="cw" style="height:200px"><canvas id="cumC" role="img" aria-label="Area chart showing cumulative savings growing from zero to the 30-year total with a steeper slope after year 15">Cumulative savings chart.</canvas></div>
+  <div style="background:#1e293b;border-radius:12px;padding:16px;margin-bottom:14px">
+    <h3 style="margin:0 0 3px;font-size:13px;font-weight:500;color:#f1f5f9">Cumulative savings over 30 years</h3>
+    <p style="margin:0 0 10px;font-size:11px;color:#94a3b8">Savings accelerate after Year 15 as rising grid tariffs are avoided entirely on your solar share.</p>
+    <div class="cw" style="height:200px"><canvas id="cumC" role="img" aria-label="Area chart showing cumulative savings growing over 30 years">Cumulative savings chart.</canvas></div>
   </div>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:18px">
-    <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px 16px;border-top:2px solid #f59e0b">
-      <p style="margin:0 0 4px;font-size:11px;color:var(--color-text-secondary)">PPA period &mdash; years 1&ndash;15</p>
-      <p style="margin:0;font-size:18px;font-weight:500" id="rPPA">&mdash;</p>
-      <p style="margin:3px 0 0;font-size:11px;color:var(--color-text-tertiary)">You pay discounted solar rate</p>
+    <div style="background:#1e293b;border-radius:8px;padding:14px 16px;border-top:2px solid #f59e0b">
+      <p style="margin:0 0 4px;font-size:11px;color:#94a3b8">PPA period &mdash; years 1&ndash;15</p>
+      <p style="margin:0;font-size:18px;font-weight:500;color:#f1f5f9" id="rPPA">&mdash;</p>
+      <p style="margin:3px 0 0;font-size:11px;color:#64748b">You pay discounted solar rate</p>
     </div>
-    <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px 16px;border-top:2px solid #10b981">
-      <p style="margin:0 0 4px;font-size:11px;color:var(--color-text-secondary)">Post-PPA &mdash; years 16&ndash;30</p>
+    <div style="background:#1e293b;border-radius:8px;padding:14px 16px;border-top:2px solid #10b981">
+      <p style="margin:0 0 4px;font-size:11px;color:#94a3b8">Post-PPA &mdash; years 16&ndash;30</p>
       <p style="margin:0;font-size:18px;font-weight:500;color:#10b981" id="rPost">&mdash;</p>
-      <p style="margin:3px 0 0;font-size:11px;color:var(--color-text-tertiary)">Solar energy is free</p>
+      <p style="margin:3px 0 0;font-size:11px;color:#64748b">Solar energy is free</p>
     </div>
-    <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px 16px;border-top:2px solid #6366f1">
-      <p style="margin:0 0 4px;font-size:11px;color:var(--color-text-secondary)">30-year lifetime total</p>
-      <p style="margin:0;font-size:18px;font-weight:500" id="rTot">&mdash;</p>
-      <p style="margin:3px 0 0;font-size:11px;color:var(--color-text-tertiary)">vs paying full grid rate</p>
+    <div style="background:#1e293b;border-radius:8px;padding:14px 16px;border-top:2px solid #6366f1">
+      <p style="margin:0 0 4px;font-size:11px;color:#94a3b8">30-year lifetime total</p>
+      <p style="margin:0;font-size:18px;font-weight:500;color:#f1f5f9" id="rTot">&mdash;</p>
+      <p style="margin:3px 0 0;font-size:11px;color:#64748b">vs paying full grid rate</p>
     </div>
   </div>
-  <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:16px;margin-bottom:14px">
-    <h3 style="margin:0 0 14px;font-size:13px;font-weight:500">Environmental impact &mdash; 30 years</h3>
+  <div style="background:#1e293b;border-radius:12px;padding:16px;margin-bottom:14px">
+    <h3 style="margin:0 0 14px;font-size:13px;font-weight:500;color:#f1f5f9">Environmental impact &mdash; 30 years</h3>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;text-align:center">
-      <div><p style="margin:0 0 2px;font-size:22px">&#127807;</p><p style="margin:3px 0 2px;font-size:16px;font-weight:500" id="rCO2">&mdash;</p><p style="margin:0;font-size:11px;color:var(--color-text-secondary)">tonnes CO&#8322; avoided</p></div>
-      <div><p style="margin:0 0 2px;font-size:22px">&#127795;</p><p style="margin:3px 0 2px;font-size:16px;font-weight:500" id="rTr">&mdash;</p><p style="margin:0;font-size:11px;color:var(--color-text-secondary)">equivalent trees</p></div>
-      <div><p style="margin:0 0 2px;font-size:22px">&#9889;</p><p style="margin:3px 0 2px;font-size:16px;font-weight:500" id="rMwh">&mdash;</p><p style="margin:0;font-size:11px;color:var(--color-text-secondary)">MWh clean energy</p></div>
-      <div><p style="margin:0 0 2px;font-size:22px">&#9728;&#65039;</p><p style="margin:3px 0 2px;font-size:16px;font-weight:500" id="rMwp">&mdash;</p><p style="margin:0;font-size:11px;color:var(--color-text-secondary)">MWp installed</p></div>
+      <div><p style="margin:0 0 2px;font-size:22px">&#127807;</p><p style="margin:3px 0 2px;font-size:16px;font-weight:500;color:#f1f5f9" id="rCO2">&mdash;</p><p style="margin:0;font-size:11px;color:#94a3b8">tonnes CO&#8322; avoided</p></div>
+      <div><p style="margin:0 0 2px;font-size:22px">&#127795;</p><p style="margin:3px 0 2px;font-size:16px;font-weight:500;color:#f1f5f9" id="rTr">&mdash;</p><p style="margin:0;font-size:11px;color:#94a3b8">equivalent trees</p></div>
+      <div><p style="margin:0 0 2px;font-size:22px">&#9889;</p><p style="margin:3px 0 2px;font-size:16px;font-weight:500;color:#f1f5f9" id="rMwh">&mdash;</p><p style="margin:0;font-size:11px;color:#94a3b8">MWh clean energy</p></div>
+      <div><p style="margin:0 0 2px;font-size:22px">&#9728;&#65039;</p><p style="margin:3px 0 2px;font-size:16px;font-weight:500;color:#f1f5f9" id="rMwp">&mdash;</p><p style="margin:0;font-size:11px;color:#94a3b8">MWp installed</p></div>
     </div>
   </div>
   <details style="margin-bottom:16px">
-    <summary style="font-size:12px;color:var(--color-text-secondary);cursor:pointer;list-style:none">&#8505; Calculation assumptions &amp; disclaimers</summary>
-    <div style="margin-top:10px;padding:12px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);font-size:11px;color:var(--color-text-tertiary);line-height:1.9" id="rDisc"></div>
+    <summary style="font-size:12px;color:#94a3b8;cursor:pointer;list-style:none">&#8505; Calculation assumptions &amp; disclaimers</summary>
+    <div style="margin-top:10px;padding:12px;background:#1e293b;border-radius:8px;font-size:11px;color:#64748b;line-height:1.9" id="rDisc"></div>
   </details>
-  <div style="background:rgba(16,185,129,0.06);border:0.5px solid rgba(16,185,129,0.3);border-radius:var(--border-radius-lg);padding:22px;text-align:center">
-    <h3 style="margin:0 0 8px;font-size:17px;font-weight:500">Ready for a bankable PPA proposal?</h3>
-    <p style="margin:0 0 16px;font-size:13px;color:var(--color-text-secondary)">PSS Orange will conduct a free site assessment and deliver a fully bankable PPA proposal &mdash; at zero cost to you.</p>
-    <a href="/contact?ref=ppa-calculator" style="display:inline-block;background:#10b981;color:#fff;padding:12px 26px;border-radius:var(--border-radius-md);font-weight:500;font-size:14px;text-decoration:none">Get your free site assessment &#8594;</a>
-    <p style="margin:12px 0 0;font-size:11px;color:var(--color-text-tertiary)">Indicative estimate only. Actual PPA terms subject to site assessment and final project design.</p>
+  <div style="background:rgba(16,185,129,0.06);border:0.5px solid rgba(16,185,129,0.3);border-radius:12px;padding:22px;text-align:center">
+    <h3 style="margin:0 0 8px;font-size:17px;font-weight:500;color:#f1f5f9">Ready for a bankable PPA proposal?</h3>
+    <p style="margin:0 0 16px;font-size:13px;color:#94a3b8">PSS Orange will conduct a free site assessment and deliver a fully bankable PPA proposal &mdash; at zero cost to you.</p>
+    <a href="/contact?ref=ppa-calculator" style="display:inline-block;background:#10b981;color:#fff;padding:12px 26px;border-radius:8px;font-weight:500;font-size:14px;text-decoration:none">Get your free site assessment &#8594;</a>
+    <p style="margin:12px 0 0;font-size:11px;color:#64748b">Indicative estimate only. Actual PPA terms subject to site assessment and final project design.</p>
   </div>
 </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-<script>
+<script is:inline>
 const S={step:1,bill:0,sH:8,eH:18,we:false,rf:0,ld:0,fl:0,disc:20};
 const TF={pk:5.1627,op:3.5827,pkb:4.18,opb:2.6,infl:0.015};
 const SL={e:1450,pk:0.67,op:0.33,d1:0.025,d:0.005};
