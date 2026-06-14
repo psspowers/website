@@ -15,13 +15,19 @@ const results = await Promise.allSettled([
   supabase.from('site_settings').select('key,value'),
   fetchFeaturedProjects(),
   fetchAllProjectsForMetrics(),
+  supabase.from('partner_stats').select('key,value,label').order('sort_order', { ascending: true }),
 ]);
 
-const { data: dbStats }      = results[0].status === 'fulfilled' ? results[0].value : { data: null };
-const { data: dbMilestones } = results[1].status === 'fulfilled' ? results[1].value : { data: null };
-const { data: dbSettings }   = results[2].status === 'fulfilled' ? results[2].value : { data: null };
-const featuredProjects       = results[3].status === 'fulfilled' ? results[3].value : [];
-const allProjectMetrics      = results[4].status === 'fulfilled' ? results[4].value : [];
+const { data: dbStats }        = results[0].status === 'fulfilled' ? results[0].value : { data: null };
+const { data: dbMilestones }   = results[1].status === 'fulfilled' ? results[1].value : { data: null };
+const { data: dbSettings }     = results[2].status === 'fulfilled' ? results[2].value : { data: null };
+const featuredProjects         = results[3].status === 'fulfilled' ? results[3].value : [];
+const allProjectMetrics        = results[4].status === 'fulfilled' ? results[4].value : [];
+const { data: dbPartnerStats } = results[5].status === 'fulfilled' ? results[5].value : { data: null };
+
+const partnerStatsMap: Record<string, string> = {};
+(dbPartnerStats ?? []).forEach((row: { key: string; value: string }) => { partnerStatsMap[row.key] = row.value; });
+const isqAum = partnerStatsMap['aum'] ?? '$60B';
 
 const heroStats = (dbStats ?? []) as { value: number; label: string; format: string }[];
 const milestones = (dbMilestones ?? []) as { year: string; event: string; logo_url: string | null }[];
@@ -135,12 +141,29 @@ const filterTypes = ['All', ...Array.from(new Set(featuredProjects.map(p => p.ty
             <h2 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight mb-5 leading-tight">
               Backed by one of the world's largest infrastructure investors
             </h2>
-            <p class="text-slate-400 leading-relaxed mb-4">
-              PSS Orange is backed by I Squared Capital — a leading global infrastructure investor with $40B+ in assets under management — and partners with Berde, their renewable energy subsidiary.
+            <p class="text-slate-400 leading-relaxed mb-6">
+              PSS Orange is backed by I Squared Capital — a leading global infrastructure investor with <span class="text-white font-semibold">{isqAum}+ in assets under management</span> — and partners with Berde, their renewable energy subsidiary.
             </p>
-            <p class="text-slate-400 leading-relaxed mb-8">
-              This institutional backing means every project we deliver meets the highest standards of financial governance, technical execution, and long-term operational accountability. It also means we can mobilise significant capital for the right opportunities.
+
+            <!-- Stat strip -->
+            <div class="grid grid-cols-2 gap-3 mb-6">
+              {[
+                { value: '24 GW', label: 'Energy Power Portfolio' },
+                { value: '400 MWhr', label: 'Battery Storage Executed' },
+                { value: 'T&D', label: 'Transmission & Distribution' },
+                { value: 'APAC', label: 'Data Centre & Hyperscaler PPAs' },
+              ].map(stat => (
+                <div class="bg-slate-800/60 border border-slate-700/50 rounded-xl px-4 py-3">
+                  <p class="font-display text-xl font-bold text-emerald-400 leading-none mb-1">{stat.value}</p>
+                  <p class="text-slate-400 text-xs leading-snug">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+
+            <p class="text-slate-400 text-sm leading-relaxed mb-8">
+              With deep roots in Asia Pacific — including hyperscaler PPAs across multiple APAC markets and a growing data centre energy portfolio — I Squared brings both the capital and regional access to unlock the continent's fastest-growing energy demand centres.
             </p>
+
             <div class="flex flex-wrap gap-4">
               <a
                 href="/partner-with-us#investment-capital-partner"
@@ -184,6 +207,22 @@ const filterTypes = ['All', ...Array.from(new Set(featuredProjects.map(p => p.ty
                   <p class="text-white font-semibold text-sm">Strategic Partnership Announced</p>
                   <p class="text-slate-400 text-xs mt-0.5">February 2025 — Scaling renewable energy across Asia</p>
                 </div>
+              </div>
+            </div>
+
+            <!-- ISQ key credential pill strip -->
+            <div class="grid grid-cols-3 gap-3">
+              <div class="glass rounded-xl p-4 text-center">
+                <p class="font-display text-2xl font-bold text-white">{isqAum}+</p>
+                <p class="text-slate-400 text-[11px] mt-1 leading-tight">Assets Under Management</p>
+              </div>
+              <div class="glass rounded-xl p-4 text-center">
+                <p class="font-display text-2xl font-bold text-white">115+</p>
+                <p class="text-slate-400 text-[11px] mt-1 leading-tight">Countries Invested</p>
+              </div>
+              <div class="glass rounded-xl p-4 text-center">
+                <p class="font-display text-2xl font-bold text-white">100+</p>
+                <p class="text-slate-400 text-[11px] mt-1 leading-tight">Portfolio Companies</p>
               </div>
             </div>
           </div>
