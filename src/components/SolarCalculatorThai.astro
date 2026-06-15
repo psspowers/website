@@ -54,6 +54,9 @@ const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
 .ppa-input::placeholder{color:#475569}
 .ppa-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media(max-width:500px){.ppa-grid{grid-template-columns:1fr}}
+select,input[type="number"]{background:#0f172a;border:0.5px solid #334155;color:#f1f5f9;border-radius:8px}
+select:focus,input[type="number"]:focus{outline:none;border-color:#10b981}
+details summary{cursor:pointer}
 </style>
 
 <div style="padding:1rem 0 0">
