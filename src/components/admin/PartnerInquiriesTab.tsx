@@ -9,6 +9,8 @@ interface Inquiry {
   company: string | null;
   country: string | null;
   message: string | null;
+  designation: string | null;
+  phone: string | null;
   project_type: string | null;
   geography: string | null;
   collaboration_goals: string | null;
@@ -74,6 +76,8 @@ function ExpandedDetails({ inquiry }: { inquiry: Inquiry }) {
             <Field label="Geography" value={inquiry.geography} />
           </>}
           {type === 'investment' && <>
+            <Field label="Designation" value={inquiry.designation} />
+            <Field label="Phone" value={inquiry.phone} />
             <Field label="Investment Size" value={inquiry.investment_size} />
             <Field label="Investment Thesis" value={inquiry.investment_thesis} />
             <Field label="Target Returns" value={inquiry.target_returns} />
@@ -100,7 +104,7 @@ function ExpandedDetails({ inquiry }: { inquiry: Inquiry }) {
             <p className="text-gray-800 text-sm whitespace-pre-wrap leading-relaxed">{inquiry.relevant_experience}</p>
           </div>
         )}
-        {(type === 'technology' || type === 'careers' || type === 'other') && inquiry.message && (
+        {(type === 'technology' || type === 'careers' || type === 'other' || type === 'investment') && inquiry.message && (
           <div className="mb-3">
             <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Message</p>
             <p className="text-gray-800 text-sm whitespace-pre-wrap leading-relaxed">{inquiry.message}</p>

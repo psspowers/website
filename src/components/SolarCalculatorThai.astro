@@ -1,5 +1,7 @@
 ---
 // PSS Orange PPA Calculator — Thailand
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
 ---
 
 <section class="py-16 max-w-screen-xl mx-auto px-6 lg:px-8">
@@ -8,11 +10,11 @@
 <h2 class="sr-only">PSS Orange solar PPA savings calculator for Thailand — estimate how much you can save under a 15-year power purchase agreement</h2>
 <style>
 *{box-sizing:border-box}
-.sp{display:none}.sp.on{display:block}
+.sp{display:none}.sp.on{display:block;border:1.5px solid rgba(249,115,22,0.55);border-radius:12px;padding:20px 22px;box-shadow:0 0 0 4px rgba(249,115,22,0.07),0 4px 28px rgba(0,0,0,0.28);background:#090f1a;transition:box-shadow 0.2s}
 .rp{display:none}.rp.on{display:block}
 .sdot{width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;border:1.5px solid #334155;color:#64748b;flex-shrink:0}
 .sdot.done{background:#10b981;border-color:#10b981;color:#fff}
-.sdot.active{border-color:#10b981;color:#10b981}
+.sdot.active{border-color:#f97316;color:#f97316;background:rgba(249,115,22,0.08)}
 .sline{flex:1;height:1px;background:#1e293b}
 .sline.done{background:#10b981}
 .mc{background:#1e293b;border-radius:8px;padding:14px 16px}
@@ -41,13 +43,17 @@
 /* Baht symbol */
 #billBaht{transition:color 0.2s}
 #billBaht.typing{color:#f97316}
-/* Step 1 panel glow */
-#s1.typing{border-radius:12px;outline:1.5px solid rgba(249,115,22,0.35);box-shadow:0 0 24px rgba(249,115,22,0.08)}
 /* Annual spend preview slide-in */
 @keyframes slideIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 #billPrev.visible{display:block;animation:slideIn 0.25s ease-out}
 /* Orange card accent when typing */
 #billPrev.typing{border-left-color:#f97316;background:rgba(249,115,22,0.06)}
+/* PPA contact form */
+.ppa-input{width:100%;padding:10px 12px;font-size:14px;border:0.5px solid #334155;border-radius:8px;background:#0f172a;color:#f1f5f9;transition:border-color 0.15s,box-shadow 0.15s;outline:none}
+.ppa-input:focus{border-color:#f97316;box-shadow:0 0 0 2px rgba(249,115,22,0.15)}
+.ppa-input::placeholder{color:#475569}
+.ppa-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:500px){.ppa-grid{grid-template-columns:1fr}}
 </style>
 
 <div style="padding:1rem 0 0">
@@ -267,16 +273,57 @@
     <summary style="font-size:12px;color:#94a3b8;cursor:pointer;list-style:none">&#8505; Calculation assumptions &amp; disclaimers</summary>
     <div style="margin-top:10px;padding:12px;background:#1e293b;border-radius:8px;font-size:11px;color:#64748b;line-height:1.9" id="rDisc"></div>
   </details>
-  <div style="background:rgba(16,185,129,0.06);border:0.5px solid rgba(16,185,129,0.3);border-radius:12px;padding:22px;text-align:center">
-    <h3 style="margin:0 0 8px;font-size:17px;font-weight:500;color:#f1f5f9">Ready for a bankable PPA proposal?</h3>
-    <p style="margin:0 0 16px;font-size:13px;color:#94a3b8">PSS Orange will conduct a free site assessment and deliver a fully bankable PPA proposal &mdash; at zero cost to you.</p>
-    <a href="/contact?ref=ppa-calculator" style="display:inline-block;background:#10b981;color:#fff;padding:12px 26px;border-radius:8px;font-weight:500;font-size:14px;text-decoration:none">Get your free site assessment &#8594;</a>
-    <p style="margin:12px 0 0;font-size:11px;color:#64748b">Indicative estimate only. Actual PPA terms subject to site assessment and final project design.</p>
+  <div style="border:1.5px solid rgba(249,115,22,0.45);border-radius:12px;padding:22px 24px;background:#090f1a">
+    <div id="ppaForm">
+      <p style="font-size:11px;color:#f97316;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin:0 0 4px">Investment &amp; Capital Partner</p>
+      <h3 style="margin:0 0 4px;font-size:17px;font-weight:600;color:#f1f5f9">Get a bankable PPA proposal</h3>
+      <p style="margin:0 0 18px;font-size:13px;color:#94a3b8">PSS Orange will conduct a free site assessment and deliver a fully bankable proposal &mdash; at zero cost to you.</p>
+      <form onsubmit="submitPPA(event)" novalidate>
+        <div class="ppa-grid" style="margin-bottom:10px">
+          <div>
+            <label style="font-size:11px;color:#64748b;display:block;margin-bottom:5px;font-weight:500;text-transform:uppercase;letter-spacing:0.05em">Full Name *</label>
+            <input id="ppaName" class="ppa-input" type="text" placeholder="Your full name" required>
+          </div>
+          <div>
+            <label style="font-size:11px;color:#64748b;display:block;margin-bottom:5px;font-weight:500;text-transform:uppercase;letter-spacing:0.05em">Company Name *</label>
+            <input id="ppaCo" class="ppa-input" type="text" placeholder="Your company" required>
+          </div>
+        </div>
+        <div class="ppa-grid" style="margin-bottom:10px">
+          <div>
+            <label style="font-size:11px;color:#64748b;display:block;margin-bottom:5px;font-weight:500;text-transform:uppercase;letter-spacing:0.05em">Designation</label>
+            <input id="ppaDes" class="ppa-input" type="text" placeholder="e.g. CFO, Director">
+          </div>
+          <div>
+            <label style="font-size:11px;color:#64748b;display:block;margin-bottom:5px;font-weight:500;text-transform:uppercase;letter-spacing:0.05em">Email Address *</label>
+            <input id="ppaEmail" class="ppa-input" type="email" placeholder="you@company.com" required>
+          </div>
+        </div>
+        <div style="max-width:50%;margin-bottom:18px">
+          <label style="font-size:11px;color:#64748b;display:block;margin-bottom:5px;font-weight:500;text-transform:uppercase;letter-spacing:0.05em">Mobile</label>
+          <input id="ppaTel" class="ppa-input" type="tel" placeholder="+66 or +91...">
+        </div>
+        <div id="ppaErr" style="display:none;font-size:12px;color:#ef4444;margin-bottom:10px"></div>
+        <button id="ppaSub" type="submit" style="width:100%;padding:13px;background:#f97316;border:none;border-radius:8px;color:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:background 0.2s,transform 0.15s">
+          Request free site assessment &#8594;
+        </button>
+        <p style="margin:10px 0 0;font-size:11px;color:#475569;text-align:center">Indicative estimate only. Actual PPA terms subject to site assessment and final project design.</p>
+      </form>
+    </div>
+    <div id="ppaThanks" style="display:none;text-align:center;padding:16px 0">
+      <div style="font-size:38px;margin-bottom:10px">&#9728;&#65039;</div>
+      <h3 style="margin:0 0 8px;font-size:17px;font-weight:600;color:#f1f5f9">Thank you!</h3>
+      <p style="margin:0 0 16px;font-size:13px;color:#94a3b8;max-width:340px;margin-left:auto;margin-right:auto">Our team will review your PPA estimate and reach out to schedule a free site assessment.</p>
+      <a href="/contact?ref=ppa-calculator" style="font-size:13px;color:#f97316;text-decoration:none;font-weight:500">Questions? Contact us directly &#8594;</a>
+    </div>
   </div>
 </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script is:inline define:vars={{supabaseUrl, supabaseKey}}>
+window.__SBU=supabaseUrl;window.__SBK=supabaseKey;
+</script>
 <script is:inline>
 const S={step:1,bill:0,sH:8,eH:18,we:false,rf:0,ld:0,fl:0,disc:20};
 const TF={pk:5.1627,op:3.5827,pkb:4.18,opb:2.6,infl:0.015};
@@ -415,14 +462,12 @@ function onBill(){
   const v=parseFloat(document.getElementById('billIn').value)||0;S.bill=v;
   const inp=document.getElementById('billIn');
   const baht=document.getElementById('billBaht');
-  const s1=document.getElementById('s1');
   const p=document.getElementById('billPrev');
   const btn=document.getElementById('s1n');
   const wasDisabled=btn.disabled;
   const active=v>0;
   inp.classList.toggle('typing',active);
   baht.classList.toggle('typing',active);
-  s1.classList.toggle('typing',active);
   p.classList.toggle('typing',active);
   btn.disabled=!active;
   if(active){
@@ -468,6 +513,31 @@ function setD(v){
   S.disc=v;document.getElementById('dSlider').value=v;document.getElementById('dV').textContent=v+'%';
   ['d15','d20','d25'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.toggle('sel',parseInt(id.replace('d',''))===v)});
   liveP();
+}
+async function submitPPA(e){
+  e.preventDefault();
+  const name=document.getElementById('ppaName').value.trim();
+  const co=document.getElementById('ppaCo').value.trim();
+  const email=document.getElementById('ppaEmail').value.trim();
+  const err=document.getElementById('ppaErr');
+  if(!name||!co||!email){err.textContent='Please fill in Name, Company, and Email.';err.style.display='block';return;}
+  const desig=document.getElementById('ppaDes').value.trim();
+  const phone=document.getElementById('ppaTel').value.trim();
+  const btn=document.getElementById('ppaSub');
+  btn.textContent='Submitting...';btn.disabled=true;err.style.display='none';
+  const r=runM();
+  const msg=r
+    ?'PPA Calculator \u2014 Monthly bill: \u0e3f'+S.bill.toLocaleString()+' | System: '+(r.kwp/1000).toFixed(2)+' MWp | 30yr savings: '+fB(r.rows.reduce((s,x)=>s+x.sav,0))
+    :'PPA Calculator inquiry';
+  try{
+    const res=await fetch(window.__SBU+'/rest/v1/partner_inquiries',{
+      method:'POST',
+      headers:{'apikey':window.__SBK,'Authorization':'Bearer '+window.__SBK,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify({partnership_type:'investment',name,email,company:co,designation:desig||null,phone:phone||null,message:msg})
+    });
+    if(res.ok){document.getElementById('ppaForm').style.display='none';document.getElementById('ppaThanks').style.display='block';}
+    else throw new Error();
+  }catch{btn.textContent='Request free site assessment \u2192';btn.disabled=false;err.textContent='Submission failed \u2014 please try again.';err.style.display='block';}
 }
 (function initSels(){
   const sh=document.getElementById('shSel'),eh=document.getElementById('ehSel');
