@@ -5,6 +5,9 @@ import MapComponent from '../components/ContactMap';
 import Icon from '../components/Icon.astro';
 
 const offices = await fetchOffices();
+const visitorCountry = (Astro.request.headers.get('x-nf-country') ?? '').toUpperCase();
+const isThailand = visitorCountry === 'TH';
+const listedOffices = offices.filter(o => o.showInList && !(isThailand && o.name === 'Rayong'));
 ---
 
 <Layout
@@ -38,7 +41,7 @@ const offices = await fetchOffices();
           <div class="lg:col-span-1" data-aos="fade-up">
             <h2 class="text-white font-bold text-2xl mb-8">Our Offices</h2>
             <div class="space-y-6">
-              {offices.filter(office => office.showInList).map(office => (
+              {listedOffices.map(office => (
                 <div class="glass rounded-2xl p-6">
                   <div class="flex justify-between items-center mb-3">
                     <h3 class="text-emerald-400 font-bold">{office.country}</h3>

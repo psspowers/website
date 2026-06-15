@@ -13,7 +13,7 @@ export const offices: Office[] = [
     country: 'Thailand',
     name: 'Bangkok',
     address: 'Ocean Tower 2 (26th Floor), 75/56 Sukhumvit Soi 19, Bangkok, TH 10110',
-    phone: '+66 2 016 2611',
+    phone: '+66 2 1062611',
     email: 'info@psspowers.com',
     coordinates: [100.5617, 13.7375],
     showInList: true
@@ -22,7 +22,7 @@ export const offices: Office[] = [
     country: 'Thailand',
     name: 'Rayong',
     address: '12 Khlong Nam Hu 1, Soi Sri Sut Tambon Noen Phra, Mueang Rayong District, Rayong 21150',
-    phone: '+66 2 016 2611',
+    phone: '+66 2 1062611',
     coordinates: [101.2812, 12.6828],
     showInList: true
   },
