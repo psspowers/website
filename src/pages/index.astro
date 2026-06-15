@@ -36,7 +36,7 @@ const settingsMap: Record<string, string> = {};
 (dbSettings ?? []).forEach((row: { key: string; value: string }) => { settingsMap[row.key] = row.value; });
 
 const heroBadgeText = settingsMap['hero_badge_text'] ?? 'Now active across 6 countries in Asia';
-const heroParagraph = settingsMap['hero_paragraph'] ?? 'Pss.Orange delivers bankable renewable energy solutions across Asia — from initial development and financing through to EPC execution, O&M, and repowering. 450+ MW installed since 2015.';
+const heroParagraph = settingsMap['hero_paragraph'] ?? 'Guaranteed savings from day one — renewable energy delivered on a 15-year Power Purchase Agreement at a rate below your current grid tariff, with zero upfront investment and no fuel price risk. 440+ MW installed across Thailand, India, and beyond.';
 
 const employeesStat = heroStats.find(s =>
   s.label.toLowerCase().includes('employee') || s.label.toLowerCase().includes('team')
@@ -68,8 +68,8 @@ const filterTypes = ['All', ...Array.from(new Set(featuredProjects.map(p => p.ty
 ---
 
 <Layout
-  title="Pss.Orange — Bankable Renewable Energy Across Asia"
-  description="Leading the transition to bankable renewable energy across Asia since 2015. Over 450 MW installed, serving industrial and utility clients in Thailand, India, and Singapore."
+  title="Cheaper, Cleaner, Guaranteed Renewable Energy Across Asia | Pss.Orange"
+  description="Pss.Orange delivers renewable energy across Asia on a 15-year PPA — at a rate below your current grid tariff, zero upfront cost, guaranteed savings from day one. Solar, wind, BESS and hybrid. 440+ MW installed."
 >
   <main>
     <!-- ── Hero ─────────────────────────────────────────────── -->
@@ -88,6 +88,19 @@ const filterTypes = ['All', ...Array.from(new Set(featuredProjects.map(p => p.ty
             <span class="text-emerald-400">Predictable Energy</span><br />
             Across Asia
           </h1>
+
+          <div class="flex flex-wrap gap-3 mb-8" data-aos="fade-up" data-aos-delay="75">
+            {[
+              'Cheaper than your grid bill',
+              'Cleaner than fossil fuel power',
+              'Guaranteed for 15 years by contract',
+            ].map(label => (
+              <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs font-medium">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0"></span>
+                {label}
+              </span>
+            ))}
+          </div>
 
           <p class="text-xl text-slate-300 max-w-2xl mb-10 leading-relaxed" data-aos="fade-up" data-aos-delay="100">
             {heroParagraph}
@@ -396,6 +409,81 @@ const filterTypes = ['All', ...Array.from(new Set(featuredProjects.map(p => p.ty
 
     <SolarCalculatorThai />
 
+    <!-- EPC vs PPA Comparison -->
+    <section class="py-24 bg-slate-950">
+      <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+
+          <div class="text-center mb-14" data-aos="fade-up">
+            <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-4">PPA vs Owning Your Plant</p>
+            <h2 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight mb-4">
+              Your capital doesn't need<br class="hidden md:block" /> to wait 10 years
+            </h2>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+              Compare owning your own renewable energy plant versus a PSS Orange PPA.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10" data-aos="fade-up" data-aos-delay="100">
+            <div class="glass rounded-xl p-5 text-center">
+              <p class="text-slate-400 text-xs mb-2">PPA savings start</p>
+              <p class="text-emerald-400 font-bold text-2xl">Month 1</p>
+              <p class="text-slate-500 text-xs mt-1">Zero capital required</p>
+            </div>
+            <div class="glass rounded-xl p-5 text-center">
+              <p class="text-slate-400 text-xs mb-2">EPC breaks even</p>
+              <p class="text-amber-400 font-bold text-2xl">Year 7–8</p>
+              <p class="text-slate-500 text-xs mt-1">Capital locked until then</p>
+            </div>
+            <div class="glass rounded-xl p-5 text-center">
+              <p class="text-slate-400 text-xs mb-2">EPC overtakes PPA at</p>
+              <p class="text-white font-bold text-2xl">Year 11</p>
+              <p class="text-slate-500 text-xs mt-1">Only then does EPC edge ahead</p>
+            </div>
+            <div class="glass rounded-xl p-5 text-center">
+              <p class="text-slate-400 text-xs mb-2">PPA advantage window</p>
+              <p class="text-white font-bold text-2xl">11 years</p>
+              <p class="text-slate-500 text-xs mt-1">Of superior cashflow</p>
+            </div>
+          </div>
+
+          <div class="glass rounded-2xl p-6 md:p-8 mb-8" data-aos="fade-up" data-aos-delay="200">
+            <div class="flex gap-6 flex-wrap mb-4 text-sm text-slate-400">
+              <span class="flex items-center gap-2">
+                <span style="width:24px;height:2px;background:#10b981;display:inline-block;border-radius:2px"></span>
+                PPA with PSS Orange
+              </span>
+              <span class="flex items-center gap-2">
+                <span style="display:inline-block;width:24px;height:0;border-top:2px dashed #94a3b8"></span>
+                Buy your own plant (EPC)
+              </span>
+            </div>
+            <div style="position:relative;width:100%;height:300px">
+              <canvas
+                id="epcPpaChart"
+                role="img"
+                aria-label="Line chart comparing cumulative cashflow of PPA versus buying your own plant over 15 years. PPA starts positive from month one. EPC starts at minus 70 million, breaks even at year 7 to 8, and only overtakes PPA at year 11."
+              >PPA delivers positive cashflow from month one. EPC starts deeply negative and only overtakes PPA at year 11.</canvas>
+            </div>
+            <p class="text-slate-500 text-xs text-center mt-3">
+              Illustrative values for a 3 MWp installation. Hover any point to compare.
+            </p>
+          </div>
+
+          <div class="glass rounded-xl p-6 md:p-8 border-l-4 border-emerald-500" data-aos="fade-up" data-aos-delay="300">
+            <p class="text-white font-semibold text-lg mb-2">
+              Most C&amp;I companies operate on a 5–7 year planning horizon.<br class="hidden md:block" /> Within that window, a PPA wins every time.
+            </p>
+            <p class="text-slate-400 leading-relaxed">
+              PSS Orange builds and owns the renewable energy plant. You pay a discounted rate for the energy it produces
+              and start saving from the first invoice. Your capital stays in your business. The technology risk stays with us.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
     <!-- ── Journey Timeline ──────────────────────────────────── -->
     <section class="bg-slate-900 py-24">
       <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
@@ -455,4 +543,93 @@ const filterTypes = ['All', ...Array.from(new Set(featuredProjects.map(p => p.ty
       </div>
     </section>
   </main>
+
+<script is:inline>
+(function(){
+  function initEpcPpaChart(){
+    const canvas=document.getElementById('epcPpaChart');
+    if(!canvas||canvas._chartInitialised)return;
+    canvas._chartInitialised=true;
+    const labels=['Y0','Y1','Y2','Y3','Y4','Y5','Y6','Y7','Y8','Y9','Y10','Y11','Y12','Y13','Y14','Y15'];
+    const ppa=[-2,3,8,13,18,23,27,31,35,39,43,47,51,55,59,63];
+    const epc=[-70,-60,-50,-38,-28,-17,-6,6,18,30,38,47,56,62,67,70];
+    const gc='rgba(255,255,255,0.07)';
+    const z0='rgba(255,255,255,0.25)';
+    const tc='#94a3b8';
+    const annoPlugin={
+      id:'anno',
+      afterDraw(chart){
+        const{ctx,scales:{x,y}}=chart;
+        const x11=x.getPixelForValue(11);
+        const y47=y.getPixelForValue(47);
+        const yMin=y.getPixelForValue(y.min);
+        ctx.save();
+        ctx.strokeStyle='rgba(255,255,255,0.15)';
+        ctx.lineWidth=1;
+        ctx.setLineDash([4,4]);
+        ctx.beginPath();ctx.moveTo(x11,yMin);ctx.lineTo(x11,y47-2);ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle='rgba(255,255,255,0.5)';
+        ctx.font='11px sans-serif';
+        ctx.textAlign='center';
+        ctx.fillText('\u2605 crossover Y11',x11,y47-9);
+        ctx.fillStyle='#10b981';
+        ctx.textAlign='left';
+        ctx.fillText('positive from day 1 \u2192',x.getPixelForValue(0.2),y.getPixelForValue(3)-9);
+        ctx.fillStyle=tc;
+        ctx.textAlign='right';
+        ctx.fillText('break-even',x.getPixelForValue(7.7),y.getPixelForValue(0)-5);
+        ctx.restore();
+      }
+    };
+    new Chart(canvas,{
+      type:'line',
+      plugins:[annoPlugin],
+      data:{
+        labels,
+        datasets:[
+          {label:'PPA',data:ppa,borderColor:'#10b981',backgroundColor:'transparent',fill:false,tension:0.35,borderWidth:2.5,pointRadius:0,pointHoverRadius:5,pointHoverBackgroundColor:'#10b981'},
+          {label:'EPC (own plant)',data:epc,borderColor:'#94a3b8',borderDash:[6,3],backgroundColor:'transparent',fill:false,tension:0.35,borderWidth:2,pointRadius:0,pointHoverRadius:5}
+        ]
+      },
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        interaction:{mode:'index',intersect:false},
+        plugins:{
+          legend:{display:false},
+          tooltip:{
+            backgroundColor:'#1e293b',titleColor:'#fff',bodyColor:'#94a3b8',
+            borderColor:'rgba(255,255,255,0.12)',borderWidth:1,
+            callbacks:{
+              title:items=>`Year ${items[0].label.replace('Y','')}`,
+              label:ctx=>` ${ctx.dataset.label}: \u0e3f${ctx.raw}M`,
+              afterBody:items=>{
+                if(items.length>=2){
+                  const d=items[0].raw-items[1].raw;
+                  if(d>0)return[` PPA ahead by \u0e3f${d}M`];
+                  if(d<0)return[` EPC ahead by \u0e3f${Math.abs(d)}M`];
+                  return[' Tied'];
+                }
+              }
+            }
+          }
+        },
+        scales:{
+          x:{ticks:{color:tc,font:{size:11}},grid:{color:gc}},
+          y:{
+            ticks:{color:tc,font:{size:11},callback:v=>`\u0e3f${v}M`},
+            grid:{color:ctx=>ctx.tick.value===0?z0:gc,lineWidth:ctx=>ctx.tick.value===0?1.5:1},
+            title:{display:true,text:'Cumulative cashflow \u2014 illustrative (\u0e3fM)',color:tc,font:{size:10}}
+          }
+        }
+      }
+    });
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',initEpcPpaChart);
+  } else {
+    initEpcPpaChart();
+  }
+})();
+</script>
 </Layout>
