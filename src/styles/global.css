@@ -23,7 +23,8 @@ html {
   -webkit-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
   overflow-y: auto;
-  overflow-x: hidden;
+  /* overflow-x must NOT be set on html — it breaks touch events on position:fixed
+     elements in iOS Safari. Horizontal overflow is controlled on body instead. */
 }
 
 body {
@@ -33,12 +34,18 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 
-/* Improve tap targets on mobile */
+/* Improve tap targets on mobile (Apple HIG: 44pt, Material: 48dp) */
 button, a {
   min-height: 44px;
   min-width: 44px;
+}
+
+/* Remove iOS/Android tap highlight flash on interactive elements */
+button, a {
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Improve form field accessibility */
@@ -132,7 +139,7 @@ input, select, textarea {
   }
 }
 
-#mobile-menu {
+#mobile-menu:not(.hidden) {
   animation: slideDown 0.2s ease forwards;
 }
 

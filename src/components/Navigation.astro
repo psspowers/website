@@ -15,7 +15,7 @@ const links = [
 <header class="fixed w-full z-50 transition-all duration-300 bg-slate-950/70 backdrop-blur-md border-b border-white/5" id="main-nav">
   <nav class="max-w-screen-2xl mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
     <!-- Logo -->
-    <a href="/" class="flex items-center flex-shrink-0">
+    <a href="/" class="flex items-center flex-shrink-0" style="min-height: auto;">
       <img src="/Pss.O_Logo_Cropped.png" alt="PssO" class="h-10 w-auto object-contain" />
     </a>
 
@@ -45,13 +45,13 @@ const links = [
       >
         Partner With Us
       </a>
-      <!-- Mobile toggle -->
+      <!-- Mobile toggle — 44x44px minimum for Apple HIG compliance, touch-action removes 300ms iOS tap delay -->
       <button
-        class="md:hidden w-10 h-10 flex items-center justify-center text-slate-300 hover:text-white transition-colors"
+        class="md:hidden flex items-center justify-center text-slate-300 hover:text-white active:text-white transition-colors rounded-lg"
         id="mobile-menu-button"
         aria-label="Toggle menu"
         aria-expanded="false"
-        style="min-height: auto; min-width: auto;"
+        style="width: 44px; height: 44px; touch-action: manipulation;"
       >
         <svg id="menu-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -69,20 +69,20 @@ const links = [
       {links.map(link => (
         <a
           href={link.href}
-          class={`py-3 text-base font-medium transition-colors border-b border-slate-800/60 last:border-0 ${
+          class={`mobile-nav-link py-3 text-base font-medium transition-colors border-b border-slate-800/60 last:border-0 ${
             (currentPath === link.href) || (currentPath.startsWith(link.href) && link.href !== '/')
               ? 'text-emerald-400'
-              : 'text-slate-300 hover:text-white'
+              : 'text-slate-300 active:text-white'
           }`}
-          style="min-height: auto;"
+          style="min-height: 48px; display: flex; align-items: center; touch-action: manipulation;"
         >
           {link.text}
         </a>
       ))}
       <a
         href="/partner-with-us"
-        class="py-3 text-base font-medium text-emerald-400 hover:text-emerald-300 transition-colors"
-        style="min-height: auto;"
+        class="mobile-nav-link py-3 text-base font-medium text-emerald-400 hover:text-emerald-300 active:text-emerald-200 transition-colors"
+        style="min-height: 48px; display: flex; align-items: center; touch-action: manipulation;"
       >
         Partner With Us
       </a>
@@ -106,6 +106,13 @@ const links = [
     }
   }
 
+  function closeMenu() {
+    menu?.classList.add('hidden');
+    menuIcon?.classList.remove('hidden');
+    closeIcon?.classList.add('hidden');
+    btn?.setAttribute('aria-expanded', 'false');
+  }
+
   window.addEventListener('scroll', updateNavBackground, { passive: true });
   updateNavBackground();
 
@@ -115,5 +122,10 @@ const links = [
     menuIcon?.classList.toggle('hidden', isNowOpen);
     closeIcon?.classList.toggle('hidden', !isNowOpen);
     btn.setAttribute('aria-expanded', String(isNowOpen));
+  });
+
+  // Close menu when any nav link is tapped so users get immediate feedback
+  document.querySelectorAll('.mobile-nav-link').forEach(link => {
+    link.addEventListener('click', closeMenu);
   });
 </script>
