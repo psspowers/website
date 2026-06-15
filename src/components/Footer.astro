@@ -1,42 +1,15 @@
 ---
-import { supabase } from '../lib/supabase';
+import { fetchOffices } from '../services/officesDbService';
 import Icon from './Icon.astro';
 import BrandName from './BrandName.astro';
 import { detectOffice } from '../utils/geoOffice';
 
 const currentYear = new Date().getFullYear();
 
-interface OfficeRow {
-  country: string;
-  name: string;
-  address: string;
-  phone: string | null;
-  email: string | null;
-  show_in_list: boolean;
-  country_code: string | null;
-}
-
-const { data: officeRows } = await supabase
-  .from('offices')
-  .select('country, name, address, phone, email, show_in_list, country_code')
-  .order('created_at', { ascending: true });
-
-const offices = (officeRows ?? []) as OfficeRow[];
-
-const allOfficesMapped = offices.map(o => ({
-  country: o.country,
-  name: o.name,
-  address: o.address,
-  phone: o.phone ?? undefined,
-  email: o.email ?? undefined,
-  coordinates: [0, 0] as [number, number],
-  showInList: o.show_in_list,
-  countryCode: o.country_code ?? undefined,
-}));
-
-const contactOffice = detectOffice(Astro.request.headers, allOfficesMapped);
-const isHQ = contactOffice === allOfficesMapped[0] || contactOffice.country === allOfficesMapped[0]?.country;
-const otherOffices = offices.filter(o => o.show_in_list && o.name !== contactOffice.name);
+const offices = await fetchOffices();
+const contactOffice = detectOffice(Astro.request.headers, offices);
+const isHQ = offices.length > 0 && contactOffice.country === offices[0].country;
+const otherOffices = offices.filter(o => o.showInList && o.name !== contactOffice.name);
 ---
 
 <footer class="bg-slate-900 border-t border-slate-800 py-12">
@@ -73,7 +46,7 @@ const otherOffices = offices.filter(o => o.show_in_list && o.name !== contactOff
           <ul class="space-y-3 text-sm text-slate-400">
             <li>
               <span class="text-slate-300 font-medium block">
-                {contactOffice.country}{isHQ ? ' (HQ)' : ` — ${contactOffice.name}`}
+                {contactOffice.country}{isHQ ? ' (HQ)' : contactOffice.name !== contactOffice.country ? ` — ${contactOffice.name}` : ''}
               </span>
               {contactOffice.address}
             </li>
