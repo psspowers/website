@@ -22,7 +22,6 @@ const { data: officeRows } = await supabase
   .order('created_at', { ascending: true });
 
 const offices = (officeRows ?? []) as OfficeRow[];
-const otherOffices = offices.slice(1).filter(o => o.show_in_list);
 
 const allOfficesMapped = offices.map(o => ({
   country: o.country,
@@ -37,6 +36,7 @@ const allOfficesMapped = offices.map(o => ({
 
 const contactOffice = detectOffice(Astro.request.headers, allOfficesMapped);
 const isHQ = contactOffice === allOfficesMapped[0] || contactOffice.country === allOfficesMapped[0]?.country;
+const otherOffices = offices.filter(o => o.show_in_list && o.name !== contactOffice.name);
 ---
 
 <footer class="bg-slate-900 border-t border-slate-800 py-12">

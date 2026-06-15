@@ -303,12 +303,11 @@ const partnerLogoUrl = ((dbLogoSetting ?? []) as { key: string; value: string }[
                     <LinkText text={milestone.event} />
                   </p>
                   {milestone.logo_url && (
-                    <a href="https://isquaredcapital.com/" target="_blank" rel="noopener noreferrer" class="flex-shrink-0" style="min-height: auto;">
+                    <a href="https://isquaredcapital.com/" target="_blank" rel="noopener noreferrer" class="flex-shrink-0 bg-white rounded-lg px-3 py-1.5 hover:opacity-80 transition-opacity" style="min-height: auto;">
                       <img
                         src={milestone.logo_url}
                         alt="Partner logo"
-                        class="h-8 w-auto transition-all duration-300 hover:opacity-80"
-                        style="filter: brightness(0) invert(1);"
+                        class="h-6 w-auto object-contain"
                       />
                     </a>
                   )}
