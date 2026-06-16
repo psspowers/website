@@ -175,19 +175,18 @@ const filterTypes = ['All', ...Array.from(new Set(featuredProjects.map(p => p.ty
 
             <!-- Data Centre portfolio card -->
             <div class="bg-slate-800/60 border border-slate-700/50 rounded-xl px-4 py-3 mb-6">
-              <p class="text-[10px] font-semibold uppercase tracking-widest text-emerald-400 mb-2.5">Data Centre &amp; Hyperscaler Portfolio</p>
-              <div class="grid grid-cols-2 gap-x-4 gap-y-2">
+              <p class="text-[10px] font-semibold uppercase tracking-widest text-emerald-400 mb-2.5">ISQ Global Power Portfolio</p>
+              <div class="grid grid-cols-3 gap-x-4 gap-y-2">
                 {[
-                  { flag: '🇦🇺', region: 'Australia / NZ', spec: '80 MW + 80 MWhr BESS' },
-                  { flag: '🇺🇸', region: 'United States', spec: '53 MW — 10 facilities' },
-                  { flag: '🇧🇷', region: 'Brazil', spec: '300+ MW — 9 campuses' },
-                  { flag: '🇯🇵', region: 'Japan', spec: '50 MW + 50 MWhr BESS' },
+                  { flag: '🇦🇺', region: 'Australia / NZ', specs: ['175 MW Solar', '209 MWh BESS'] },
+                  { flag: '🇯🇵', region: 'Japan', specs: ['10 MW Solar'] },
+                  { flag: '🇺🇸', region: 'United States', specs: ['200 MW Wind', '600 MW CCGT', '400 MW CUSS'] },
                 ].map(m => (
                   <div class="flex items-start gap-2">
                     <span class="text-base leading-none mt-0.5">{m.flag}</span>
                     <div>
                       <p class="text-white text-xs font-semibold leading-none mb-0.5">{m.region}</p>
-                      <p class="text-slate-400 text-[11px]">{m.spec}</p>
+                      {m.specs.map(s => <p class="text-slate-400 text-[11px]">{s}</p>)}
                     </div>
                   </div>
                 ))}
@@ -195,7 +194,7 @@ const filterTypes = ['All', ...Array.from(new Set(featuredProjects.map(p => p.ty
             </div>
 
             <p class="text-slate-400 text-sm leading-relaxed mb-8">
-              With a growing data centre and hyperscaler energy portfolio across four continents — including BESS-paired assets in Australia and Japan — I Squared brings institutional capital and proven execution to the world's fastest-growing power demand sector.
+              With a diversified global power portfolio spanning solar, wind, CCGT, and BESS-paired assets across Australia, Japan, and the United States — I Squared brings institutional capital and proven execution to some of the world's most critical energy markets.
             </p>
 
             <div class="flex flex-wrap gap-4">
