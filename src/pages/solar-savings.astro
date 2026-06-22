@@ -4,10 +4,56 @@ import SolarCalculatorThai from '../components/SolarCalculatorThai.astro';
 ---
 
 <Layout
-  title="Solar PPA Savings Calculator - PSS Orange"
-  description="Estimate how much your business could save under a PSS Orange 15-year solar PPA in Thailand. Zero upfront cost, free solar after year 15."
+  title="Solar PPA Savings Calculator — PSS Orange Thailand"
+  description="Estimate how much your facility could save under a PSS Orange 15-year solar PPA in Thailand. Zero upfront cost, instant 30-year savings estimate, free solar after year 15."
 >
   <main class="pt-20">
-    <SolarCalculatorThai />
+
+    <!-- ─── HERO ─────────────────────────────────────────────────── -->
+    <section class="dark-gradient-header relative overflow-hidden">
+      <!-- Emerald glow centred behind hero text -->
+      <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-emerald-500/6 blur-[160px] rounded-full pointer-events-none"></div>
+
+      <div class="max-w-screen-xl mx-auto px-6 lg:px-8 text-center relative" data-aos="fade-up">
+        <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-4">Thailand Solar PPA Estimator</p>
+        <h1 class="font-display text-4xl md:text-5xl font-bold tracking-tight text-white mb-5 leading-tight">
+          How much could your facility<br class="hidden md:block" /> save on electricity?
+        </h1>
+        <p class="text-lg text-slate-300 leading-relaxed max-w-2xl mx-auto mb-8">
+          PSS Orange builds and owns the solar plant at <strong class="text-white">zero upfront cost</strong> to you.
+          Answer 4 quick questions and get your 30-year savings estimate instantly.
+        </p>
+        <!-- Trust pills -->
+        <div class="flex flex-wrap justify-center gap-2">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-800/70 border border-slate-700/60 text-slate-300 text-xs font-medium">
+            <svg class="w-3 h-3 text-emerald-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            Zero Upfront Cost
+          </span>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-800/70 border border-slate-700/60 text-slate-300 text-xs font-medium">
+            <svg class="w-3 h-3 text-emerald-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            15-Year PPA Contract
+          </span>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-800/70 border border-slate-700/60 text-slate-300 text-xs font-medium">
+            <svg class="w-3 h-3 text-emerald-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            Free Solar After Year 15
+          </span>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-800/70 border border-slate-700/60 text-slate-300 text-xs font-medium">
+            <svg class="w-3 h-3 text-emerald-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            Instant 30-Year Estimate
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── CALCULATOR STAGE ──────────────────────────────────────── -->
+    <div class="relative" style="background:linear-gradient(180deg,#090f1a 0%,#0d1529 40%,#0f172a 100%)">
+      <!-- Subtle dot grid -->
+      <div class="absolute inset-0 pointer-events-none" style="background-image:radial-gradient(circle,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:28px 28px"></div>
+      <!-- Soft glow behind the calculator card -->
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[600px] bg-emerald-500/5 blur-[150px] rounded-full pointer-events-none"></div>
+
+      <SolarCalculatorThai />
+    </div>
+
   </main>
 </Layout>

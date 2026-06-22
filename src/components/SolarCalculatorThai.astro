@@ -4,51 +4,69 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
 ---
 
-<section class="py-16 max-w-screen-xl mx-auto px-6 lg:px-8">
+<section class="py-14 max-w-screen-xl mx-auto px-6 lg:px-8 relative z-10">
   <div class="max-w-2xl mx-auto">
 
 <h2 class="sr-only">PSS Orange solar PPA savings calculator for Thailand — estimate how much you can save under a 15-year power purchase agreement</h2>
 <style>
 *{box-sizing:border-box}
-.sp{display:none}.sp.on{display:block;border:1.5px solid rgba(249,115,22,0.55);border-radius:12px;padding:20px 22px;box-shadow:0 0 0 4px rgba(249,115,22,0.07),0 4px 28px rgba(0,0,0,0.28);background:#090f1a;transition:box-shadow 0.2s}
+/* Active step card */
+.sp{display:none}
+.sp.on{display:block;border:1.5px solid rgba(249,115,22,0.55);border-radius:14px;padding:22px 24px;box-shadow:0 0 0 4px rgba(249,115,22,0.14),0 8px 48px rgba(249,115,22,0.12),0 4px 28px rgba(0,0,0,0.4);background:#090f1a;transition:box-shadow 0.2s}
+/* Results */
 .rp{display:none}.rp.on{display:block}
-.sdot{width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;border:1.5px solid #334155;color:#64748b;flex-shrink:0}
+/* Step dots */
+.sdot{width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;border:1.5px solid #334155;color:#64748b;flex-shrink:0}
 .sdot.done{background:#10b981;border-color:#10b981;color:#fff}
-.sdot.active{border-color:#f97316;color:#f97316;background:rgba(249,115,22,0.08)}
-.sline{flex:1;height:1px;background:#1e293b}
+.sdot.active{border-color:#f97316;color:#f97316;background:rgba(249,115,22,0.18);font-weight:700}
+/* Connector lines — visible on dark background */
+.sline{flex:1;height:1px;background:#334155}
 .sline.done{background:#10b981}
+/* Metric cards */
 .mc{background:#1e293b;border-radius:8px;padding:14px 16px}
 .mval{font-size:20px;font-weight:500;margin:4px 0 2px;color:#f1f5f9}
 .mlbl{font-size:12px;color:#94a3b8;margin:0}
+/* Hero metric — the 30-yr lifetime value */
+.mc-star{background:#1e293b;border-radius:8px;padding:14px 16px;border-top:2px solid #10b981}
+.mc-star .mval{font-size:24px;color:#10b981}
+/* Results entrance animation */
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.rp.on .mc,.rp.on .mc-star{animation:fadeUp 0.4s ease-out both}
+/* Preset buttons */
 .pbn{padding:8px 13px;border:0.5px solid #334155;border-radius:8px;font-size:13px;color:#94a3b8;cursor:pointer;background:transparent;line-height:1.3}
 .pbn:hover{background:#1e293b}
 .pbn.sel{border-color:#10b981;color:#10b981;background:rgba(16,185,129,0.08)}
+/* Input addons */
 .ain{position:relative}
 .ain input{padding-right:36px}
 .ain .u{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:12px;color:#64748b;pointer-events:none}
+/* Nav buttons */
 .nb{display:flex;gap:10px;margin-top:24px}
 .nb button{flex:1;padding:12px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer}
-.bbk{background:transparent;border:0.5px solid #334155;color:#94a3b8}
+/* Back button — visible but secondary */
+.bbk{background:transparent;border:1px solid #475569;color:#cbd5e1;transition:background 0.15s,border-color 0.15s}
+.bbk:hover{background:#1e293b;border-color:#64748b}
+/* Next/Go button */
 .bgo{background:#10b981;border:none;color:#fff;transition:background 0.2s,box-shadow 0.2s,transform 0.15s}
+.bgo:hover{background:#059669}
 .bgo:disabled{background:#1e293b;color:#64748b;cursor:not-allowed}
 .bgo.pulse{animation:btnpulse 0.35s ease-out}
 @keyframes btnpulse{0%{transform:scale(1)}50%{transform:scale(1.04)}100%{transform:scale(1)}}
+/* Green accent card */
 .gcard{border-left:2px solid #10b981;border-radius:0 8px 8px 0;background:rgba(16,185,129,0.06);padding:10px 14px}
+/* Chart wrapper */
 .cw{position:relative;width:100%}
 .leg{display:flex;flex-wrap:wrap;gap:10px;font-size:11px;color:#94a3b8;margin-bottom:8px}
 .lsq{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:3px;vertical-align:middle}
-/* Bill input active state */
+/* Bill input typing state */
 #billIn{transition:border-color 0.2s,box-shadow 0.2s,background 0.2s}
 #billIn.typing{border-color:#f97316 !important;box-shadow:0 0 0 3px rgba(249,115,22,0.18);background:rgba(249,115,22,0.04) !important}
-/* Baht symbol */
 #billBaht{transition:color 0.2s}
 #billBaht.typing{color:#f97316}
-/* Annual spend preview slide-in */
 @keyframes slideIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 #billPrev.visible{display:block;animation:slideIn 0.25s ease-out}
-/* Orange card accent when typing */
 #billPrev.typing{border-left-color:#f97316;background:rgba(249,115,22,0.06)}
-/* PPA contact form */
+/* PPA contact form inputs */
 .ppa-input{width:100%;padding:10px 12px;font-size:14px;border:0.5px solid #334155;border-radius:8px;background:#0f172a;color:#f1f5f9;transition:border-color 0.15s,box-shadow 0.15s;outline:none}
 .ppa-input:focus{border-color:#f97316;box-shadow:0 0 0 2px rgba(249,115,22,0.15)}
 .ppa-input::placeholder{color:#475569}
@@ -58,20 +76,6 @@ select,input[type="number"]{background:#0f172a;border:0.5px solid #334155;color:
 select:focus,input[type="number"]:focus{outline:none;border-color:#10b981}
 details summary{cursor:pointer}
 </style>
-
-<div style="padding:1rem 0 0">
-
-<!-- HEADER -->
-<div style="text-align:center;margin-bottom:40px">
-  <p style="color:#10b981;font-size:13px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 12px">Thailand Solar PPA Estimator</p>
-  <h2 style="font-size:clamp(28px,4vw,42px);font-weight:700;color:#f1f5f9;margin:0 0 16px;line-height:1.2">How much could you save?</h2>
-  <p style="color:#94a3b8;font-size:16px;max-width:520px;margin:0 auto 20px;line-height:1.7">PSS Orange builds and owns the solar plant at <strong style="color:#f1f5f9">zero upfront cost</strong> to you. Answer 4 quick questions and see your 30-year savings estimate.</p>
-  <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:24px;margin-top:8px">
-    <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#94a3b8"><span style="color:#10b981;font-size:18px">&#10003;</span> Zero upfront cost</div>
-    <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#94a3b8"><span style="color:#10b981;font-size:18px">&#10003;</span> 15-year PPA contract</div>
-    <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#94a3b8"><span style="color:#10b981;font-size:18px">&#10003;</span> Free solar after year 15</div>
-  </div>
-</div>
 
 <!-- STEP INDICATOR -->
 <div style="display:flex;align-items:center;gap:4px;margin-bottom:28px" id="stepBar">
@@ -218,7 +222,7 @@ details summary{cursor:pointer}
       <p style="font-size:11px;color:#10b981;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;margin:0 0 3px">Your PPA analysis</p>
       <h2 style="margin:0;font-size:20px;font-weight:500;color:#f1f5f9">Solar savings estimate</h2>
     </div>
-    <button onclick="backToForm()" style="font-size:12px;color:#94a3b8;background:transparent;border:0.5px solid #334155;border-radius:8px;padding:7px 13px;cursor:pointer">&#8592; Edit inputs</button>
+    <button onclick="backToForm()" style="font-size:12px;color:#94a3b8;background:transparent;border:1px solid #475569;border-radius:8px;padding:7px 13px;cursor:pointer">&#8592; Edit inputs</button>
   </div>
   <div style="background:rgba(16,185,129,0.06);border:0.5px solid rgba(16,185,129,0.3);border-radius:12px;padding:13px 16px;margin-bottom:18px;display:flex;gap:12px;align-items:start">
     <div>
@@ -226,11 +230,12 @@ details summary{cursor:pointer}
       <p style="margin:0;font-size:12px;color:#94a3b8">PSS Orange builds, owns, and maintains the solar plant at <strong style="color:#f1f5f9">zero upfront cost</strong> to you. You pay a discounted rate for solar electricity for <strong style="color:#f1f5f9">15 years</strong>. After the PPA ends, you receive solar energy <strong style="color:#f1f5f9">free</strong> for the remaining plant life.</p>
     </div>
   </div>
+  <!-- Summary metrics — mc-star makes the 30-yr lifetime value stand out -->
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:18px">
     <div class="mc"><p class="mlbl">System size</p><p class="mval" id="rSz">&mdash;</p><p style="font-size:11px;color:#64748b;margin:0" id="rKwp">&mdash;</p></div>
     <div class="mc"><p class="mlbl">Solar coverage</p><p class="mval" style="color:#10b981" id="rCov">&mdash;</p><p style="font-size:11px;color:#64748b;margin:0">of consumption</p></div>
     <div class="mc"><p class="mlbl">Month 1 saving</p><p class="mval" style="color:#10b981" id="rM1">&mdash;</p><p style="font-size:11px;color:#64748b;margin:0">vs full grid rate</p></div>
-    <div class="mc"><p class="mlbl">30-yr lifetime value</p><p class="mval" id="rLf">&mdash;</p><p style="font-size:11px;color:#64748b;margin:0">total savings</p></div>
+    <div class="mc-star"><p class="mlbl">30-yr lifetime value</p><p class="mval" id="rLf">&mdash;</p><p style="font-size:11px;color:#64748b;margin:0">total savings</p></div>
   </div>
   <div style="background:#1e293b;border-radius:12px;padding:16px;margin-bottom:14px">
     <h3 style="margin:0 0 3px;font-size:13px;font-weight:500;color:#f1f5f9">Annual electricity cost &mdash; with vs without solar</h3>
@@ -279,11 +284,12 @@ details summary{cursor:pointer}
     <summary style="font-size:12px;color:#94a3b8;cursor:pointer;list-style:none">&#8505; Calculation assumptions &amp; disclaimers</summary>
     <div style="margin-top:10px;padding:12px;background:#1e293b;border-radius:8px;font-size:11px;color:#64748b;line-height:1.9" id="rDisc"></div>
   </details>
-  <div style="border:1.5px solid rgba(249,115,22,0.45);border-radius:12px;padding:22px 24px;background:#090f1a">
+  <!-- PPA contact form — warmer background, stronger border -->
+  <div style="border:1.5px solid rgba(249,115,22,0.6);border-radius:14px;padding:22px 24px;background:rgba(249,115,22,0.04)">
     <div id="ppaForm">
-      <p style="font-size:11px;color:#f97316;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin:0 0 4px">Investment &amp; Capital Partner</p>
-      <h3 style="margin:0 0 4px;font-size:17px;font-weight:600;color:#f1f5f9">Get a bankable PPA proposal</h3>
-      <p style="margin:0 0 18px;font-size:13px;color:#94a3b8">PSS Orange will conduct a free site assessment and deliver a fully bankable proposal &mdash; at zero cost to you.</p>
+      <p style="font-size:11px;color:#f97316;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin:0 0 4px">Get a Free Site Assessment</p>
+      <h3 style="margin:0 0 4px;font-size:17px;font-weight:600;color:#f1f5f9">Turn this estimate into a bankable proposal</h3>
+      <p style="margin:0 0 18px;font-size:13px;color:#94a3b8">PSS Orange will conduct a free site assessment and deliver a fully bankable PPA proposal &mdash; at zero cost to you.</p>
       <form onsubmit="submitPPA(event)" novalidate>
         <div class="ppa-grid" style="margin-bottom:10px">
           <div>
@@ -323,7 +329,6 @@ details summary{cursor:pointer}
       <a href="/contact?ref=ppa-calculator" style="font-size:13px;color:#f97316;text-decoration:none;font-weight:500">Questions? Contact us directly &#8594;</a>
     </div>
   </div>
-</div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
