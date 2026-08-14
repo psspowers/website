@@ -7,6 +7,7 @@ interface Props {
   class?: string;
   priority?: boolean;
   aspectRatio?: "16:9" | "4:3" | "1:1";
+  fit?: "cover" | "contain";
   sizes?: string;
   fallback?: string;
 }
@@ -19,6 +20,7 @@ const {
   class: className = "",
   priority = false,
   aspectRatio,
+  fit = "cover",
   sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
   fallback = "/pss-logo-black.png",
 } = Astro.props;
@@ -51,7 +53,7 @@ const fetchPriority = priority ? "high" : "auto";
       onload="this.parentElement.querySelector('.skeleton')?.remove(); this.classList.add('loaded');"
       width={width}
       height={height}
-      class={`opt-img absolute inset-0 w-full h-full object-cover will-change-transform ${className}`}
+      class={`opt-img absolute inset-0 w-full h-full ${fit === "contain" ? "object-contain" : "object-cover"} will-change-transform ${className}`}
     />
   )}
 </div>
