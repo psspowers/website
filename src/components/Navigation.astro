@@ -10,6 +10,8 @@ const links = [
   { text: 'News', href: '/news' },
   { text: 'Group', href: '/group' },
 ];
+
+const eventLink = { text: 'Commitment Day 2026', href: '/commitment-day-2026' };
 ---
 
 <header class="fixed w-full z-50 transition-all duration-300 bg-slate-950/70 backdrop-blur-md border-b border-white/5" id="main-nav">
@@ -34,6 +36,17 @@ const links = [
           {link.text}
         </a>
       ))}
+      <a
+        href={eventLink.href}
+        style="min-height: auto;"
+        class={`text-sm font-bold tracking-normal transition-colors duration-200 px-3 py-1.5 rounded-full border ${
+          currentPath === eventLink.href
+            ? 'bg-amber-500 text-slate-950 border-amber-400'
+            : 'bg-amber-500/10 text-amber-300 border-amber-500/30 hover:bg-amber-500/20'
+        }`}
+      >
+        {eventLink.text}
+      </a>
     </div>
 
     <!-- CTA Buttons -->
@@ -79,6 +92,17 @@ const links = [
           {link.text}
         </a>
       ))}
+      <a
+        href={eventLink.href}
+        class={`mobile-nav-link py-3 text-base font-bold transition-colors border-b border-slate-800/60 ${
+          currentPath === eventLink.href
+            ? 'text-amber-400'
+            : 'text-amber-300 active:text-amber-200'
+        }`}
+        style="min-height: 48px; display: flex; align-items: center; touch-action: manipulation;"
+      >
+        {eventLink.text}
+      </a>
       <a
         href="/partner-with-us"
         class="mobile-nav-link py-3 text-base font-medium text-emerald-400 hover:text-emerald-300 active:text-emerald-200 transition-colors"
