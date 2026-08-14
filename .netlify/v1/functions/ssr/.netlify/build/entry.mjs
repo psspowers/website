@@ -58,3 +58,6 @@ if (_start in serverEntrypointModule) {
 }
 
 export { __astrojsSsrVirtualEntry as default, pageMap };
+
+
+export default _start
