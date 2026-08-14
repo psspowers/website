@@ -35,6 +35,8 @@ const sessions = [
     posterImage: '/Commitment Day/5.1_-_Panel__Leader_+_Government_.jpg',
     fillPct: 62,
     fillLabel: '62% Full',
+    fillCategory: 'Data Center',
+    fillNickname: 'Gov & Policy',
   },
   {
     id: 'session-2',
@@ -60,6 +62,8 @@ const sessions = [
     posterImage: '/Commitment Day/5.2_-_Panel__Quick_Win_Technology_.jpg',
     fillPct: 45,
     fillLabel: '45% Full',
+    fillCategory: 'Energy',
+    fillNickname: 'Quick Wins',
   },
   {
     id: 'session-3',
@@ -84,6 +88,8 @@ const sessions = [
     posterImage: '/Commitment Day/5.3_-_Panel__Engg_+_EPC_+_Consult_.jpg',
     fillPct: 61,
     fillLabel: '61% Full',
+    fillCategory: 'Data Center',
+    fillNickname: 'DC in 12 Months',
   },
   {
     id: 'session-4',
@@ -109,6 +115,8 @@ const sessions = [
     posterImage: '/Commitment Day/5.4_-_Panel__Strategic_Initiative_.jpg',
     fillPct: 51,
     fillLabel: '51% Full',
+    fillCategory: 'Energy',
+    fillNickname: 'Big Strategies',
   },
 ];
 
@@ -198,129 +206,114 @@ const eventDetails = {
       </div>
 
       <div class="relative max-w-screen-2xl mx-auto px-6 lg:px-8 py-16 md:py-24">
-        <div class="max-w-3xl" data-aos="fade-up">
-          <p class="text-amber-400 text-sm font-semibold tracking-widest uppercase mb-4">
-            PSS Powers presents
-          </p>
-          <h1 class="font-display text-4xl md:text-6xl font-bold text-white tracking-tight mb-4 leading-tight">
-            Commitment Day 2026
-          </h1>
-          <p class="text-2xl text-emerald-400 font-display italic mb-6">
-            Predictable Energy
-          </p>
-
-          <p class="text-lg text-slate-300 leading-relaxed mb-8 max-w-2xl">
-            Thailand's energy conversation is usually held in separate rooms. On 19 August, they are all in one place.
-          </p>
-
-          {/* Key facts */}
-          <div class="flex flex-col gap-3 mb-8">
-            <div class="flex items-center gap-3 text-slate-200">
-              <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-              <span>{eventDetails.date}</span>
-            </div>
-            <div class="flex items-center gap-3 text-slate-200">
-              <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-              <span>{eventDetails.venue}</span>
-            </div>
-            <div class="flex items-center gap-3 text-slate-200">
-              <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              <span>Registration from {eventDetails.registrationStart}</span>
-            </div>
-          </div>
-
-          {/* Registration CTA — primary */}
-          <a
-            href={registrationUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center justify-center gap-x-2 px-8 py-4 bg-emerald-500 hover:bg-emerald-600 transition-colors text-slate-950 font-bold rounded-full text-base mb-5"
-            style="min-height: auto;"
-          >
-            Register &amp; choose your sessions
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-          </a>
-
-          {/* Urgency / status badges */}
-          <div class="flex flex-wrap gap-3">
-            {daysUntil > 0 && (
-              <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-sm font-medium">
-                <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-                {daysUntil} day{daysUntil !== 1 ? 's' : ''} to go
-              </span>
-            )}
-            <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/30 text-red-300 text-sm font-medium">
-              Final numbers confirmed 17 August
-            </span>
-            <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/80 border border-slate-700 text-slate-300 text-sm font-medium">
-              By invitation only
-            </span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    {/* ── Pull Quote ───────────────────────────────────────── */}
-    <section class="py-10 md:py-14 bg-slate-900">
-      <div class="max-w-4xl mx-auto px-6 lg:px-8" data-aos="fade-up">
-        <blockquote class="border-l-4 border-emerald-500 pl-6">
-          <p class="font-display text-2xl md:text-3xl text-white leading-snug font-normal">
-            The panels are worth your afternoon. The room is worth your evening.
-          </p>
-        </blockquote>
-      </div>
-    </section>
-
-    {/* ── Seats Remaining ──────────────────────────────────── */}
-    <section class="py-12 md:py-16">
-      <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
-        <div class="max-w-4xl mx-auto" data-aos="fade-up">
-          <div class="text-center mb-8">
-            <h2 class="font-display text-2xl md:text-3xl font-bold text-white tracking-tight mb-3">
-              Seats are filling fast
-            </h2>
-            <p class="text-slate-400 text-sm">
-              Entry by QR code. Last year, some without a chosen session found their room full.
+        <div class="grid lg:grid-cols-[1fr_auto] gap-12 lg:gap-16 items-start">
+          {/* Left: Event details */}
+          <div data-aos="fade-up">
+            <p class="text-amber-400 text-sm font-semibold tracking-widest uppercase mb-4">
+              PSS Powers presents
             </p>
-          </div>
+            <h1 class="font-display text-4xl md:text-6xl font-bold text-white tracking-tight mb-4 leading-tight">
+              Commitment Day 2026
+            </h1>
+            <p class="text-2xl text-emerald-400 font-display italic mb-6">
+              Predictable Energy
+            </p>
 
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            {sessions.map(s => (
-              <div class="glass rounded-xl p-5 text-center">
-                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2 leading-tight">{s.track.split('—')[0].trim()}</p>
-                <div class="relative inline-flex items-center justify-center w-20 h-20 mb-2">
-                  <svg class="w-20 h-20 -rotate-90" viewBox="0 0 80 80">
-                    <circle cx="40" cy="40" r="34" fill="none" stroke="rgb(30 41 59)" stroke-width="5" />
-                    <circle
-                      cx="40" cy="40" r="34" fill="none"
-                      stroke="rgb(16 185 129)" stroke-width="5"
-                      stroke-dasharray={2 * Math.PI * 34}
-                      stroke-dashoffset={2 * Math.PI * 34 * (1 - s.fillPct / 100)}
-                      stroke-linecap="round"
-                      class="transition-all duration-1000"
-                    />
-                  </svg>
-                  <span class="absolute text-sm font-bold text-white">{s.fillPct}%</span>
-                </div>
-                <p class="text-xs text-slate-500">full</p>
+            <p class="text-lg text-slate-300 leading-relaxed mb-6 max-w-2xl">
+              Thailand's energy conversation is usually held in separate rooms. On 19 August, they are all in one place.
+            </p>
+
+            <p class="text-slate-400 italic font-display text-lg leading-snug border-l-2 border-emerald-500/40 pl-4 mb-8 max-w-lg">
+              The panels are worth your afternoon. The room is worth your evening.
+            </p>
+
+            {/* Key facts */}
+            <div class="flex flex-col gap-3 mb-8">
+              <div class="flex items-center gap-3 text-slate-200">
+                <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                <span>{eventDetails.date}</span>
               </div>
-            ))}
-          </div>
+              <div class="flex items-center gap-3 text-slate-200">
+                <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                <span>{eventDetails.venue}</span>
+              </div>
+              <div class="flex items-center gap-3 text-slate-200">
+                <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <span>Registration from {eventDetails.registrationStart}</span>
+              </div>
+            </div>
 
-          <div class="text-center">
+            {/* Registration CTA — primary */}
             <a
               href={registrationUrl}
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center justify-center gap-x-2 px-8 py-4 bg-emerald-500 hover:bg-emerald-600 transition-colors text-slate-950 font-bold rounded-full text-base"
+              class="inline-flex items-center justify-center gap-x-2 px-8 py-4 bg-emerald-500 hover:bg-emerald-600 transition-colors text-slate-950 font-bold rounded-full text-base mb-5"
               style="min-height: auto;"
             >
-              Register before 17 August
+              Register &amp; choose your sessions
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
             </a>
-            <p class="text-slate-500 text-sm mt-3">
-              Final numbers are confirmed with The Athenee on Monday 17 August.
-            </p>
+
+            {/* Urgency / status badges */}
+            <div class="flex flex-wrap gap-3">
+              {daysUntil > 0 && (
+                <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-sm font-medium">
+                  <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                  {daysUntil} day{daysUntil !== 1 ? 's' : ''} to go
+                </span>
+              )}
+              <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/30 text-red-300 text-sm font-medium">
+                Final numbers confirmed 17 August
+              </span>
+              <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/80 border border-slate-700 text-slate-300 text-sm font-medium">
+                By invitation only
+              </span>
+            </div>
+          </div>
+
+          {/* Right: Seats filling dials */}
+          <div class="lg:w-[340px]" data-aos="fade-up" data-aos-delay="200">
+            <div class="glass rounded-2xl p-6">
+              <h2 class="text-white font-display text-lg font-bold mb-1">Seats are filling fast</h2>
+              <p class="text-slate-500 text-xs mb-5 leading-relaxed">
+                Entry by QR code. Last year, some without a chosen session found their room full.
+              </p>
+
+              <div class="grid grid-cols-2 gap-4">
+                {sessions.map(s => (
+                  <div class="flex flex-col items-center text-center">
+                    <p class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-1 leading-tight">{s.fillCategory}</p>
+                    <div class="relative inline-flex items-center justify-center w-16 h-16 mb-1">
+                      <svg class="w-16 h-16 -rotate-90" viewBox="0 0 64 64">
+                        <circle cx="32" cy="32" r="27" fill="none" stroke="rgb(30 41 59)" stroke-width="4" />
+                        <circle
+                          cx="32" cy="32" r="27" fill="none"
+                          stroke="rgb(16 185 129)" stroke-width="4"
+                          stroke-dasharray={2 * Math.PI * 27}
+                          stroke-dashoffset={2 * Math.PI * 27 * (1 - s.fillPct / 100)}
+                          stroke-linecap="round"
+                          class="transition-all duration-1000"
+                        />
+                      </svg>
+                      <span class="absolute text-xs font-bold text-white">{s.fillPct}%</span>
+                    </div>
+                    <p class="text-[11px] text-emerald-300 font-medium leading-tight">{s.fillNickname}</p>
+                  </div>
+                ))}
+              </div>
+
+              <a
+                href={registrationUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mt-5 flex items-center justify-center gap-x-2 w-full px-4 py-3 bg-emerald-500 hover:bg-emerald-600 transition-colors text-slate-950 font-bold rounded-full text-sm"
+                style="min-height: auto;"
+              >
+                Register before 17 August
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -367,57 +360,38 @@ const eventDetails = {
       </div>
     </section>
 
-    {/* ── Quick Schedule ───────────────────────────────────── */}
-    <section class="py-12 md:py-16" id="programme">
+    {/* ── Quick Schedule strip ────────────────────────────── */}
+    <section class="py-8 md:py-10" id="programme">
       <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
-        <div class="text-center mb-10" data-aos="fade-up">
-          <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-3">The Format</p>
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight mb-3">
-            Choose your conversation.
-          </h2>
-          <p class="text-slate-400 max-w-2xl mx-auto">
-            Two rounds, two choices. Pick the conversations most relevant to your business.
-          </p>
-        </div>
+        <div class="max-w-3xl mx-auto" data-aos="fade-up">
+          <div class="text-center mb-5">
+            <p class="text-emerald-400 text-xs font-semibold tracking-widest uppercase mb-1">The Format</p>
+            <h2 class="font-display text-xl md:text-2xl font-bold text-white tracking-tight">
+              Two rounds, two choices.
+            </h2>
+          </div>
 
-        <div class="max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
-          <div class="glass rounded-2xl p-6 md:p-8">
-            <div class="space-y-5">
-              <div class="flex items-center gap-4">
-                <div class="flex-shrink-0 w-16 text-right">
-                  <p class="text-emerald-400 font-bold">3:00</p>
-                  <p class="text-slate-500 text-xs">PM</p>
-                </div>
-                <div class="flex-1 border-l-2 border-slate-700 pl-5">
-                  <p class="text-white font-semibold text-sm">Registration opens</p>
-                </div>
+          <div class="glass rounded-xl p-4">
+            <div class="grid grid-cols-4 gap-2 text-center">
+              <div class="flex flex-col items-center px-1 py-2">
+                <p class="text-emerald-400 font-display font-bold text-lg leading-none">3:00</p>
+                <p class="text-slate-500 text-[10px] uppercase tracking-wider mb-1.5">PM</p>
+                <p class="text-slate-300 text-xs leading-tight">Registration opens</p>
               </div>
-              <div class="flex items-center gap-4">
-                <div class="flex-shrink-0 w-16 text-right">
-                  <p class="text-emerald-400 font-bold">4:00</p>
-                  <p class="text-slate-500 text-xs">PM</p>
-                </div>
-                <div class="flex-1 border-l-2 border-emerald-500 pl-5">
-                  <p class="text-white font-semibold text-sm">Round 1 — choose one session</p>
-                </div>
+              <div class="flex flex-col items-center px-1 py-2 border-l border-slate-700/50">
+                <p class="text-emerald-400 font-display font-bold text-lg leading-none">4:00</p>
+                <p class="text-slate-500 text-[10px] uppercase tracking-wider mb-1.5">PM</p>
+                <p class="text-slate-300 text-xs leading-tight">Round 1 — choose one</p>
               </div>
-              <div class="flex items-center gap-4">
-                <div class="flex-shrink-0 w-16 text-right">
-                  <p class="text-emerald-400 font-bold">5:00</p>
-                  <p class="text-slate-500 text-xs">PM</p>
-                </div>
-                <div class="flex-1 border-l-2 border-emerald-500 pl-5">
-                  <p class="text-white font-semibold text-sm">Round 2 — choose one session</p>
-                </div>
+              <div class="flex flex-col items-center px-1 py-2 border-l border-slate-700/50">
+                <p class="text-emerald-400 font-display font-bold text-lg leading-none">5:00</p>
+                <p class="text-slate-500 text-[10px] uppercase tracking-wider mb-1.5">PM</p>
+                <p class="text-slate-300 text-xs leading-tight">Round 2 — choose one</p>
               </div>
-              <div class="flex items-center gap-4">
-                <div class="flex-shrink-0 w-16 text-right">
-                  <p class="text-emerald-400 font-bold">6:00</p>
-                  <p class="text-slate-500 text-xs">PM</p>
-                </div>
-                <div class="flex-1 border-l-2 border-slate-700 pl-5">
-                  <p class="text-white font-semibold text-sm">Plenary — all guests rejoin</p>
-                </div>
+              <div class="flex flex-col items-center px-1 py-2 border-l border-slate-700/50">
+                <p class="text-emerald-400 font-display font-bold text-lg leading-none">6:00</p>
+                <p class="text-slate-500 text-[10px] uppercase tracking-wider mb-1.5">PM</p>
+                <p class="text-slate-300 text-xs leading-tight">Plenary — all rejoin</p>
               </div>
             </div>
           </div>
@@ -425,108 +399,108 @@ const eventDetails = {
       </div>
     </section>
 
-    {/* ── Session Cards ────────────────────────────────────── */}
-    {sessions.map((session, index) => (
-      <section class={`py-10 md:py-14 ${index % 2 === 0 ? 'bg-slate-900' : ''}`}>
-        <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
-          {index === 0 && (
-            <div class="text-center mb-10" data-aos="fade-up">
-              <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-3">The Session Line-up</p>
-              <h2 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight">Four questions. Four conversations.</h2>
-            </div>
-          )}
+    {/* ── Session Cards Grid ──────────────────────────────── */}
+    <section class="py-12 md:py-16">
+      <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
+        <div class="text-center mb-10" data-aos="fade-up">
+          <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-3">The Session Line-up</p>
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight">Four questions. Four conversations.</h2>
+        </div>
 
-          <div class={`grid lg:grid-cols-2 gap-8 items-start ${index % 2 !== 0 ? 'lg:[&>*:first-child]:order-2' : ''}`} data-aos="fade-up">
-            {/* Face crop image */}
-            <div class="glass rounded-2xl overflow-hidden">
-              <OptimizedImage
-                src={session.faceImage}
-                alt={`${session.title} — panellists`}
-                aspectRatio="1:1"
-                priority={index < 2}
-              />
-              <div class="p-3 flex items-center justify-between">
-                <button
-                  type="button"
-                  class="text-emerald-400 text-xs font-medium hover:text-emerald-300 transition-colors flex items-center gap-1"
-                  onclick={`openPoster('poster-${session.id}')`}
-                  style="min-height: auto;"
-                >
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                  View full poster
-                </button>
-                <span class="text-slate-500 text-xs">{session.fillLabel}</span>
-              </div>
-            </div>
-
-            {/* Session content */}
-            <div>
-              <div class="flex flex-wrap items-center gap-2 mb-3">
-                <span class="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs font-semibold uppercase tracking-wider">
-                  {session.round}
-                </span>
-                <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-400 text-xs font-medium">
-                  {session.time}
-                </span>
-                <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-400 text-xs font-medium">
-                  Room {session.room}
-                </span>
+        <div class="grid md:grid-cols-2 gap-6" data-aos="fade-up" data-aos-delay="100">
+          {sessions.map((session) => (
+            <div class="glass rounded-2xl overflow-hidden border-l-4 border-emerald-500 project-card">
+              {/* Face crop image */}
+              <div class="relative">
+                <OptimizedImage
+                  src={session.faceImage}
+                  alt={`${session.title} — panellists`}
+                  aspectRatio="1:1"
+                  priority={sessions.indexOf(session) < 2}
+                />
+                <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-slate-950/80 to-transparent flex items-center justify-between">
+                  <button
+                    type="button"
+                    class="text-emerald-400 text-xs font-medium hover:text-emerald-300 transition-colors flex items-center gap-1"
+                    onclick={`openPoster('poster-${session.id}')`}
+                    style="min-height: auto;"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                    View full poster
+                  </button>
+                  <span class="text-slate-300 text-xs font-medium">{session.fillLabel}</span>
+                </div>
               </div>
 
-              <p class="text-amber-400 text-xs font-semibold uppercase tracking-wider mb-2">{session.track}</p>
-              <h3 class="font-display text-2xl md:text-3xl font-bold text-white tracking-tight mb-3 leading-tight">
-                {session.title}
-              </h3>
-              <p class="text-slate-400 text-sm leading-relaxed mb-4">{session.summary}</p>
+              {/* Session content */}
+              <div class="p-5">
+                <div class="flex flex-wrap items-center gap-2 mb-3">
+                  <span class="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs font-semibold uppercase tracking-wider">
+                    {session.round}
+                  </span>
+                  <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-400 text-xs font-medium">
+                    {session.time}
+                  </span>
+                  <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-400 text-xs font-medium">
+                    Room {session.room}
+                  </span>
+                </div>
 
-              {/* Collapsible details */}
-              <details class="group mb-4">
-                <summary class="cursor-pointer text-emerald-400 text-sm font-medium hover:text-emerald-300 transition-colors flex items-center gap-1 select-none">
-                  <svg class="w-4 h-4 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
-                  Session details &amp; Panel
-                </summary>
-                <div class="mt-4 space-y-4">
-                  <p class="text-slate-400 text-sm leading-relaxed">{session.description}</p>
+                <p class="text-amber-400 text-xs font-semibold uppercase tracking-wider mb-2">{session.track}</p>
+                <h3 class="font-display text-xl font-bold text-white tracking-tight mb-2 leading-tight">
+                  {session.title}
+                </h3>
+                <p class="text-slate-400 text-sm leading-relaxed mb-4">{session.summary}</p>
 
-                  <div class="glass rounded-lg p-4 border-l-4 border-emerald-500">
-                    <p class="text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-1">The question on the table</p>
-                    <p class="text-slate-300 italic text-sm leading-relaxed">{session.question}</p>
-                  </div>
+                {/* Collapsible details */}
+                <details class="group mb-4">
+                  <summary class="cursor-pointer text-emerald-400 text-sm font-medium hover:text-emerald-300 transition-colors flex items-center gap-1 select-none">
+                    <svg class="w-4 h-4 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                    Session details &amp; Panel
+                  </summary>
+                  <div class="mt-4 space-y-4">
+                    <p class="text-slate-400 text-sm leading-relaxed">{session.description}</p>
 
-                  <div>
-                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Moderator</p>
-                    <p class="text-white text-sm font-medium mb-3">{session.moderator}</p>
+                    <div class="glass rounded-lg p-4 border-l-4 border-emerald-500">
+                      <p class="text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-1">The question on the table</p>
+                      <p class="text-slate-300 italic text-sm leading-relaxed">{session.question}</p>
+                    </div>
 
-                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Panel</p>
-                    <div class="space-y-1.5">
-                      {session.panel.map(member => (
-                        <div class="flex items-baseline gap-2 text-sm">
-                          <span class="text-emerald-400 font-semibold whitespace-nowrap">{member.org}</span>
-                          <span class="text-slate-500">—</span>
-                          <span class="text-slate-300">{member.person}</span>
-                        </div>
-                      ))}
+                    <div>
+                      <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Moderator</p>
+                      <p class="text-white text-sm font-medium mb-3">{session.moderator}</p>
+
+                      <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Panel</p>
+                      <div class="space-y-1.5">
+                        {session.panel.map(member => (
+                          <div class="flex items-baseline gap-2 text-sm">
+                            <span class="text-emerald-400 font-semibold whitespace-nowrap">{member.org}</span>
+                            <span class="text-slate-500">—</span>
+                            <span class="text-slate-300">{member.person}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </details>
+                </details>
 
-              {/* Per-session register button */}
-              <a
-                href={registrationUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center gap-x-2 px-6 py-3 bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/20 transition-colors text-emerald-300 font-semibold rounded-full text-sm"
-                style="min-height: auto;"
-              >
-                Register for this session
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-              </a>
+                {/* Per-session register button */}
+                <a
+                  href={registrationUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-x-2 px-5 py-2.5 bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/20 transition-colors text-emerald-300 font-semibold rounded-full text-sm"
+                  style="min-height: auto;"
+                >
+                  Register for this session
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                </a>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
-      </section>
-    ))}
+      </div>
+    </section>
 
     {/* ── 7-minute Tech Updates ────────────────────────────── */}
     <section class="py-12 md:py-16 bg-slate-900">
@@ -691,6 +665,16 @@ const eventDetails = {
               <p class="text-slate-400 text-sm leading-relaxed">
                 Wednesday 19 August 2026 · Registration from 3:00 PM · Sessions at 4:00 PM · Plenary and dinner from 6:00 PM
               </p>
+              <a
+                href={`https://www.google.com/calendar/render?action=TEMPLATE&text=PSS+Commitment+Day+2026&dates=20260819T080000Z/20260819T130000Z&details=Predictable+Energy+-+The+Athenee+Hotel+Bangkok&location=The+Athenee+Hotel+Bangkok`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 text-emerald-400 text-sm hover:text-emerald-300 transition-colors mt-3"
+                style="min-height: auto;"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                Add to Google Calendar
+              </a>
             </div>
 
             <div class="glass rounded-xl p-5">
@@ -765,7 +749,7 @@ const eventDetails = {
     </section>
 
     {/* ── Sticky mobile register button ────────────────────── */}
-    <div class="md:hidden fixed bottom-0 left-0 right-0 z-40 p-3 bg-slate-950/95 backdrop-blur-md border-t border-slate-800">
+    <div class="md:hidden fixed bottom-0 left-0 right-0 z-40 p-3 bg-slate-950/95 backdrop-blur-md border-t border-slate-800 shadow-[0_-4px_12px_rgba(0,0,0,0.3)]">
       <a
         href={registrationUrl}
         target="_blank"
