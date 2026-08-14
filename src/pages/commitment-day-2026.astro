@@ -126,6 +126,12 @@ const techUpdate = {
   companies: ['Huawei', 'Integra RE', 'Atmoce', 'Jinko Solar', 'UL', 'Envision', 'PSS'],
 };
 
+const availability = [
+  ...sessions,
+  { id: 'tech-update-1', fillCategory: 'Tech Update 1', fillPct: 34, fillNickname: 'Fun w Tech' },
+  { id: 'tech-update-2', fillCategory: 'Tech Update 2', fillPct: 43, fillNickname: 'Fun w Tech' },
+];
+
 const manifest = [
   {
     label: 'Policy & Regulation',
@@ -273,19 +279,19 @@ const eventDetails = {
           </div>
 
           {/* Right: Seats filling dials */}
-          <div class="lg:w-[340px]" data-aos="fade-up" data-aos-delay="200">
-            <div class="glass rounded-2xl p-6">
-              <h2 class="text-white font-display text-lg font-bold mb-1">Seats are filling fast</h2>
-              <p class="text-slate-500 text-xs mb-5 leading-relaxed">
+          <div class="lg:w-[480px]" data-aos="fade-up" data-aos-delay="200">
+            <div class="glass rounded-2xl p-7">
+              <h2 class="text-white font-display text-xl font-bold mb-1">Seats are filling fast</h2>
+              <p class="text-slate-500 text-xs mb-6 leading-relaxed">
                 Entry by QR code. Last year, some without a chosen session found their room full.
               </p>
 
-              <div class="grid grid-cols-2 gap-4">
-                {sessions.map(s => (
+              <div class="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-6">
+                {availability.map(s => (
                   <div class="flex flex-col items-center text-center">
-                    <p class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-1 leading-tight">{s.fillCategory}</p>
-                    <div class="relative inline-flex items-center justify-center w-16 h-16 mb-1">
-                      <svg class="w-16 h-16 -rotate-90" viewBox="0 0 64 64">
+                    <p class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-2 leading-tight">{s.fillCategory}</p>
+                    <div class="relative inline-flex items-center justify-center w-20 h-20 mb-1">
+                      <svg class="w-20 h-20 -rotate-90" viewBox="0 0 64 64">
                         <circle cx="32" cy="32" r="27" fill="none" stroke="rgb(30 41 59)" stroke-width="4" />
                         <circle
                           cx="32" cy="32" r="27" fill="none"
@@ -296,9 +302,10 @@ const eventDetails = {
                           class="transition-all duration-1000"
                         />
                       </svg>
-                      <span class="absolute text-xs font-bold text-white">{s.fillPct}%</span>
+                      <span class="absolute text-sm font-bold text-white">{s.fillPct}%</span>
                     </div>
-                    <p class="text-[11px] text-emerald-300 font-medium leading-tight">{s.fillNickname}</p>
+                    <p class="text-[10px] text-slate-500 uppercase tracking-wider leading-tight">Full</p>
+                    <p class="mt-1 text-[11px] text-emerald-300 font-medium leading-tight">{s.fillNickname}</p>
                   </div>
                 ))}
               </div>
