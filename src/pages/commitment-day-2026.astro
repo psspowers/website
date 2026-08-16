@@ -33,8 +33,8 @@ const sessions = [
     ],
     faceImage: '/Commitment Day/5.1.1_-_Panel__Leader_+_Government_.png',
     posterImage: '/Commitment Day/5.1_-_Panel__Leader_+_Government_.jpg',
-    fillPct: 62,
-    fillLabel: '62% Full',
+    fillPct: 100,
+    fillLabel: '100% Full',
     fillCategory: 'Data Center',
     fillNickname: 'Gov & Policy',
   },
@@ -60,10 +60,10 @@ const sessions = [
     ],
     faceImage: '/Commitment Day/5.2.1_-_Panel__Quick_Win_Technology_.png',
     posterImage: '/Commitment Day/5.2_-_Panel__Quick_Win_Technology_.jpg',
-    fillPct: 45,
-    fillLabel: '45% Full',
+    fillPct: 52,
+    fillLabel: '52% Full',
     fillCategory: 'Energy',
-    fillNickname: 'Quick Wins',
+    fillNickname: 'Quick Win w RE',
   },
   {
     id: 'session-3',
@@ -86,8 +86,8 @@ const sessions = [
     ],
     faceImage: '/Commitment Day/5.3.1_-_Panel__Engg_+_EPC_+_Consult_.png',
     posterImage: '/Commitment Day/5.3_-_Panel__Engg_+_EPC_+_Consult_.jpg',
-    fillPct: 61,
-    fillLabel: '61% Full',
+    fillPct: 94,
+    fillLabel: '94% Full',
     fillCategory: 'Data Center',
     fillNickname: 'DC in 12 Months',
   },
@@ -113,8 +113,8 @@ const sessions = [
     ],
     faceImage: '/Commitment Day/5.4.1_-_Panel__Strategic_Initiative_.png',
     posterImage: '/Commitment Day/5.4_-_Panel__Strategic_Initiative_.jpg',
-    fillPct: 51,
-    fillLabel: '51% Full',
+    fillPct: 56,
+    fillLabel: '56% Full',
     fillCategory: 'Energy',
     fillNickname: 'Big Strategies',
   },
@@ -126,10 +126,28 @@ const techUpdate = {
   companies: ['Huawei', 'Integra RE', 'Atmoce', 'Jinko Solar', 'UL', 'Envision', 'PSS'],
 };
 
-const availability = [
-  ...sessions,
-  { id: 'tech-update-1', fillCategory: 'Tech Update 1', fillPct: 34, fillNickname: 'Fun w Tech' },
-  { id: 'tech-update-2', fillCategory: 'Tech Update 2', fillPct: 43, fillNickname: 'Fun w Tech' },
+const availabilityGroups = [
+  {
+    label: 'Data Center',
+    items: [
+      { fillPct: 100, fillNickname: 'Gov & Policy' },
+      { fillPct: 94, fillNickname: 'DC in 12 Months' },
+    ],
+  },
+  {
+    label: 'Energy',
+    items: [
+      { fillPct: 52, fillNickname: 'Quick Win w RE' },
+      { fillPct: 56, fillNickname: 'Big Strategies' },
+    ],
+  },
+  {
+    label: 'Tech Update',
+    items: [
+      { fillPct: 53, fillNickname: 'Fun w Tech' },
+      { fillPct: 67, fillNickname: 'Fun w Tech' },
+    ],
+  },
 ];
 
 const manifest = [
@@ -286,26 +304,32 @@ const eventDetails = {
                 Entry by QR code. Last year, some without a chosen session found their room full.
               </p>
 
-              <div class="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-6">
-                {availability.map(s => (
-                  <div class="flex flex-col items-center text-center">
-                    <p class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-2 leading-tight">{s.fillCategory}</p>
-                    <div class="relative inline-flex items-center justify-center w-20 h-20 mb-1">
-                      <svg class="w-20 h-20 -rotate-90" viewBox="0 0 64 64">
-                        <circle cx="32" cy="32" r="27" fill="none" stroke="rgb(30 41 59)" stroke-width="4" />
-                        <circle
-                          cx="32" cy="32" r="27" fill="none"
-                          stroke="rgb(16 185 129)" stroke-width="4"
-                          stroke-dasharray={2 * Math.PI * 27}
-                          stroke-dashoffset={2 * Math.PI * 27 * (1 - s.fillPct / 100)}
-                          stroke-linecap="round"
-                          class="transition-all duration-1000"
-                        />
-                      </svg>
-                      <span class="absolute text-sm font-bold text-white">{s.fillPct}%</span>
+              <div class="grid grid-cols-3 gap-x-3 gap-y-2">
+                {availabilityGroups.map(group => (
+                  <div class="flex flex-col items-center">
+                    <p class="text-[11px] font-bold uppercase tracking-wider text-amber-400 mb-4 leading-tight text-center">{group.label}</p>
+                    <div class="space-y-5">
+                      {group.items.map(s => (
+                        <div class="flex flex-col items-center text-center">
+                          <div class="relative inline-flex items-center justify-center w-20 h-20 mb-1">
+                            <svg class="w-20 h-20 -rotate-90" viewBox="0 0 64 64">
+                              <circle cx="32" cy="32" r="27" fill="none" stroke="rgb(30 41 59)" stroke-width="4" />
+                              <circle
+                                cx="32" cy="32" r="27" fill="none"
+                                stroke="rgb(16 185 129)" stroke-width="4"
+                                stroke-dasharray={2 * Math.PI * 27}
+                                stroke-dashoffset={2 * Math.PI * 27 * (1 - s.fillPct / 100)}
+                                stroke-linecap="round"
+                                class="transition-all duration-1000"
+                              />
+                            </svg>
+                            <span class="absolute text-sm font-bold text-white">{s.fillPct}%</span>
+                          </div>
+                          <p class="text-[10px] text-slate-500 uppercase tracking-wider leading-tight">Full</p>
+                          <p class="mt-1 text-[11px] text-emerald-300 font-medium leading-tight">{s.fillNickname}</p>
+                        </div>
+                      ))}
                     </div>
-                    <p class="text-[10px] text-slate-500 uppercase tracking-wider leading-tight">Full</p>
-                    <p class="mt-1 text-[11px] text-emerald-300 font-medium leading-tight">{s.fillNickname}</p>
                   </div>
                 ))}
               </div>
