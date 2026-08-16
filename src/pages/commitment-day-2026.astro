@@ -304,29 +304,33 @@ const eventDetails = {
                 Entry by QR code. Last year, some without a chosen session found their room full.
               </p>
 
-              <div class="grid grid-cols-3 gap-x-3 gap-y-2">
-                {availabilityGroups.map(group => (
-                  <div class="flex flex-col items-center">
+              <div class="grid grid-cols-3 gap-x-0">
+                {availabilityGroups.map((group, gi) => (
+                  <div class={`flex flex-col items-center px-2 ${gi > 0 ? 'border-l border-slate-700/50' : ''}`}>
                     <p class="text-[11px] font-bold uppercase tracking-wider text-amber-400 mb-4 leading-tight text-center">{group.label}</p>
                     <div class="space-y-5">
                       {group.items.map(s => (
                         <div class="flex flex-col items-center text-center">
-                          <div class="relative inline-flex items-center justify-center w-20 h-20 mb-1">
+                          <div class={`relative inline-flex items-center justify-center w-20 h-20 mb-1 ${s.fillPct >= 100 ? 'animate-pulse' : ''}`}>
                             <svg class="w-20 h-20 -rotate-90" viewBox="0 0 64 64">
                               <circle cx="32" cy="32" r="27" fill="none" stroke="rgb(30 41 59)" stroke-width="4" />
                               <circle
                                 cx="32" cy="32" r="27" fill="none"
-                                stroke="rgb(16 185 129)" stroke-width="4"
+                                stroke={s.fillPct >= 100 ? 'rgb(239 68 68)' : 'rgb(16 185 129)'} stroke-width="4"
                                 stroke-dasharray={2 * Math.PI * 27}
                                 stroke-dashoffset={2 * Math.PI * 27 * (1 - s.fillPct / 100)}
                                 stroke-linecap="round"
                                 class="transition-all duration-1000"
                               />
                             </svg>
-                            <span class="absolute text-sm font-bold text-white">{s.fillPct}%</span>
+                            <span class={`absolute text-sm font-bold ${s.fillPct >= 100 ? 'text-red-400' : 'text-white'}`}>{s.fillPct}%</span>
                           </div>
-                          <p class="text-[10px] text-slate-500 uppercase tracking-wider leading-tight">Full</p>
-                          <p class="mt-1 text-[11px] text-emerald-300 font-medium leading-tight">{s.fillNickname}</p>
+                          {s.fillPct >= 100 ? (
+                            <p class="text-[10px] text-red-400 uppercase tracking-wider leading-tight font-bold">Full — Join waitlist</p>
+                          ) : (
+                            <p class="text-[10px] text-slate-500 uppercase tracking-wider leading-tight">Full</p>
+                          )}
+                          <p class={`mt-1 text-[11px] font-medium leading-tight ${s.fillPct >= 100 ? 'text-red-300' : 'text-emerald-300'}`}>{s.fillNickname}</p>
                         </div>
                       ))}
                     </div>
