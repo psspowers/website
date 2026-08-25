@@ -3,215 +3,144 @@ import Layout from '../layouts/Layout.astro';
 import OptimizedImage from '../components/OptimizedImage.astro';
 import PosterModal from '../components/PosterModal.astro';
 
-const registrationUrl = 'https://www.zipeventapp.com/e/PSS-Commitment-Day-2026';
-const eventDate = '2026-08-19';
-const today = new Date('2026-08-18T00:00:00Z');
-const eventDay = new Date(eventDate + 'T00:00:00Z');
-const daysUntil = Math.ceil((eventDay.getTime() - today.getTime()) / 86400000);
+const heroImage = '/Commitment Day/COMMITMENT2026--364.jpg';
 
-const heroImage = '/Commitment Day/5.1_-_Panel__Leader_+_Government_.jpg';
+const keynotes = [
+  {
+    name: 'Khun Somchai Songsiri',
+    role: 'Deputy Governor, PEA',
+  },
+  {
+    name: 'Khun Arthit Vechakij',
+    role: 'President, Thai RE100 Association',
+  },
+  {
+    name: 'Khun Vibeke Lyssand Leirvag',
+    role: 'Chairwoman, JFCCT',
+  },
+];
 
 const sessions = [
   {
     id: 'session-1',
-    time: '4:00 – 4:45 PM',
-    round: 'Round 1',
-    room: 'London 1',
-    track: 'Data Center — Policy & Delivery',
-    title: 'Can Thailand power the AI boom?',
-    summary: 'A single 100 MW data-centre campus draws power on the scale of a Thai city. Can the grid, connection timelines and policy support growth at the speed now being proposed?',
-    description:
-      'Thailand is attracting major data-centre investment. A single 100 MW campus draws power on the scale of a Thai city. The question is whether the grid, the connection timelines and the policy environment can support that growth at the speed now being proposed.',
-    question:
-      'Can Thailand support rapid data-centre expansion without creating new risks for electricity reliability, affordability or the wider economy?',
-    moderator: 'Bob Fox — Chair, Digital Economy & Policy Co-ordinator, JFCCT',
+    track: 'Gov & Policy',
+    title: 'Is it a real boom? Can Thailand power the AI and data-centre boom?',
+    summary:
+      'A single 100 MW data-centre campus draws power on the scale of a Thai city. Can the grid, connection timelines and policy support growth at the speed now being proposed?',
+    moderator: 'Bob Fox — JFCCT',
     panel: [
-      { org: 'ERC', person: 'Dr. Chanchai Amornvipas' },
-      { org: 'Thammasat University', person: 'Asst. Prof. Nondh Nuchmorn' },
-      { org: 'ERRA', person: 'M.K. Balaji, Advisory Board' },
-      { org: 'Deloitte', person: 'Dr. Bordin Vongvitayapirom, CoE Head, Sustainability & Energy' },
+      { org: 'ERC', person: 'Dr. Chanchai Amornvipas, Director' },
+      { org: 'ERRA', person: 'M.K. Balaji' },
+      { org: 'Thammasat University', person: 'Prof. Nondh Nuchmorn' },
+      { org: 'Deloitte', person: 'Dr. Bordin Vongvitayapirom' },
     ],
     faceImage: '/Commitment Day/5.1.1_-_Panel__Leader_+_Government_.png',
     posterImage: '/Commitment Day/5.1_-_Panel__Leader_+_Government_.jpg',
-    fillPct: 100,
-    fillLabel: '100% Full',
-    fillCategory: 'Data Center',
-    fillNickname: 'Gov & Policy',
   },
   {
     id: 'session-2',
-    time: '4:00 – 4:45 PM',
-    round: 'Round 1',
-    room: 'London 3',
-    track: 'Energy — Now & Next',
+    track: 'Invest Now — Quick Wins',
     title: 'What can companies implement today?',
-    summary: 'BESS and peak management, industrial efficiency, cooling, energy recovery and practical renewables. Real projects, real economics, real payback periods.',
-    description:
-      'Most of the energy debate is about future policy. This session is about what is already available — BESS and peak management, industrial efficiency, cooling, rotating-equipment optimisation, energy recovery and practical renewables. Real projects, real economics, real payback periods.',
-    question:
-      'If energy policy does not change for the next 12 months, what can companies implement today to materially reduce cost, emissions and operational risk?',
+    summary:
+      'BESS and peak management, industrial efficiency, cooling, energy recovery and practical renewables. Real projects, real economics, real payback periods.',
     moderator: 'Natagorn Kawsuay — Head of Business Development & Strategic Partnerships, PSS Powers',
     panel: [
-      { org: 'Thai Renewable Energy (RE100) Association', person: 'Arthit Vechakij, President' },
-      { org: 'EEC Engineering Network', person: 'Annop Kingkachee, Managing Director' },
-      { org: 'Huawei (Thailand)', person: 'Patipan Kalvibool, Chief Technology Officer' },
-      { org: 'PSS Group', person: 'Karan Yamdagni, CEO' },
-      { org: 'PCS Thailand', person: 'Ibrahim Kocagoz, Director, Engineering Solutions' },
+      { org: 'EEC Engineering Network', person: 'Annop Kingkachee' },
+      { org: 'Huawei Thailand', person: 'Patipan Kalvibool' },
+      { org: 'The Perfect Seals and Services', person: 'Karan Yamdagni' },
     ],
     faceImage: '/Commitment Day/5.2.1_-_Panel__Quick_Win_Technology_.png',
     posterImage: '/Commitment Day/5.2_-_Panel__Quick_Win_Technology_.jpg',
-    fillPct: 81,
-    fillLabel: '81% Full',
-    fillCategory: 'Energy',
-    fillNickname: 'Quick Win w RE',
   },
   {
     id: 'session-3',
-    time: '5:00 – 5:45 PM',
-    round: 'Round 2',
-    room: 'London 1',
-    track: 'Data Center — Policy & Delivery',
-    title: 'Can we really build it in 12 months?',
-    summary: 'Projects are expected to move from concept to operational readiness inside a year — while managing design changes, long-lead equipment, testing and commissioning.',
-    description:
-      'Projects are increasingly expected to move from concept to operational readiness inside a year — while managing design changes, power infrastructure, long-lead equipment, multiple contractors, testing and commissioning. This session deals with the execution reality, not the ambition.',
-    question:
-      'Can Thailand reliably deliver mega-scale data centres in 12 months — and what must change in engineering, procurement, construction and decision-making to make that possible?',
-    moderator: 'Bob Fox — Chair, Digital Economy & Policy Co-ordinator, JFCCT',
+    track: 'DC in 12 Months — EPC, Engg & Consult',
+    title: 'Can we build a data center in 12 months?',
+    summary:
+      'Projects are expected to move from concept to operational readiness inside a year — while managing design changes, long-lead equipment, testing and commissioning.',
+    moderator: 'Bob Fox — JFCCT',
     panel: [
-      { org: 'Meinhardt (Thailand)', person: 'Matthew Silvester, Director' },
-      { org: 'JLL', person: 'Chailai van Kampen, Head of Data Centres, Industrial & Logistics' },
-      { org: 'Siemens (Thailand)', person: 'Ross Conlan, CEO & President' },
-      { org: 'Asia Pacific Data Center Association (APDCA)', person: 'Speaker to be confirmed' },
+      { org: 'Meinhardt Thailand', person: 'Matthew Silvester' },
+      { org: 'JLL', person: 'Chailai van Kampen' },
+      { org: 'PCS Thailand', person: 'Ibrahim Kocagoz' },
     ],
     faceImage: '/Commitment Day/5.3.1_-_Panel__Engg_+_EPC_+_Consult_.png',
     posterImage: '/Commitment Day/5.3_-_Panel__Engg_+_EPC_+_Consult_.jpg',
-    fillPct: 100,
-    fillLabel: '100% Full',
-    fillCategory: 'Data Center',
-    fillNickname: 'DC in 12 Months',
   },
   {
     id: 'session-4',
-    time: '5:00 – 5:45 PM',
-    round: 'Round 2',
-    room: 'London 3',
-    track: 'Energy — Now & Next',
-    title: 'What should Thailand invest in now?',
-    summary: 'Grid modernisation, generation and storage, LNG and fuel security, transport decarbonisation. Capital and time are limited — this panel will prioritise, on the record.',
-    description:
-      'Grid modernisation. Generation and storage. LNG and fuel security. Transport decarbonisation. Power-plant modernisation. Hydrogen. Capital and time are both limited — so rather than discussing every option, this panel will be asked to prioritise, on the record.',
-    question:
-      'If Thailand has limited capital and limited time, which strategic energy investments should it prioritise now?',
-    moderator: 'Martin Venzky-Stalling — Chair, Sustainable Development Committee, JFCCT',
+    track: 'Big Strategies — Vision 2036',
+    title: 'Where should Thailand invest now?',
+    summary:
+      'Grid modernisation, generation and storage, LNG and fuel security, transport decarbonisation. Capital and time are limited — this panel prioritised, on the record.',
+    moderator: 'Martin Venzky-Stalling — JFCCT',
     panel: [
       { org: 'Prince of Songkla University', person: 'Assoc. Prof. Prawit Kongjan' },
-      { org: 'Maxion Wheels', person: 'Sutheep Ratnabhas, President-Asia; VP, EVAT' },
-      { org: 'UNESCAP', person: 'Zixuan Guo, Power Policy & Planning' },
-      { org: 'Siemens Energy', person: 'Natat Thinaphong, Sales Director' },
-      { org: 'Krungthai Bank', person: 'Kriengkrai Chokelarptawee, SVP, Markets Solutions' },
+      { org: 'Maxion Wheels / EVAT', person: 'Sutheep Ratnabhas' },
+      { org: 'UNESCAP', person: 'Zixuan Guo' },
+      { org: 'Siemens Energy', person: 'Natat Thinaphong' },
+      { org: 'Krungthai Bank', person: 'Kriengkrai Chokelarptawee' },
     ],
     faceImage: '/Commitment Day/5.4.1_-_Panel__Strategic_Initiative_.png',
     posterImage: '/Commitment Day/5.4_-_Panel__Strategic_Initiative_.jpg',
-    fillPct: 86,
-    fillLabel: '86% Full',
-    fillCategory: 'Energy',
-    fillNickname: 'Big Strategies',
   },
 ];
 
 const techUpdate = {
   faceImage: '/Commitment Day/5.5.1_-_7_Mins_Tech_Update_.png',
   posterImage: '/Commitment Day/5.5_-_7_Mins_Tech_Update_.png',
-  companies: ['Huawei', 'Integra RE', 'Atmoce', 'Jinko Solar', 'UL', 'Envision', 'PSS'],
+  companies: ['Huawei', 'Integra RE', 'Atmoce', 'Jinko Solar', 'Envision', 'PSS'],
 };
 
-const availabilityGroups = [
+const quotes = [
   {
-    label: 'Data Center',
-    items: [
-      { fillPct: 100, fillNickname: 'Gov & Policy' },
-      { fillPct: 100, fillNickname: 'DC in 12 Months' },
-    ],
+    text: 'Predictable Policy is the biggest enabler to Predictable Energy.',
+    author: 'Khun Suthep Ratnabhas',
+    org: 'EVAT',
   },
   {
-    label: 'Energy',
-    items: [
-      { fillPct: 95, fillNickname: 'Quick Win w RE' },
-      { fillPct: 88, fillNickname: 'Big Strategies' },
-    ],
+    text: 'Electricity prices must reflect the market cost of consumption and generation.',
+    author: 'Khun Zixuan Guo',
+    org: 'UNESCAP',
   },
   {
-    label: 'Tech Update',
-    items: [
-      { fillPct: 70, fillNickname: 'Fun w Tech' },
-      { fillPct: 78, fillNickname: 'Fun w Tech' },
-    ],
-  },
-];
-
-const manifest = [
-  {
-    label: 'Policy & Regulation',
-    orgs: ['ERC', 'ERRA', 'UN ESCAP', 'RE100', 'EVAT', 'APDCA', 'JFCCT'],
+    text: 'Enhancing existing Power Assets is as important, if not more, than generating new assets.',
+    author: 'Khun Natat Thinaphong',
+    org: 'Siemens Energy',
   },
   {
-    label: 'Capital & Finance',
-    orgs: ['Krungthai Bank', 'I Squared', 'Berde PSS'],
+    text: 'Thailand does not lack low-carbon projects, it lacks aggregation into large projects.',
+    author: 'Khun Kriengkrai Chokelarptawee',
+    org: 'Krungthai Bank',
   },
   {
-    label: 'Engineering, EPC & Advisory',
-    orgs: ['Meinhardt', 'ISTARI', 'JLL', 'Deloitte', 'PCS', 'EEC', 'PSS Group'],
-  },
-  {
-    label: 'Energy & Technology',
-    orgs: ['Siemens Energy', 'Huawei', 'Jinko Solar', 'Integra RE', 'Atmoce', 'UL', 'Watts'],
-  },
-  {
-    label: 'Research & Academia',
-    orgs: ['Thammasat University', 'Prince of Songkla University'],
-  },
-  {
-    label: 'International Business',
-    orgs: ['Seven chambers of commerce'],
+    text: 'The biggest regret we will have in 2035 is if we do not incentivise pilot-scale projects now.',
+    author: 'Assoc. Prof. Prawit Kongjan',
+    org: 'Prince of Songkla University',
   },
 ];
 
-const audienceTypes = [
-  'Government & policy makers',
-  'Data-centre operators & investors',
-  'Manufacturers & industrial estates',
-  'Engineering & construction leaders',
-  'Renewable developers & utilities',
-  'Investors, banks & infrastructure funds',
-];
-
-const sponsors = ['I Squared', 'Berde Renewables', 'Y Cube'];
-const supporters = [
-  'JFCCT',
-  'Irish Thai Chamber of Commerce',
-  'Thai-Finnish Chamber of Commerce',
-  'Thai-Swedish Chamber of Commerce',
-  'Netherlands-Thai Chamber of Commerce',
-  'New Zealand Chamber of Commerce',
-  'British Chamber of Commerce',
-  'RE100 Thailand',
-  'IIT Alumni',
+const galleryImages = [
+  { src: '/Commitment Day/Opening_Night.jpg', alt: 'Opening night at Commitment Day 2026' },
+  { src: '/Commitment Day/Keynote_-_PEA.jpg', alt: 'Keynote address from PEA' },
+  { src: '/Commitment Day/Panel_Bob.jpg', alt: 'Panel moderated by Bob Fox' },
+  { src: '/Commitment Day/Panel_Martin.jpg', alt: 'Panel moderated by Martin Venzky-Stalling' },
+  { src: '/Commitment Day/Raise_a_toast.jpg', alt: 'Closing toast at Commitment Day 2026' },
+  { src: '/Commitment Day/Big_Cheers.jpg', alt: 'Guests cheering at the commitment ceremony' },
 ];
 
 const eventDetails = {
-  date: 'Wednesday 19 August 2026',
+  date: '19 August 2026',
   venue: 'The Athenee Hotel, Bangkok',
-  registrationStart: '3:00 PM',
+  attendees: '398',
   phone: '+66 63 224 4664',
   email: 'info@psspowers.com',
-  mapsUrl: 'https://maps.google.com/?q=The+Athenee+Hotel+Bangkok',
 };
 ---
 
 <Layout
-  title="Commitment Day 2026 — Predictable Energy | PSS Powers"
-  description="Commitment Day 2026 at The Athenee Hotel, Bangkok — Wednesday 19 August 2026. Government, investors, developers and energy leaders in one room. By invitation. Register before 17 August."
+  title="Commitment Day 2026 — Predictable Energy, In the Room | PSS Powers"
+  description="Commitment Day 2026 at The Athenee Hotel, Bangkok — 398 leaders from government, finance, industry and energy. Panels, keynotes, the Thailand Energy Predictability Index launch, and the commitment ceremony."
   image={heroImage}
   type="article"
 >
@@ -221,320 +150,91 @@ const eventDetails = {
     <section class="relative overflow-hidden bg-slate-950">
       <div class="absolute inset-0">
         <img
-          src="/News_Images/Commitment_Day_2025.jpeg"
-          alt="Commitment Day 2025 event photography"
-          class="w-full h-full object-cover opacity-25"
+          src={heroImage}
+          alt="Commitment Day 2026 — attendees at The Athenee Hotel, Bangkok"
+          class="w-full h-full object-cover opacity-30"
           loading="eager"
         />
-        <div class="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/90 to-slate-950"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-slate-950/70 via-slate-950/85 to-slate-950"></div>
       </div>
 
-      <div class="relative max-w-screen-2xl mx-auto px-6 lg:px-8 py-16 md:py-24">
-        <div class="grid lg:grid-cols-[1fr_auto] gap-12 lg:gap-16 items-start">
-          {/* Left: Event details */}
-          <div data-aos="fade-up">
-            <p class="text-amber-400 text-sm font-semibold tracking-widest uppercase mb-4">
-              PSS Powers presents
-            </p>
-            <h1 class="font-display text-4xl md:text-6xl font-bold text-white tracking-tight mb-4 leading-tight">
-              Commitment Day 2026
-            </h1>
-            <p class="text-2xl text-emerald-400 font-display italic mb-6">
-              Predictable Energy
-            </p>
+      <div class="relative max-w-screen-2xl mx-auto px-6 lg:px-8 py-16 md:py-28">
+        <div class="max-w-3xl" data-aos="fade-up">
+          <p class="text-amber-400 text-sm font-semibold tracking-widest uppercase mb-4">
+            PSS Powers presents
+          </p>
+          <h1 class="font-display text-4xl md:text-6xl font-bold text-white tracking-tight mb-4 leading-tight">
+            Commitment Day 2026
+          </h1>
+          <p class="text-2xl text-emerald-400 font-display italic mb-6">
+            Predictable Energy, In the Room
+          </p>
 
-            <p class="text-lg text-slate-300 leading-relaxed mb-6 max-w-2xl">
-              Thailand's energy conversation is usually held in separate rooms. On 19 August, they are all in one place.
-            </p>
+          <p class="text-lg text-slate-300 leading-relaxed mb-3">
+            {eventDetails.date} · {eventDetails.venue}
+          </p>
 
-            <p class="text-slate-400 italic font-display text-lg leading-snug border-l-2 border-emerald-500/40 pl-4 mb-8 max-w-lg">
-              The panels are worth your afternoon. The room is worth your evening.
-            </p>
+          <p class="text-lg text-slate-300 leading-relaxed mb-8 max-w-2xl">
+            On 19 August, PSS Powers convened Commitment Day 2026 — a gathering of {eventDetails.attendees} leaders from government, finance, industry, and energy, built around a single premise: predictability, not just growth, is now the scarce resource in Thailand's energy system.
+          </p>
 
-            {/* Key facts */}
-            <div class="flex flex-col gap-3 mb-8">
-              <div class="flex items-center gap-3 text-slate-200">
-                <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                <span>{eventDetails.date}</span>
-              </div>
-              <div class="flex items-center gap-3 text-slate-200">
-                <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                <span>{eventDetails.venue}</span>
-              </div>
-              <div class="flex items-center gap-3 text-slate-200">
-                <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                <span>Registration from {eventDetails.registrationStart}</span>
-              </div>
-            </div>
-
-            {/* Registration CTA — primary */}
-            <a
-              href={registrationUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center justify-center gap-x-2 px-8 py-4 bg-emerald-500 hover:bg-emerald-600 transition-colors text-slate-950 font-bold rounded-full text-base mb-5"
-              style="min-height: auto;"
-            >
-              Register &amp; choose your sessions
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-            </a>
-
-            {/* Urgency / status badges */}
-            <div class="flex flex-wrap gap-3">
-              {daysUntil > 1 && (
-                <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-sm font-medium">
-                  <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-                  {daysUntil} day{daysUntil !== 1 ? 's' : ''} to go
-                </span>
-              )}
-              {daysUntil === 1 && (
-                <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-300 text-sm font-bold">
-                  <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-                  Tomorrow — 19 August
-                </span>
-              )}
-              <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/30 text-red-300 text-sm font-medium">
-                Final registration deadline — today
-              </span>
-              <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/80 border border-slate-700 text-slate-300 text-sm font-medium">
-                By invitation only
-              </span>
-            </div>
-          </div>
-
-          {/* Right: Seats filling dials */}
-          <div class="lg:w-[480px]" data-aos="fade-up" data-aos-delay="200">
-            <div class="glass rounded-2xl p-7">
-              <h2 class="text-white font-display text-xl font-bold mb-1">Seats are filling fast</h2>
-              <p class="text-slate-500 text-xs mb-6 leading-relaxed">
-                Entry by QR code. Last year, some without a chosen session found their room full.
-              </p>
-
-              <div class="grid grid-cols-3 gap-x-0">
-                {availabilityGroups.map((group, gi) => (
-                  <div class={`flex flex-col items-center px-2 ${gi > 0 ? 'border-l border-slate-700/50' : ''}`}>
-                    <p class="text-[11px] font-bold uppercase tracking-wider text-amber-400 mb-4 leading-tight text-center">{group.label}</p>
-                    <div class="space-y-5">
-                      {group.items.map(s => (
-                        <div class="flex flex-col items-center text-center">
-                          <div class={`relative inline-flex items-center justify-center w-20 h-20 mb-1 ${s.fillPct >= 100 ? 'animate-pulse' : ''}`}>
-                            <svg class="w-20 h-20 -rotate-90" viewBox="0 0 64 64">
-                              <circle cx="32" cy="32" r="27" fill="none" stroke="rgb(30 41 59)" stroke-width="4" />
-                              <circle
-                                cx="32" cy="32" r="27" fill="none"
-                                stroke={s.fillPct >= 100 ? 'rgb(239 68 68)' : 'rgb(16 185 129)'} stroke-width="4"
-                                stroke-dasharray={2 * Math.PI * 27}
-                                stroke-dashoffset={2 * Math.PI * 27 * (1 - s.fillPct / 100)}
-                                stroke-linecap="round"
-                                class="transition-all duration-1000"
-                              />
-                            </svg>
-                            <span class={`absolute text-sm font-bold ${s.fillPct >= 100 ? 'text-red-400' : 'text-white'}`}>{s.fillPct}%</span>
-                          </div>
-                          {s.fillPct >= 100 ? (
-                            <p class="text-[10px] text-red-400 uppercase tracking-wider leading-tight font-bold">Full — Join waitlist</p>
-                          ) : (
-                            <p class="text-[10px] text-slate-500 uppercase tracking-wider leading-tight">Full</p>
-                          )}
-                          <p class={`mt-1 text-[11px] font-medium leading-tight ${s.fillPct >= 100 ? 'text-red-300' : 'text-emerald-300'}`}>{s.fillNickname}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <a
-                href={registrationUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="mt-5 flex items-center justify-center gap-x-2 w-full px-4 py-3 bg-emerald-500 hover:bg-emerald-600 transition-colors text-slate-950 font-bold rounded-full text-sm"
-                style="min-height: auto;"
-              >
-                Register today for tomorrow
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-              </a>
-            </div>
+          <div class="flex flex-wrap gap-3">
+            <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-sm font-medium">
+              {eventDetails.attendees} leaders in the room
+            </span>
+            <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-sm font-medium">
+              4 panels · 3 keynotes · 7-min tech updates
+            </span>
           </div>
         </div>
       </div>
     </section>
 
-    {/* ── Who Is in the Room + Special Announcement ────────── */}
-    <section class="relative overflow-hidden py-16 md:py-24 bg-slate-900">
-      <div class="absolute inset-0 pointer-events-none opacity-40" style="background: radial-gradient(circle at 82% 38%, rgba(245, 158, 11, 0.12), transparent 34%), radial-gradient(circle at 12% 70%, rgba(16, 185, 129, 0.08), transparent 30%);"></div>
-      <div class="relative max-w-screen-2xl mx-auto px-6 lg:px-8">
+    {/* ── Keynote Speakers ─────────────────────────────────── */}
+    <section class="py-16 md:py-24 bg-slate-900">
+      <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
         <div class="max-w-3xl mb-12" data-aos="fade-up">
           <div class="flex items-center gap-3 mb-4">
-            <span class="h-px w-10 bg-emerald-400"></span>
-            <p class="text-emerald-400 text-xs font-bold tracking-[0.2em] uppercase">Confirmed in the room</p>
+            <span class="h-px w-10 bg-amber-400"></span>
+            <p class="text-amber-400 text-xs font-bold tracking-[0.2em] uppercase">Keynote Addresses</p>
           </div>
-          <h2 class="font-display text-4xl md:text-5xl font-bold text-white tracking-tight mb-5 leading-[1.1]">
-            The room is the story.
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight mb-5 leading-[1.1]">
+            Three voices framing the question.
           </h2>
-          <p class="text-slate-400 text-lg md:text-xl leading-relaxed max-w-2xl">
-            Government, developers, investors, banks and the companies paying the electricity bill — the people who buy the power, build the assets and finance both.
+          <p class="text-slate-400 text-lg leading-relaxed max-w-2xl">
+            How does Thailand build an energy system its businesses can actually plan around? Three keynote speakers framed the policy, grid, and private-sector dimensions of that single question.
           </p>
         </div>
 
-        <div class="grid lg:grid-cols-[1.08fr_0.92fr] gap-8 xl:gap-12 items-stretch">
-          {/* Left: Confirmed organisations */}
-          <div class="glass rounded-2xl p-6 md:p-8" data-aos="fade-up" data-aos-delay="100">
-            <div class="flex items-end justify-between gap-4 pb-5 mb-1 border-b border-slate-800">
-              <div>
-                <p class="text-white font-display text-xl font-bold">Who is represented in the Panels</p>
-                <p class="text-slate-500 text-sm mt-1">Six sectors. One executive room.</p>
-              </div>
-              <span class="text-emerald-400 font-display text-3xl font-bold leading-none">06</span>
-            </div>
-
-            <div class="divide-y divide-slate-800">
-              {manifest.map((cat, i) => (
-                <div class="group flex gap-4 py-4 first:pt-5 last:pb-2">
-                  <span class="flex-shrink-0 w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold flex items-center justify-center transition-colors group-hover:bg-emerald-500/20">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <div class="min-w-0">
-                    <p class="text-emerald-400 text-xs font-bold uppercase tracking-wider mb-1">{cat.label}</p>
-                    <p class="text-slate-300 text-sm leading-relaxed">{cat.orgs.join(' · ')}</p>
-                  </div>
+        <div class="grid md:grid-cols-3 gap-6" data-aos="fade-up" data-aos-delay="100">
+          {keynotes.map((k, i) => (
+            <div class="group rounded-2xl p-6 bg-slate-950 border border-slate-800 hover:border-amber-500/40 transition-colors">
+              <div class="flex items-center gap-4">
+                <span class="w-12 h-12 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center flex-shrink-0 text-amber-400 font-display font-bold text-lg">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div>
+                  <p class="text-white font-semibold leading-tight">{k.name}</p>
+                  <p class="text-slate-500 text-sm mt-1">{k.role}</p>
                 </div>
-              ))}
-            </div>
-
-            <div class="mt-6 pt-5 border-t border-slate-800">
-              <p class="text-slate-500 text-xs leading-relaxed mb-3">
-                An executive-scale event, deliberately kept small. The value of the evening is the density of the room.
-              </p>
-              <div class="flex flex-wrap gap-2">
-                {audienceTypes.map(a => (
-                  <span class="px-2.5 py-1 rounded-md bg-slate-800/70 border border-slate-700 text-slate-400 text-[11px]">{a}</span>
-                ))}
               </div>
             </div>
-          </div>
-
-          {/* Right: Special Announcement — Keynote Speakers */}
-          <div class="relative" data-aos="fade-up" data-aos-delay="200">
-            <div class="absolute -inset-px rounded-2xl bg-gradient-to-br from-amber-400/50 via-amber-500/10 to-transparent opacity-80"></div>
-            <div class="relative h-full rounded-2xl overflow-hidden bg-slate-950 border border-amber-500/30">
-              <div class="h-1.5 bg-gradient-to-r from-amber-300 via-amber-500 to-amber-700"></div>
-              <div class="p-7 md:p-9">
-                <div class="flex items-center justify-between gap-4 mb-7">
-                  <div class="flex items-center gap-3">
-                    <span class="relative flex h-3 w-3">
-                      <span class="absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-60 animate-ping"></span>
-                      <span class="relative inline-flex h-3 w-3 rounded-full bg-amber-400"></span>
-                    </span>
-                    <p class="text-amber-400 text-xs font-bold tracking-[0.16em] uppercase">Special announcement</p>
-                  </div>
-                  <span class="text-amber-500/70 font-display text-4xl font-bold leading-none">03</span>
-                </div>
-
-                <p class="text-slate-500 text-xs font-semibold tracking-widest uppercase mb-3">For the evening session</p>
-                <h3 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight mb-4 leading-[1.08]">
-                  Three voices shaping the conversation.
-                </h3>
-                <p class="text-slate-400 text-sm leading-relaxed mb-7">
-                  We're honoured to welcome the following keynote speakers to the room tomorrow evening.
-                </p>
-
-                <div class="space-y-2.5 mb-6">
-                  <div class="group rounded-xl p-4 bg-slate-900 border border-slate-800 hover:border-amber-500/40 transition-colors flex items-center gap-4">
-                    <span class="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center flex-shrink-0 text-amber-400 font-display font-bold">01</span>
-                    <div>
-                      <p class="text-white font-semibold leading-tight">Khun Sanphet Bunyamanee</p>
-                      <p class="text-slate-500 text-sm mt-0.5">Deputy Minister of Transport*</p>
-                    </div>
-                  </div>
-                  <div class="group rounded-xl p-4 bg-slate-900 border border-slate-800 hover:border-amber-500/40 transition-colors flex items-center gap-4">
-                    <span class="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center flex-shrink-0 text-amber-400 font-display font-bold">02</span>
-                    <div>
-                      <p class="text-white font-semibold leading-tight">Khun Somchai Songsiri</p>
-                      <p class="text-slate-500 text-sm mt-0.5">Deputy Governor, PEA</p>
-                    </div>
-                  </div>
-                  <div class="group rounded-xl p-4 bg-slate-900 border border-slate-800 hover:border-amber-500/40 transition-colors flex items-center gap-4">
-                    <span class="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center flex-shrink-0 text-amber-400 font-display font-bold">03</span>
-                    <div>
-                      <p class="text-white font-semibold leading-tight">Khun Arthit Vechakij</p>
-                      <p class="text-slate-500 text-sm mt-0.5">President, RE100</p>
-                    </div>
-                  </div>
-                </div>
-
-                <p class="text-slate-600 text-xs italic leading-relaxed mb-6">
-                  *Invitation accepted, pending last minute confirmation.
-                </p>
-
-                <a
-                  href={registrationUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="group inline-flex items-center justify-between gap-x-4 px-5 py-3.5 bg-amber-500 hover:bg-amber-400 transition-colors text-slate-950 font-bold rounded-xl text-sm w-full"
-                  style="min-height: auto;"
-                >
-                  <span>Register today for tomorrow</span>
-                  <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-                </a>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>
 
-    {/* ── Quick Schedule strip ────────────────────────────── */}
-    <section class="py-8 md:py-10" id="programme">
-      <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
-        <div class="max-w-3xl mx-auto" data-aos="fade-up">
-          <div class="text-center mb-5">
-            <p class="text-emerald-400 text-xs font-semibold tracking-widest uppercase mb-1">The Format</p>
-            <h2 class="font-display text-xl md:text-2xl font-bold text-white tracking-tight">
-              Two rounds, two choices.
-            </h2>
-          </div>
-
-          <div class="glass rounded-xl p-4">
-            <div class="grid grid-cols-4 gap-2 text-center">
-              <div class="flex flex-col items-center px-1 py-2">
-                <p class="text-emerald-400 font-display font-bold text-lg leading-none">3:00</p>
-                <p class="text-slate-500 text-[10px] uppercase tracking-wider mb-1.5">PM</p>
-                <p class="text-slate-300 text-xs leading-tight">Registration opens</p>
-              </div>
-              <div class="flex flex-col items-center px-1 py-2 border-l border-slate-700/50">
-                <p class="text-emerald-400 font-display font-bold text-lg leading-none">4:00</p>
-                <p class="text-slate-500 text-[10px] uppercase tracking-wider mb-1.5">PM</p>
-                <p class="text-slate-300 text-xs leading-tight">Round 1 — choose one</p>
-              </div>
-              <div class="flex flex-col items-center px-1 py-2 border-l border-slate-700/50">
-                <p class="text-emerald-400 font-display font-bold text-lg leading-none">5:00</p>
-                <p class="text-slate-500 text-[10px] uppercase tracking-wider mb-1.5">PM</p>
-                <p class="text-slate-300 text-xs leading-tight">Round 2 — choose one</p>
-              </div>
-              <div class="flex flex-col items-center px-1 py-2 border-l border-slate-700/50">
-                <p class="text-emerald-400 font-display font-bold text-lg leading-none">6:00</p>
-                <p class="text-slate-500 text-[10px] uppercase tracking-wider mb-1.5">PM</p>
-                <p class="text-slate-300 text-xs leading-tight">Plenary — all rejoin</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    {/* ── Session Cards Grid ──────────────────────────────── */}
+    {/* ── The Panels ───────────────────────────────────────── */}
     <section class="py-12 md:py-16">
       <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
         <div class="text-center mb-10" data-aos="fade-up">
-          <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-3">The Session Line-up</p>
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight">Four questions. Four conversations.</h2>
+          <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-3">The Panels</p>
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight">Four conversations. One room.</h2>
         </div>
 
         <div class="grid md:grid-cols-2 gap-6" data-aos="fade-up" data-aos-delay="100">
           {sessions.map((session) => (
             <div class="glass rounded-2xl overflow-hidden border-l-4 border-emerald-500 project-card">
-              {/* Face crop image */}
               <div class="relative">
                 <OptimizedImage
                   src={session.faceImage}
@@ -553,44 +253,22 @@ const eventDetails = {
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                     View full poster
                   </button>
-                  <span class="text-slate-300 text-xs font-medium">{session.fillLabel}</span>
                 </div>
               </div>
 
-              {/* Session content */}
               <div class="p-5">
-                <div class="flex flex-wrap items-center gap-2 mb-3">
-                  <span class="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs font-semibold uppercase tracking-wider">
-                    {session.round}
-                  </span>
-                  <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-400 text-xs font-medium">
-                    {session.time}
-                  </span>
-                  <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-400 text-xs font-medium">
-                    Room {session.room}
-                  </span>
-                </div>
-
                 <p class="text-amber-400 text-xs font-semibold uppercase tracking-wider mb-2">{session.track}</p>
                 <h3 class="font-display text-xl font-bold text-white tracking-tight mb-2 leading-tight">
                   {session.title}
                 </h3>
                 <p class="text-slate-400 text-sm leading-relaxed mb-4">{session.summary}</p>
 
-                {/* Collapsible details */}
                 <details class="group mb-4">
                   <summary class="cursor-pointer text-emerald-400 text-sm font-medium hover:text-emerald-300 transition-colors flex items-center gap-1 select-none">
                     <svg class="w-4 h-4 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
-                    Session details &amp; Panel
+                    Moderator &amp; Panel
                   </summary>
-                  <div class="mt-4 space-y-4">
-                    <p class="text-slate-400 text-sm leading-relaxed">{session.description}</p>
-
-                    <div class="glass rounded-lg p-4 border-l-4 border-emerald-500">
-                      <p class="text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-1">The question on the table</p>
-                      <p class="text-slate-300 italic text-sm leading-relaxed">{session.question}</p>
-                    </div>
-
+                  <div class="mt-4 space-y-3">
                     <div>
                       <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Moderator</p>
                       <p class="text-white text-sm font-medium mb-3">{session.moderator}</p>
@@ -608,18 +286,6 @@ const eventDetails = {
                     </div>
                   </div>
                 </details>
-
-                {/* Per-session register button */}
-                <a
-                  href={registrationUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="inline-flex items-center gap-x-2 px-5 py-2.5 bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/20 transition-colors text-emerald-300 font-semibold rounded-full text-sm"
-                  style="min-height: auto;"
-                >
-                  Register for this session
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-                </a>
               </div>
             </div>
           ))}
@@ -636,7 +302,7 @@ const eventDetails = {
               <div class="relative">
                 <OptimizedImage
                   src={techUpdate.faceImage}
-                  alt="7-Minute Tech Updates — Room China speakers"
+                  alt="7-Minute Tech Updates — speakers"
                   aspectRatio="1:1"
                   class="h-full"
                 />
@@ -653,31 +319,20 @@ const eventDetails = {
                 </div>
               </div>
               <div class="p-8 md:p-10">
-                <p class="text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-3">Room China · Both rounds</p>
+                <p class="text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-3">Rapid-fire showcases</p>
                 <h3 class="font-display text-2xl font-bold text-white tracking-tight mb-3 leading-tight">
                   7-Minute Tech Updates
                 </h3>
                 <p class="text-slate-400 text-sm leading-relaxed mb-5">
-                  Short, concise presentations with no corporate introductions:
-                  <span class="text-emerald-300 italic"> what has changed in your technology in the last 12 months that an energy executive should know?</span>
+                  A fast, wide-angle look at what's new across the sector — rapid-fire technology showcases with no corporate introductions.
                 </p>
-                <div class="flex flex-wrap gap-2 mb-5">
+                <div class="flex flex-wrap gap-2">
                   {techUpdate.companies.map(company => (
                     <span class="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-slate-200 text-xs font-medium">
                       {company}
                     </span>
                   ))}
                 </div>
-                <a
-                  href={registrationUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="inline-flex items-center gap-x-2 px-6 py-3 bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/20 transition-colors text-emerald-300 font-semibold rounded-full text-sm"
-                  style="min-height: auto;"
-                >
-                  Register &amp; choose Room China
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-                </a>
               </div>
             </div>
           </div>
@@ -685,207 +340,204 @@ const eventDetails = {
       </div>
     </section>
 
-    {/* ── Evening Plenary ──────────────────────────────────── */}
+    {/* ── Quotable Quotes ──────────────────────────────────── */}
+    <section class="py-16 md:py-24">
+      <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
+        <div class="text-center mb-12" data-aos="fade-up">
+          <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-3">Quotable Quotes</p>
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight">What the room heard.</h2>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+          {quotes.map((q, i) => (
+            <div class={`glass rounded-2xl p-7 border-l-4 ${i === quotes.length - 1 ? 'border-amber-500 md:col-span-2' : 'border-emerald-500'}`}>
+              <svg class={`w-8 h-8 mb-3 ${i === quotes.length - 1 ? 'text-amber-500/30' : 'text-emerald-500/30'}`} fill="currentColor" viewBox="0 0 24 24"><path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-4v-10h9.983zm14.017 0v7.391c0 5.704-3.748 9.571-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3.983v-10h9.983z" /></svg>
+              <p class={`text-slate-200 leading-relaxed font-display italic mb-4 ${i === quotes.length - 1 ? 'text-lg md:text-xl' : 'text-lg'}`}>
+                {q.text}
+              </p>
+              <p class={`text-sm font-semibold ${i === quotes.length - 1 ? 'text-amber-400' : 'text-emerald-400'}`}>{q.author}</p>
+              <p class="text-slate-500 text-xs mt-0.5">{q.org}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* ── Thailand Energy Predictability Index ─────────────── */}
+    <section class="py-16 md:py-24 bg-slate-900">
+      <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto" data-aos="fade-up">
+          <div class="glass rounded-3xl overflow-hidden border border-emerald-500/20">
+            <div class="h-1.5 bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-700"></div>
+            <div class="p-8 md:p-12">
+              <div class="flex items-center gap-3 mb-5">
+                <span class="relative flex h-3 w-3">
+                  <span class="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60 animate-ping"></span>
+                  <span class="relative inline-flex h-3 w-3 rounded-full bg-emerald-400"></span>
+                </span>
+                <p class="text-emerald-400 text-xs font-bold tracking-[0.16em] uppercase">New Initiative Launched</p>
+              </div>
+
+              <h2 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight mb-5 leading-[1.1]">
+                The Thailand Energy Predictability Index
+              </h2>
+
+              <p class="text-slate-300 text-lg leading-relaxed mb-5">
+                A new joint initiative with JFCCT — the first attempt to measure, on a recurring annual basis, how predictable Thailand's cost, availability, and regulation of energy actually feels to the businesses investing in it.
+              </p>
+
+              <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                Scored across five dimensions including price predictability, grid access, and regulatory certainty. The PSS Index — Predictability, Security, Sustainability.
+              </p>
+
+              <div class="glass rounded-xl p-5 border-l-4 border-emerald-500">
+                <p class="text-slate-300 text-sm leading-relaxed">
+                  19 August marked the launch only — the first full findings and published report will follow by the end of the year.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ── The Commitment Ceremony ──────────────────────────── */}
+    <section class="py-16 md:py-24">
+      <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+          <div data-aos="fade-up">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="h-px w-10 bg-amber-400"></span>
+              <p class="text-amber-400 text-xs font-bold tracking-[0.2em] uppercase">The Commitment Ceremony</p>
+            </div>
+            <h2 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight mb-5 leading-[1.1]">
+              More than a panel discussion.
+            </h2>
+            <p class="text-slate-400 text-lg leading-relaxed mb-5">
+              The day closed with a commitment ceremony with substantial conclusions on what the government and businesses can do. The details of the panel discussions will be posted on the website in due time.
+            </p>
+            <p class="text-slate-400 text-base leading-relaxed mb-5">
+              Many MOUs were signed for partnerships, and success stories were shared — including the largest solar installation on a university campus in Thailand, at Khon Kaen University.
+            </p>
+            <p class="text-slate-300 text-sm italic leading-relaxed">
+              This is the piece that separates Commitment Day from a standard industry panel.
+            </p>
+          </div>
+
+          <div class="relative" data-aos="fade-up" data-aos-delay="100">
+            <div class="rounded-2xl overflow-hidden border border-slate-800">
+              <img
+                src="/Commitment Day/Raise_a_toast.jpg"
+                alt="Participants at the closing commitment ceremony"
+                class="w-full h-auto object-cover"
+                loading="lazy"
+              />
+            </div>
+            <p class="text-slate-500 text-xs text-center mt-3">Participants at the closing ceremony</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ── Photo Gallery ────────────────────────────────────── */}
+    <section class="py-12 md:py-16 bg-slate-900">
+      <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
+        <div class="text-center mb-10" data-aos="fade-up">
+          <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-3">From the Day</p>
+          <h2 class="font-display text-2xl md:text-3xl font-bold text-white tracking-tight">Moments from Commitment Day 2026</h2>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4" data-aos="fade-up" data-aos-delay="100">
+          {galleryImages.map(img => (
+            <div class="rounded-xl overflow-hidden border border-slate-800 hover:border-emerald-500/30 transition-colors group">
+              <img
+                src={img.src}
+                alt={img.alt}
+                class="w-full h-48 md:h-64 object-cover group-hover:scale-105 transition-transform duration-700"
+                loading="lazy"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* ── A Milestone for PSS Powers ───────────────────────── */}
     <section class="py-16 md:py-20 solar-gradient">
       <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
         <div class="max-w-3xl mx-auto text-center" data-aos="fade-up">
-          <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-4">6:00 PM onwards · Grand Hall</p>
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight mb-4">
-            It is called Commitment Day because discussion is not enough.
+          <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-4">A Milestone for PSS Powers</p>
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight mb-5 leading-[1.1]">
+            From independent operation to a global partnership.
           </h2>
           <p class="text-lg text-slate-300 leading-relaxed mb-6 max-w-2xl mx-auto">
-            After the afternoon sessions, everyone returns to one hall for leadership perspectives, project and commitment announcements, dinner and executive networking.
+            Commitment Day 2026 marked a point in PSS Powers' own journey — from independent operation, through two joint venture chapters, to our current partnership with I Squared Capital, a global infrastructure investor.
           </p>
-          <p class="text-slate-300 leading-relaxed mb-10 max-w-2xl mx-auto">
-            Projects will be announced. Partnerships will be signed. Most of the conversations that matter will happen standing up, after 7:30.
+          <p class="text-slate-300 leading-relaxed max-w-2xl mx-auto">
+            The event reflected that evolution: not just where Thailand's energy market is heading, but where we've positioned ourselves within it.
           </p>
-
-          <div class="glass rounded-2xl p-8 max-w-xl mx-auto">
-            <div class="space-y-3 text-left">
-              {[
-                'What can we do now?',
-                'What must Thailand do next?',
-                'What are we prepared to commit to?',
-              ].map(q => (
-                <div class="flex items-center gap-4">
-                  <div class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
-                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
-                  </div>
-                  <p class="text-emerald-300 text-lg italic font-display">{q}</p>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     </section>
 
-    {/* ── Registration CTA ─────────────────────────────────── */}
+    {/* ── Thank You ────────────────────────────────────────── */}
     <section class="py-16 md:py-20 bg-slate-950">
-      <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
-        <div class="glass rounded-3xl p-10 md:p-16 text-center" data-aos="fade-up">
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight mb-4">
-            Ready to join us?
-          </h2>
-          <p class="text-slate-400 text-lg max-w-xl mx-auto mb-3">
-            {eventDetails.date} · {eventDetails.venue} · Registration from {eventDetails.registrationStart}
-          </p>
-          <p class="text-amber-300 text-sm mb-8">
-            The event is tomorrow. Registration closes today — please register now to secure your place.
-          </p>
-          <a
-            href={registrationUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center justify-center gap-x-2 px-10 py-4 bg-emerald-500 hover:bg-emerald-600 transition-colors text-slate-950 font-bold rounded-full text-lg"
-            style="min-height: auto;"
-          >
-            Register &amp; choose your sessions
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-          </a>
-        </div>
+      <div class="max-w-2xl mx-auto px-6 lg:px-8 text-center" data-aos="fade-up">
+        <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-4">Thank You</p>
+        <h2 class="font-display text-2xl md:text-3xl font-bold text-white tracking-tight mb-6 leading-tight">
+          To every speaker, panelist, and guest.
+        </h2>
+        <p class="text-slate-400 text-base leading-relaxed mb-5">
+          To our keynote speakers — Khun Somchai Songsiri, Khun Arthit Vechakij and Khun Vibeke Lyssand Leirvag — our panelists and moderators across all four sessions, our 7-Minute Tech Update presenters, and our own team. Thank you for making this a working session, not a formality.
+        </p>
+        <p class="text-slate-300 text-lg italic font-display">
+          And to every guest who gave us an afternoon: this is why we do it.
+        </p>
       </div>
     </section>
 
-    {/* ── Sponsors & Supporters ────────────────────────────── */}
+    {/* ── Get in touch / Subscribe ─────────────────────────── */}
     <section class="py-12 md:py-16 bg-slate-900">
       <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
-        <div class="max-w-4xl mx-auto" data-aos="fade-up">
-          <div class="text-center mb-8">
-            <h2 class="font-display text-xl md:text-2xl font-bold text-white tracking-tight mb-2">Sponsored by</h2>
-            <div class="flex flex-wrap justify-center gap-3 mt-4">
-              {sponsors.map(s => (
-                <span class="px-6 py-3 rounded-xl glass text-white font-display text-lg font-semibold">{s}</span>
-              ))}
-            </div>
+        <div class="glass rounded-3xl p-10 md:p-14 text-center" data-aos="fade-up">
+          <h2 class="font-display text-2xl md:text-3xl font-bold text-white tracking-tight mb-4">
+            Interested in what's next?
+          </h2>
+          <p class="text-slate-400 text-base max-w-xl mx-auto mb-8">
+            Interested in the Thailand Energy Predictability Index, or what's next for PSS Powers?
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href="/contact"
+              class="inline-flex items-center justify-center gap-x-2 px-8 py-3.5 bg-emerald-500 hover:bg-emerald-600 transition-colors text-slate-950 font-bold rounded-full text-base"
+              style="min-height: auto;"
+            >
+              Get in touch
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+            </a>
+            <a
+              href={`mailto:${eventDetails.email}?subject=Subscribe to PSS Powers updates`}
+              class="inline-flex items-center justify-center gap-x-2 px-8 py-3.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-colors text-white font-semibold rounded-full text-base"
+              style="min-height: auto;"
+            >
+              Subscribe for updates
+            </a>
           </div>
 
-          <div class="text-center mt-8">
-            <h3 class="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-4">Supported by</h3>
-            <div class="flex flex-wrap justify-center gap-2">
-              {supporters.map(s => (
-                <span class="px-3 py-1.5 rounded-lg bg-slate-800/60 border border-slate-700 text-slate-400 text-xs">{s}</span>
-              ))}
+          <div class="mt-8 pt-6 border-t border-slate-800">
+            <div class="flex flex-col sm:flex-row gap-4 justify-center text-sm">
+              <a href={`tel:${eventDetails.phone.replace(/\s+/g, '')}`} class="text-emerald-400 hover:text-emerald-300 transition-colors" style="min-height: auto;">
+                {eventDetails.phone}
+              </a>
+              <span class="hidden sm:inline text-slate-700">|</span>
+              <a href={`mailto:${eventDetails.email}`} class="text-emerald-400 hover:text-emerald-300 transition-colors" style="min-height: auto;">
+                {eventDetails.email}
+              </a>
             </div>
           </div>
         </div>
       </div>
     </section>
-
-    {/* ── Practical Info ───────────────────────────────────── */}
-    <section class="py-12 md:py-16">
-      <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
-        <div class="max-w-4xl mx-auto" data-aos="fade-up">
-          <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-3 text-center">Practical Information</p>
-          <h2 class="font-display text-2xl md:text-3xl font-bold text-white tracking-tight mb-8 text-center">Everything you need to know</h2>
-
-          <div class="grid md:grid-cols-2 gap-4">
-            <div class="glass rounded-xl p-5">
-              <div class="flex items-center gap-3 mb-3">
-                <div class="w-9 h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                  <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                </div>
-                <h3 class="text-white font-semibold">Date &amp; Time</h3>
-              </div>
-              <p class="text-slate-400 text-sm leading-relaxed">
-                Wednesday 19 August 2026 · Registration from 3:00 PM · Sessions at 4:00 PM · Plenary and dinner from 6:00 PM
-              </p>
-              <a
-                href={`https://www.google.com/calendar/render?action=TEMPLATE&text=PSS+Commitment+Day+2026&dates=20260819T080000Z/20260819T130000Z&details=Predictable+Energy+-+The+Athenee+Hotel+Bangkok&location=The+Athenee+Hotel+Bangkok`}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center gap-1.5 text-emerald-400 text-sm hover:text-emerald-300 transition-colors mt-3"
-                style="min-height: auto;"
-              >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                Add to Google Calendar
-              </a>
-            </div>
-
-            <div class="glass rounded-xl p-5">
-              <div class="flex items-center gap-3 mb-3">
-                <div class="w-9 h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                  <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                </div>
-                <h3 class="text-white font-semibold">Venue</h3>
-              </div>
-              <p class="text-slate-400 text-sm leading-relaxed mb-2">{eventDetails.venue}</p>
-              <a href={eventDetails.mapsUrl} target="_blank" rel="noopener noreferrer" class="text-emerald-400 text-sm hover:text-emerald-300 transition-colors" style="min-height: auto;">
-                View on Google Maps →
-              </a>
-            </div>
-
-            <div class="glass rounded-xl p-5">
-              <div class="flex items-center gap-3 mb-3">
-                <div class="w-9 h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                  <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" /></svg>
-                </div>
-                <h3 class="text-white font-semibold">Registration</h3>
-              </div>
-              <p class="text-slate-400 text-sm leading-relaxed">
-                By invitation only. You'll choose your sessions during registration and receive an email confirmation.
-              </p>
-            </div>
-
-            <div class="glass rounded-xl p-5">
-              <div class="flex items-center gap-3 mb-3">
-                <div class="w-9 h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                  <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
-                </div>
-                <h3 class="text-white font-semibold">Contact</h3>
-              </div>
-              <div class="space-y-1">
-                <a href={`tel:${eventDetails.phone.replace(/\s+/g, '')}`} class="block text-emerald-400 text-sm hover:text-emerald-300 transition-colors" style="min-height: auto;">
-                  {eventDetails.phone}
-                </a>
-                <a href={`mailto:${eventDetails.email}`} class="block text-emerald-400 text-sm hover:text-emerald-300 transition-colors" style="min-height: auto;">
-                  {eventDetails.email}
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="mt-6 glass rounded-xl p-5 border-l-4 border-emerald-500">
-            <p class="text-slate-300 text-sm leading-relaxed">
-              If your operations, engineering or finance lead would get more from this room than you would, please forward this page to them. They are welcome to register directly.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    {/* ── Sign-off ─────────────────────────────────────────── */}
-    <section class="py-12 bg-slate-900">
-      <div class="max-w-2xl mx-auto px-6 lg:px-8 text-center" data-aos="fade-up">
-        <p class="text-slate-400 text-lg italic mb-5">We hope you can join us.</p>
-        <p class="text-white font-display text-xl font-bold mb-1">Sam Yamdagni</p>
-        <p class="text-slate-400 text-sm mb-4">PSS Powers</p>
-        <a
-          href="https://www.linkedin.com/in/sam-yamdagni-3967ba2"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 text-emerald-400 text-sm font-medium hover:text-emerald-300 transition-colors"
-          style="min-height: auto;"
-        >
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>
-          Connect with Sam on LinkedIn
-        </a>
-      </div>
-    </section>
-
-    {/* ── Sticky mobile register button ────────────────────── */}
-    <div class="md:hidden fixed bottom-0 left-0 right-0 z-40 p-3 bg-slate-950/95 backdrop-blur-md border-t border-slate-800 shadow-[0_-4px_12px_rgba(0,0,0,0.3)]">
-      <a
-        href={registrationUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="flex items-center justify-center gap-x-2 w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 transition-colors text-slate-950 font-bold rounded-full text-sm"
-        style="min-height: auto;"
-      >
-        Register &amp; choose your sessions
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-      </a>
-    </div>
   </main>
 
   {/* ── Poster Modals ─────────────────────────────────────── */}
