@@ -92,31 +92,104 @@ const techUpdate = {
   companies: ['Huawei', 'Integra RE', 'Atmoce', 'Jinko Solar', 'Envision', 'PSS', 'Istari'],
 };
 
-const quotes = [
+const quoteTabs = [
   {
-    text: 'Predictable Policy is the biggest enabler to Predictable Energy.',
-    author: 'Khun Suthep Ratnabhas',
-    org: 'EVAT',
+    id: 'data-centres',
+    label: 'Data Centres',
+    quotes: [
+      {
+        text: 'There is money to invest, but money wants time to market, policies have to be known and clear, their clarity has to support quantifiable construction. It\u2019s quite normal that money is attracted to policy clarity, cost effectiveness and predictable returns.',
+        author: 'Matthew Silvester',
+        role: 'Director, Meinhardt Thailand',
+      },
+      {
+        text: 'The Direct PPA 2,000 MW pilot, originally proposed in 2004, is not likely to be finalized until early 2027.',
+        author: 'Dr. Chanchai Amornvipas',
+        role: 'Director, Energy Regulatory Development and Strategic Execution Dept., ERC',
+      },
+      {
+        text: 'The Power Development Plan will need to both support and harmonise with energy policy.',
+        author: 'M.K. Balaji',
+        role: 'Strategic Advisory Board, ERRA',
+      },
+      {
+        text: 'Looking beyond PPAs, there may come a time when they are not the exception, but a decentralised market with direct supply is the norm.',
+        author: 'Lucas Meier',
+        role: 'Program Manager, CPG (German\u2013Southeast Asian Centre of Excellence for Public Policy and Good Governance)',
+      },
+      {
+        text: 'We will factor in all scenarios. Unknowns just mean more complexity and costs in planning.',
+        author: 'Chalalai van Kampen',
+        role: 'Head of Cost Management (Data Centres, Industrial & Logistics), JLL',
+      },
+      {
+        text: 'PREDICTABLE ENERGY includes availability, cost and confidence in transformation to higher renewables demand, and a decentralised sector away from a traditional monopoly.',
+        author: 'Consensus from Data Centres panels',
+        role: '',
+        featured: true,
+      },
+      {
+        text: 'It comes at us at high velocity in flashing red neon: In this time of rapid development where the game has already changed, cogent policy clarity is fundamental to Thailand\u2019s Data Centre success. There are now several policy makers.',
+        author: 'Bob Fox',
+        role: 'Moderator of two Data Centre panels (Policy, Constructor)',
+      },
+      {
+        text: 'UGT2 has price stability \u2014 decoupled from fossil prices; REC price embedded.',
+        author: 'Dr. Chanchai Amornvipas',
+        role: 'Director, Energy Regulatory Development and Strategic Execution Dept., ERC',
+      },
+      {
+        text: 'Prior to 2025, colocation data centres dominated the market. However, the trend has shifted towards hyperscalers. The Eastern Economic Corridor (EEC) is one of the prime locations for large-scale infrastructure, while locations near Bangkok\u2019s CBA are in high demand for colocations.',
+        author: 'Chalalai van Kampen',
+        role: 'Head of Cost Management (Data Centres, Industrial & Logistics), JLL',
+      },
+      {
+        text: 'Capacity is adequate in aggregate. The issue is where and when power lands.',
+        author: 'Matthew Silvester',
+        role: 'Director, Meinhardt Thailand',
+      },
+      {
+        text: 'We are less likely to see rationing; good policy and planning should mean we can avoid that.',
+        author: 'M.K. Balaji',
+        role: 'Strategic Advisory Board, ERRA',
+      },
+      {
+        text: 'Across competing Southeast Asian markets, the policy trend is turning from rapid expansion to more selective, sustainability-linked data center growth.',
+        author: 'Asst. Prof. Nondh Nuchmorn',
+        role: 'Faculty of Economics, Thammasat University',
+      },
+    ],
   },
   {
-    text: 'Electricity prices must reflect the market cost of consumption and generation.',
-    author: 'Khun Zixuan Guo',
-    org: 'UNESCAP',
-  },
-  {
-    text: 'Enhancing existing Power Assets is as important, if not more, than generating new assets.',
-    author: 'Khun Natat Thinaphong',
-    org: 'Siemens Energy',
-  },
-  {
-    text: 'Thailand does not lack low-carbon projects, it lacks aggregation into large projects.',
-    author: 'Khun Kriengkrai Chokelarptawee',
-    org: 'Krungthai Bank',
-  },
-  {
-    text: 'The biggest regret we will have in 2035 is if we do not incentivise pilot-scale projects now.',
-    author: 'Assoc. Prof. Prawit Kongjan',
-    org: 'Prince of Songkla University',
+    id: 'big-strategies',
+    label: 'Big Strategies \u2014 Vision 2036',
+    quotes: [
+      {
+        text: 'Predictable Policy is the biggest enabler to Predictable Energy.',
+        author: 'Suthep Ratnabhas',
+        role: 'EVAT',
+      },
+      {
+        text: 'Electricity prices must reflect the market cost of consumption and generation.',
+        author: 'Zixuan Guo',
+        role: 'UNESCAP',
+      },
+      {
+        text: 'Enhancing existing Power Assets is as important, if not more, than generating new assets.',
+        author: 'Natat Thinaphong',
+        role: 'Siemens Energy',
+      },
+      {
+        text: 'Thailand does not lack low-carbon projects, it lacks aggregation into large projects.',
+        author: 'Kriengkrai Chokelarptawee',
+        role: 'Krungthai Bank',
+      },
+      {
+        text: 'The biggest regret we will have in 2035 is if we do not incentivise pilot-scale projects now.',
+        author: 'Assoc. Prof. Prawit Kongjan',
+        role: 'Prince of Songkla University',
+      },
+    ],
   },
 ];
 
@@ -347,22 +420,53 @@ const eventDetails = {
     </section>
 
     {/* ── Quotable Quotes ──────────────────────────────────── */}
-    <section class="py-16 md:py-24">
+    <section class="py-16 md:py-24" id="quotes-section">
       <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
-        <div class="text-center mb-12" data-aos="fade-up">
+        <div class="text-center mb-10" data-aos="fade-up">
           <p class="text-emerald-400 text-sm font-semibold tracking-widest uppercase mb-3">Quotable Quotes</p>
           <h2 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight">What the room heard.</h2>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto" data-aos="fade-up" data-aos-delay="100">
-          {quotes.map((q, i) => (
-            <div class={`glass rounded-2xl p-7 border-l-4 ${i === quotes.length - 1 ? 'border-amber-500 md:col-span-2' : 'border-emerald-500'}`}>
-              <svg class={`w-8 h-8 mb-3 ${i === quotes.length - 1 ? 'text-amber-500/30' : 'text-emerald-500/30'}`} fill="currentColor" viewBox="0 0 24 24"><path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-4v-10h9.983zm14.017 0v7.391c0 5.704-3.748 9.571-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3.983v-10h9.983z" /></svg>
-              <p class={`text-slate-200 leading-relaxed font-display italic mb-4 ${i === quotes.length - 1 ? 'text-lg md:text-xl' : 'text-lg'}`}>
-                {q.text}
-              </p>
-              <p class={`text-sm font-semibold ${i === quotes.length - 1 ? 'text-amber-400' : 'text-emerald-400'}`}>{q.author}</p>
-              <p class="text-slate-500 text-xs mt-0.5">{q.org}</p>
+        <div class="max-w-5xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+          <div class="flex flex-wrap justify-center gap-2 mb-10 border-b border-slate-800 pb-1">
+            {quoteTabs.map((tab, i) => (
+              <button
+                type="button"
+                class:list={[
+                  'px-5 py-2.5 text-sm font-semibold rounded-t-lg transition-colors border-b-2 -mb-1',
+                  i === 0 ? 'active-quote-tab border-emerald-500 text-emerald-400' : 'border-transparent text-slate-400 hover:text-slate-200',
+                ]}
+                data-quote-tab={tab.id}
+                style="min-height: auto;"
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          {quoteTabs.map((tab, tabIndex) => (
+            <div
+              class:list={['quote-panel', tabIndex === 0 ? '' : 'hidden']}
+              data-quote-panel={tab.id}
+            >
+              <div class:list={['grid gap-6', tab.quotes.length > 6 ? 'md:grid-cols-2' : 'md:grid-cols-2']}>
+                {tab.quotes.map((q) => (
+                  <div class:list={[
+                    'glass rounded-2xl p-7 border-l-4',
+                    q.featured ? 'border-amber-500 md:col-span-2' : 'border-emerald-500',
+                  ]}>
+                    <svg class:list={['w-8 h-8 mb-3', q.featured ? 'text-amber-500/30' : 'text-emerald-500/30']} fill="currentColor" viewBox="0 0 24 24"><path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-4v-10h9.983zm14.017 0v7.391c0 5.704-3.748 9.571-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3.983v-10h9.983z" /></svg>
+                    <p class:list={[
+                      'text-slate-200 leading-relaxed font-display italic mb-4',
+                      q.featured ? 'text-lg md:text-xl' : 'text-lg',
+                    ]}>
+                      {q.text}
+                    </p>
+                    <p class:list={['text-sm font-semibold', q.featured ? 'text-amber-400' : 'text-emerald-400']}>{q.author}</p>
+                    {q.role && <p class="text-slate-500 text-xs mt-0.5">{q.role}</p>}
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
         </div>
@@ -583,6 +687,25 @@ const eventDetails = {
           }
         });
       }
+    });
+
+    document.querySelectorAll('[data-quote-tab]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const tabId = btn.getAttribute('data-quote-tab');
+        document.querySelectorAll('[data-quote-tab]').forEach((b) => {
+          b.classList.remove('active-quote-tab', 'border-emerald-500', 'text-emerald-400');
+          b.classList.add('border-transparent', 'text-slate-400');
+        });
+        btn.classList.add('active-quote-tab', 'border-emerald-500', 'text-emerald-400');
+        btn.classList.remove('border-transparent', 'text-slate-400');
+        document.querySelectorAll('[data-quote-panel]').forEach((panel) => {
+          if (panel.getAttribute('data-quote-panel') === tabId) {
+            panel.classList.remove('hidden');
+          } else {
+            panel.classList.add('hidden');
+          }
+        });
+      });
     });
   </script>
 </Layout>
