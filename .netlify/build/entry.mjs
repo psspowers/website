@@ -1,6 +1,6 @@
 import { renderers } from './renderers.mjs';
 import { s as serverEntrypointModule } from './assets/_@astrojs-ssr-adapter.CvSoi7hX.js';
-import { manifest } from './manifest_CQwIgfIJ.mjs';
+import { manifest } from './manifest_vq8eMiWy.mjs';
 import { createExports } from '@astrojs/netlify/ssr-function.js';
 
 const _page0 = () => import('./pages/_image.astro.mjs');
@@ -46,7 +46,7 @@ const _manifest = Object.assign(manifest, {
     middleware: () => import('./_noop-middleware.mjs')
 });
 const _args = {
-    "middlewareSecret": "64826c88-e8e0-4f96-996a-cc59fce0077d"
+    "middlewareSecret": "ff9b7a8c-a2f2-4e26-a686-92c2f0867401"
 };
 const _exports = createExports(_manifest, _args);
 const __astrojsSsrVirtualEntry = _exports.default;
