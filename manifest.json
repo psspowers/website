@@ -8,12 +8,12 @@
   "theme_color": "#1550b6",
   "icons": [
     {
-      "src": "/pss-logo-black.png",
+      "src": "/Pss.O_Logo_Cropped.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/pss-logo-black.png",
+      "src": "/Pss.O_Logo_Cropped.png",
       "sizes": "512x512",
       "type": "image/png"
     }
