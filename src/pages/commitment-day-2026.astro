@@ -35,7 +35,7 @@ const sessions = [
       { org: 'Deloitte', person: 'Dr. Bordin Vongvitayapirom' },
     ],
     faceImage: '/Commitment Day/5.1.1_-_Panel__Leader_+_Government_.png',
-    posterImage: '/Commitment Day/5.1.1_-_Panel__Leader_+_Government_.png',
+    posterImage: '/Commitment Day/5.1_-_Panel__Leader_+_Government_.jpg',
   },
   {
     id: 'session-2',
@@ -50,7 +50,7 @@ const sessions = [
       { org: 'The Perfect Seals and Services', person: 'Karan Yamdagni' },
     ],
     faceImage: '/Commitment Day/5.2.1_-_Panel__Quick_Win_Technology_.png',
-    posterImage: '/Commitment Day/5.2.1_-_Panel__Quick_Win_Technology_.png',
+    posterImage: '/Commitment Day/5.2_-_Panel__Quick_Win_Technology_.jpg',
   },
   {
     id: 'session-3',
@@ -65,7 +65,7 @@ const sessions = [
       { org: 'PCS Thailand', person: 'Ibrahim Kocagoz' },
     ],
     faceImage: '/Commitment Day/5.3.1_-_Panel__Engg_+_EPC_+_Consult_.png',
-    posterImage: '/Commitment Day/5.3.1_-_Panel__Engg_+_EPC_+_Consult_.png',
+    posterImage: '/Commitment Day/5.3_-_Panel__Engg_+_EPC_+_Consult_.jpg',
   },
   {
     id: 'session-4',
@@ -82,7 +82,7 @@ const sessions = [
       { org: 'Krungthai Bank', person: 'Kriengkrai Chokelarptawee' },
     ],
     faceImage: '/Commitment Day/5.4.1_-_Panel__Strategic_Initiative_.png',
-    posterImage: '/Commitment Day/5.4.1_-_Panel__Strategic_Initiative_.png',
+    posterImage: '/Commitment Day/5.4_-_Panel__Strategic_Initiative_.jpg',
   },
 ];
 
@@ -238,19 +238,6 @@ const galleryImages = [
   { src: '/Commitment Day/CD 26 Raise_a_toast.jpg', alt: 'Closing toast at Commitment Day 2026' },
   { src: '/Commitment Day/CD_26_-_Panel_Pai.jpg', alt: 'Panel discussion in progress' },
   { src: '/Commitment Day/CD_26_-_Stage_Wai.jpg', alt: 'On stage at Commitment Day 2026' },
-];
-
-const eventDocuments = [
-  {
-    title: 'Master Constructor',
-    description: 'The constructor framework and commitments from Commitment Day 2026.',
-    src: '/Commitment Day/DC-MASTER-CONSTRUCTOR-v1-3.pdf',
-  },
-  {
-    title: 'Master Policy',
-    description: 'The policy framework supporting predictable energy and infrastructure growth.',
-    src: '/Commitment Day/DC-MASTER-POLICY-v1-2.pdf',
-  },
 ];
 
 const eventDetails = {
@@ -599,62 +586,6 @@ const eventDetails = {
             </div>
             <p class="text-slate-500 text-xs text-center mt-3">Participants at the closing ceremony</p>
           </div>
-        </div>
-      </div>
-    </section>
-
-    {/* ── Event Documents ──────────────────────────────────── */}
-    <section class="py-16 md:py-24 bg-slate-950">
-      <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
-        <div class="max-w-3xl mb-10" data-aos="fade-up">
-          <div class="flex items-center gap-3 mb-4">
-            <span class="h-px w-10 bg-amber-400"></span>
-            <p class="text-amber-400 text-xs font-bold tracking-[0.2em] uppercase">Event Documents</p>
-          </div>
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-white tracking-tight mb-4 leading-[1.1]">
-            Read the master documents.
-          </h2>
-          <p class="text-slate-400 text-lg leading-relaxed max-w-2xl">
-            Browse the documents directly on this page, or open them in a new tab for a larger view and download options.
-          </p>
-        </div>
-
-        <div class="grid lg:grid-cols-2 gap-6" data-aos="fade-up" data-aos-delay="100">
-          {eventDocuments.map((document) => (
-            <article class="glass rounded-2xl overflow-hidden border border-slate-800">
-              <div class="bg-slate-900 p-3">
-                <object
-                  data={document.src}
-                  type="application/pdf"
-                  title={document.title}
-                  class="w-full h-[420px] md:h-[520px] rounded-lg bg-white"
-                >
-                  <div class="flex h-full min-h-[420px] flex-col items-center justify-center gap-4 px-6 text-center bg-slate-800 rounded-lg">
-                    <p class="text-slate-200 font-medium">This PDF preview is not available in your browser.</p>
-                    <a href={document.src} target="_blank" rel="noreferrer" class="text-emerald-400 hover:text-emerald-300 font-semibold" style="min-height: auto;">
-                      Open the document
-                    </a>
-                  </div>
-                </object>
-              </div>
-              <div class="p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div>
-                  <h3 class="font-display text-xl font-bold text-white">{document.title}</h3>
-                  <p class="text-slate-400 text-sm leading-relaxed mt-1">{document.description}</p>
-                </div>
-                <a
-                  href={document.src}
-                  target="_blank"
-                  rel="noreferrer"
-                  class="inline-flex shrink-0 items-center justify-center gap-2 rounded-full border border-emerald-500/40 px-4 py-2.5 text-sm font-semibold text-emerald-300 transition-colors hover:bg-emerald-500/10 hover:text-emerald-200"
-                  style="min-height: auto;"
-                >
-                  Open PDF
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5h5v5m0-5L10 14m-5 5h14a1 1 0 001-1V9" /></svg>
-                </a>
-              </div>
-            </article>
-          ))}
         </div>
       </div>
     </section>
