@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.5.6",
+    "@types/aos": "^3.0.8",
     "@types/compression": "^1.7.5",
     "@types/express": "^4.17.21",
     "@types/leaflet.markercluster": "^1.5.5",

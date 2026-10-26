@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import type { Project } from '../data/projects/types';
-import type { Map as LeafletMap, LeafletMouseEvent, MarkerClusterGroup, Marker, DivIcon } from 'leaflet';
+import type { Map as LeafletMap, MarkerClusterGroup, Marker } from 'leaflet';
 
 function debounce<T extends (...args: unknown[]) => void>(fn: T, ms: number): T {
   let timer: ReturnType<typeof setTimeout>;
@@ -17,10 +17,10 @@ interface Props {
 // Map configuration
 const MAP_CONFIG = {
   bounds: {
-    southwest: [-10, 65],  // Southwest corner
-    northeast: [35, 140]   // Northeast corner
+    southwest: [-10, 65] as [number, number],  // Southwest corner
+    northeast: [35, 140] as [number, number]   // Northeast corner
   },
-  defaultCenter: [15.0, 102.5], // Default center (Thailand)
+  defaultCenter: [15.0, 102.5] as [number, number], // Default center (Thailand)
   defaultZoom: 5,
   minZoom: 4,
   maxZoom: 12,
@@ -31,11 +31,9 @@ const MapComponent: React.FC<Props> = ({ projects }) => {
   const mapRef = useRef<LeafletMap | null>(null);
   const markersRef = useRef<Marker[]>([]);
   const clusterGroupRef = useRef<MarkerClusterGroup | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
   // Calculate map center based on project coordinates
   const calculateMapCenter = useCallback((): [number, number] => {
     if (!projects.length) return MAP_CONFIG.defaultCenter;
@@ -63,7 +61,10 @@ const MapComponent: React.FC<Props> = ({ projects }) => {
     const initMap = async () => {
       try {
         const L = (await import('leaflet')).default;
-        await import('leaflet.markercluster');
+        const markerClusterModule = await import('leaflet.markercluster');
+        (L as unknown as Record<string, unknown>).markerClusterGroup =
+          (markerClusterModule as unknown as { markerClusterGroup: unknown }).markerClusterGroup ??
+          (markerClusterModule as unknown as { default: { markerClusterGroup: unknown } }).default.markerClusterGroup;
         await import('leaflet/dist/leaflet.css');
         await import('leaflet.markercluster/dist/MarkerCluster.css');
         await import('leaflet.markercluster/dist/MarkerCluster.Default.css');
@@ -107,8 +108,8 @@ const MapComponent: React.FC<Props> = ({ projects }) => {
 
         // Override default scroll behavior to only work with Shift key
         mapInstance.scrollWheelZoom.disable();
-        mapInstance.on('wheel', (e: LeafletMouseEvent) => {
-          if (e.originalEvent?.shiftKey) {
+        mapInstance.getContainer().addEventListener('wheel', (e: WheelEvent) => {
+          if (e.shiftKey) {
             mapInstance.scrollWheelZoom.enable();
           } else {
             mapInstance.scrollWheelZoom.disable();
@@ -140,42 +141,29 @@ const MapComponent: React.FC<Props> = ({ projects }) => {
         const handleKeyDown = (e: KeyboardEvent) => {
           if (e.key === 'Control' || e.key === 'Meta' || e.key === 'Command') {
             mapInstance.dragging.enable();
-            setIsDragging(true);
           }
         };
 
         const handleKeyUp = (e: KeyboardEvent) => {
           if (e.key === 'Control' || e.key === 'Meta' || e.key === 'Command') {
             mapInstance.dragging.disable();
-            setIsDragging(false);
           }
         };
 
         document.addEventListener('keydown', handleKeyDown);
         document.addEventListener('keyup', handleKeyUp);
 
-        // Enable dragging only when CTRL is pressed
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Control' || e.key === 'Meta' || e.key === 'Command') {
-            mapInstance.dragging.enable();
-            setIsDragging(true);
-          }
-        });
-        document.addEventListener('keyup', (e) => {
-          if (e.key === 'Control' || e.key === 'Meta' || e.key === 'Command') {
-            mapInstance.dragging.disable();
-            setIsDragging(false);
-          }
-        });
-
         // Create marker cluster group
-        const clusterGroup = L.markerClusterGroup({
+        const clusterCreate = (L as unknown as {
+          markerClusterGroup: (opts: Record<string, unknown>) => MarkerClusterGroup;
+        }).markerClusterGroup;
+        const clusterGroup = clusterCreate({
           maxClusterRadius: MAP_CONFIG.clusterRadius,
           spiderfyOnMaxZoom: true,
           showCoverageOnHover: false,
           zoomToBoundsOnClick: true,
           removeOutsideVisibleBounds: true,
-          iconCreateFunction: (cluster) => {
+          iconCreateFunction: (cluster: { getChildCount: () => number }) => {
             const count = cluster.getChildCount();
             return L.divIcon({
               html: `<div class="cluster-marker">${count}</div>`,

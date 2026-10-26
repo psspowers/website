@@ -15,12 +15,13 @@ interface Props {
 const {
   title,
   description = "Pss.Orange delivers cheaper, cleaner, guaranteed renewable energy across Asia through 15-year Power Purchase Agreements. Zero upfront cost. 440+ MW installed.",
-  image = "/Pss.O_Logo.png",
+  image = "/Pss.O_New_Logo_Transparent.png",
   type = "website",
   noPopup = false,
 } = Astro.props;
 
-const canonicalURL = Astro.url.pathname;
+const SITE_URL = 'https://www.psspowers.com';
+const canonicalURL = new URL(Astro.url.pathname, SITE_URL).href;
 ---
 
 <!doctype html>
@@ -37,7 +38,7 @@ const canonicalURL = Astro.url.pathname;
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"></noscript>
     <meta name="generator" content={Astro.generator} />
-    
+
     <!-- Primary Meta Tags -->
     <meta name="description" content={description} />
     <meta name="keywords" content="Renewable Energy, Solar Power, Wind Energy, Battery Storage, Pss.Orange, I Squared Capital" />
@@ -64,7 +65,6 @@ const canonicalURL = Astro.url.pathname;
     <!-- PWA Tags -->
     <link rel="manifest" href="/manifest.json" />
     <link rel="apple-touch-icon" href="/Logo_Only.png" />
-    <link rel="preload" as="image" href="/Final_Hero_shot_website.jpg" fetchpriority="high" />
 
     <!-- JSON-LD Schema -->
     <script type="application/ld+json">

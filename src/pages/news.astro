@@ -50,7 +50,6 @@ function formatDate(dateStr: string) {
             <div class="grid md:grid-cols-2 gap-6 mb-12">
               {newsItems.map((item, index) => (
                 <div
-                  key={`news-${item.date}-${index}`}
                   class="glass rounded-2xl overflow-hidden"
                   data-aos="fade-up"
                   data-aos-delay={index * 80}
@@ -85,8 +84,8 @@ function formatDate(dateStr: string) {
                       <LinkText text={item.summary} />
                     </p>
                     <div class="flex flex-wrap gap-2">
-                      {item.tags.map((tag, index) => (
-                        <span key={`tag-${index}`} class="px-2.5 py-0.5 bg-slate-800/60 text-slate-400 rounded-full text-xs border border-slate-700">
+                      {item.tags.map((tag) => (
+                        <span class="px-2.5 py-0.5 bg-slate-800/60 text-slate-400 rounded-full text-xs border border-slate-700">
                           {tag}
                         </span>
                       ))}
@@ -185,8 +184,8 @@ function formatDate(dateStr: string) {
           button.classList.remove('text-slate-400');
 
           newsCards.forEach(item => {
-            const tags = Array.from(item.querySelectorAll('.rounded-full')).map(t => t.textContent?.trim());
-            (item as HTMLElement).style.display = tags.includes(tag) ? '' : 'none';
+            const tags = Array.from(item.querySelectorAll('.rounded-full')).map(t => t.textContent?.trim() ?? '');
+            (item as HTMLElement).style.display = tag !== null && tags.includes(tag) ? '' : 'none';
           });
         } else {
           newsCards.forEach(item => { (item as HTMLElement).style.display = ''; });

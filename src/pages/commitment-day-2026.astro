@@ -1,7 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import OptimizedImage from '../components/OptimizedImage.astro';
-import PosterModal from '../components/PosterModal.astro';
 
 const heroImage = '/Commitment Day/CD 26 Opening Dry Ice.jpg';
 
@@ -35,7 +34,6 @@ const sessions = [
       { org: 'Deloitte', person: 'Dr. Bordin Vongvitayapirom' },
     ],
     faceImage: '/Commitment Day/5.1.1_-_Panel__Leader_+_Government_.png',
-    posterImage: '/Commitment Day/5.1_-_Panel__Leader_+_Government_.jpg',
     conclusionsUrl: 'https://pssorange.com/DC_MASTER_POLICY_v1_2.pdf',
   },
   {
@@ -51,7 +49,6 @@ const sessions = [
       { org: 'The Perfect Seals and Services', person: 'Karan Yamdagni' },
     ],
     faceImage: '/Commitment Day/5.2.1_-_Panel__Quick_Win_Technology_.png',
-    posterImage: '/Commitment Day/5.2_-_Panel__Quick_Win_Technology_.jpg',
   },
   {
     id: 'session-3',
@@ -66,7 +63,6 @@ const sessions = [
       { org: 'PCS Thailand', person: 'Ibrahim Kocagoz' },
     ],
     faceImage: '/Commitment Day/5.3.1_-_Panel__Engg_+_EPC_+_Consult_.png',
-    posterImage: '/Commitment Day/5.3_-_Panel__Engg_+_EPC_+_Consult_.jpg',
     conclusionsUrl: 'https://pssorange.com/DC_MASTER_CONSTRUCTOR_v1_3.pdf',
   },
   {
@@ -84,13 +80,11 @@ const sessions = [
       { org: 'Krungthai Bank', person: 'Kriengkrai Chokelarptawee' },
     ],
     faceImage: '/Commitment Day/5.4.1_-_Panel__Strategic_Initiative_.png',
-    posterImage: '/Commitment Day/5.4_-_Panel__Strategic_Initiative_.jpg',
   },
 ];
 
 const techUpdate = {
   faceImage: '/Commitment Day/5.5.1_-_7_Mins_Tech_Update_.png',
-  posterImage: '/Commitment Day/5.5_-_7_Mins_Tech_Update_.png',
   companies: ['Huawei', 'Integra RE', 'Atmoce', 'Jinko Solar', 'Envision', 'PSS', 'Istari'],
 };
 
@@ -423,17 +417,6 @@ const eventDetails = {
                   fit="cover"
                   class="h-full"
                 />
-                <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-slate-950/80 to-transparent">
-                  <button
-                    type="button"
-                    class="text-emerald-400 text-xs font-medium hover:text-emerald-300 transition-colors flex items-center gap-1"
-                    onclick="openPoster('poster-tech')"
-                    style="min-height: auto;"
-                  >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                    View full poster
-                  </button>
-                </div>
               </div>
               <div class="p-8 md:p-10">
                 <p class="text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-3">Rapid-fire showcases</p>
@@ -700,21 +683,7 @@ const eventDetails = {
     </section>
   </main>
 
-  {/* ── Poster Modals ─────────────────────────────────────── */}
-  {sessions.map(s => (
-    <PosterModal id={`poster-${s.id}`} src={s.posterImage} alt={`${s.title} — full poster`} />
-  ))}
-  <PosterModal id="poster-tech" src={techUpdate.posterImage} alt="7-Minute Tech Updates — full poster" />
-
   <script is:inline>
-    function openPoster(modalId) {
-      const el = document.getElementById(modalId);
-      if (el) {
-        el.classList.remove('hidden');
-        el.classList.add('flex');
-        document.body.style.overflow = 'hidden';
-      }
-    }
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         document.querySelectorAll('[data-poster-modal]').forEach((m) => {

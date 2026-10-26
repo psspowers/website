@@ -131,22 +131,22 @@ const statIcons = {
         <div class="flex flex-wrap gap-3 mb-8">
           <select id="type-filter" class="px-4 py-2 rounded-xl glass border-0 text-slate-300 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-transparent min-w-[150px]" style="min-height: auto;">
             <option value="" class="bg-slate-800">All Types</option>
-            {projectTypes.map((type, index) => (
-              <option key={`type-${index}`} value={type} class="bg-slate-800">{type}</option>
+            {projectTypes.map((type) => (
+              <option value={type} class="bg-slate-800">{type}</option>
             ))}
           </select>
 
           <select id="status-filter" class="px-4 py-2 rounded-xl glass border-0 text-slate-300 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-transparent min-w-[150px]" style="min-height: auto;">
             <option value="" class="bg-slate-800">All Statuses</option>
-            {projectStatuses.map((status, index) => (
-              <option key={`status-${index}`} value={status} class="bg-slate-800">{status}</option>
+            {projectStatuses.map((status) => (
+              <option value={status} class="bg-slate-800">{status}</option>
             ))}
           </select>
 
           <select id="region-filter" class="px-4 py-2 rounded-xl glass border-0 text-slate-300 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-transparent min-w-[200px]" style="min-height: auto;">
             <option value="" class="bg-slate-800">All Regions</option>
-            {Object.entries(projectRegions).map(([key, region], index) => (
-              <option key={`region-${key}-${index}`} value={key} class="bg-slate-800">{region.name}</option>
+            {Object.entries(projectRegions).map(([key, region]) => (
+              <option value={key} class="bg-slate-800">{region.name}</option>
             ))}
           </select>
         </div>

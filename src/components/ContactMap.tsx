@@ -18,10 +18,10 @@ interface Props {
 // Map configuration
 const MAP_CONFIG = {
   bounds: {
-    southwest: [-10, 65],  // Southwest corner
-    northeast: [35, 140]   // Northeast corner
+    southwest: [-10, 65] as [number, number],  // Southwest corner
+    northeast: [35, 140] as [number, number]   // Northeast corner
   },
-  center: [15.0, 102.5],   // Centered on Thailand
+  center: [15.0, 102.5] as [number, number],   // Centered on Thailand
   zoom: 4,
   minZoom: 3,
   maxZoom: 10
@@ -32,7 +32,6 @@ const ContactMap: React.FC<Props> = ({ offices }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [mapInitialized, setMapInitialized] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -89,21 +88,19 @@ const ContactMap: React.FC<Props> = ({ offices }) => {
         document.addEventListener('keydown', (e) => {
           if (e.key === 'Control' || e.key === 'Meta' || e.key === 'Command') {
             mapInstance.dragging.enable();
-            setIsDragging(true);
           }
         });
 
         document.addEventListener('keyup', (e) => {
           if (e.key === 'Control' || e.key === 'Meta' || e.key === 'Command') {
             mapInstance.dragging.disable();
-            setIsDragging(false);
           }
         });
 
         // Override default scroll behavior to only work with Shift key
         mapInstance.scrollWheelZoom.disable();
-        mapInstance.on('wheel', (e) => {
-          if (e.originalEvent.shiftKey) {
+        mapInstance.getContainer().addEventListener('wheel', (e: WheelEvent) => {
+          if (e.shiftKey) {
             mapInstance.scrollWheelZoom.enable();
           } else {
             mapInstance.scrollWheelZoom.disable();
@@ -195,7 +192,7 @@ const ContactMap: React.FC<Props> = ({ offices }) => {
       {/* Controls Info */}
       <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm p-4 rounded-lg shadow-lg z-20">
         <p className="text-sm text-gray-600">
-          Hold <kbd className="px-2 py-1 bg-gray-100 rounded">{navigator.platform.includes('Mac') ? '⌘ Command' : 'CTRL'}</kbd> + Mouse to pan<br/>
+          Hold <kbd className="px-2 py-1 bg-gray-100 rounded">{/Mac/i.test(navigator.userAgent) ? '⌘ Command' : 'CTRL'}</kbd> + Mouse to pan<br/>
           Hold <kbd className="px-2 py-1 bg-gray-100 rounded">Shift</kbd> + Scroll to zoom
         </p>
       </div>
