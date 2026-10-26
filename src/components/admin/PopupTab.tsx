@@ -229,7 +229,7 @@ export default function PopupTab({ supabase }: { supabase: SupabaseClient }) {
                     </label>
                     <p className="text-xs text-gray-400">JPG, PNG or WebP · max 5 MB · or paste a URL:</p>
                     <input value={form.image_url ?? ''} onChange={e => set('image_url', e.target.value)}
-                      placeholder="/News_Images/your-image.jpg or https://..." className={inp} />
+                      placeholder="/News_Images/your-image.jpeg or https://..." className={inp} />
                   </div>
                   {form.image_url && !uploading && (
                     <img src={form.image_url} alt="preview" className="w-28 h-20 rounded-xl object-cover border border-gray-200 shrink-0"

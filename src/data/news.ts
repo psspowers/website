@@ -20,7 +20,7 @@ export const newsItems: NewsItem[] = [
     date: "2024-09-05",
     summary: "Naresuan University signed an agreement with Power Systems and Solutions Co., Ltd. to install and operate a 12MW solar power system. The project aims to promote renewable energy, supporting the university's sustainability goals and Thailand's net-zero target. Expected to generate 20 million kWh annually, the system will help reduce electricity costs by 395 million THB over 12 years. Power Systems and Solutions will handle the survey, design, installation, and maintenance, ensuring long-term efficiency and environmental benefits.",
     image: {
-      url: "/News_Images/2024-09_2024-09-05_naraesuan-sign.jpg",
+      url: "/News_Images/2024-09_2024-09-05_naraesuan-sign.jpeg",
       alt: "PSS Powers and Naresuan University signing ceremony",
       aspectRatio: "16:9",
       width: 1200,
@@ -35,7 +35,7 @@ export const newsItems: NewsItem[] = [
     date: "2025-02-15",
     summary: "PSS Powers is pleased to announce a strategic partnership with I Squared Capital, a leading global infrastructure investment manager. This collaboration combines PSS Powers' local expertise and track record with I Squared Capital's global experience and financial strength. Together, we have established a joint venture with Berde, I Squared Capital's subsidiary, forming Berde PSS Renewable Investment. This entity will focus on renewable energy projects in Thailand, with plans for expansion across Asia. The partnership will prioritize utility-scale solar, wind, and energy storage projects, strengthening our pipeline and commitment to sustainability.",
     image: {
-      url: "/News_Images/2025-02_2025-02-15_isq-partnership-announcement.jpg",
+      url: "/News_Images/2025-02_2025-02-15_isq-partnership-announcement.jpeg",
       alt: "PSS Powers and I Squared Capital partnership announcement",
       aspectRatio: "16:9",
       width: 1200,
@@ -52,7 +52,7 @@ export const newsItems: NewsItem[] = [
     source: "LinkedIn",
     sourceUrl: "https://www.linkedin.com/company/psspowers/",
     image: {
-      url: "/News_Images/2024-02_2024-02-20_maxion-wheels-completion.jpg",
+      url: "/News_Images/2024-02_2024-02-20_maxion-wheels-completion.jpeg",
       alt: "Maxion Wheels solar installation",
       aspectRatio: "16:9",
       width: 1200,
@@ -67,7 +67,7 @@ export const newsItems: NewsItem[] = [
     source: "LinkedIn",
     sourceUrl: "https://www.linkedin.com/company/psspowers/",
     image: {
-      url: "/News_Images/2024-01_2024-01-15_operations-india.jpg",
+      url: "/News_Images/2024-01_2024-01-15_operations-india.jpeg",
       alt: "PSS Powers India operations",
       aspectRatio: "16:9",
       width: 1200,
